@@ -1,0 +1,80 @@
+<form [formGroup]="addressForm" (ngSubmit)="onSubmit()">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mt-3">
+                <mat-form-field>
+                    <input matInput name="Name" placeholder="Name" name="Name" formControlName="name"
+                        [(ngModel)]="address.name" />
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-4 mt-3">
+                <mat-form-field>
+                    <input matInput name="Number" placeholder="Mobile Number" type="text" [maxLength]="maxLengthPhone"
+                        [(ngModel)]="address.mobileNumber" formControlName="mobileNumber">
+                </mat-form-field>
+            </div>
+            <div class="col-md-4 mt-3">
+                <mat-form-field>
+                    <input matInput name="houseNo" placeholder="Flat /House No" [(ngModel)]="address.houseNo"
+                        formControlName="houseNo">
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+
+                <mat-form-field>
+                    <input matInput name="society" placeholder="Society / Apartment Name" [(ngModel)]="address.society"
+                        formControlName="society">
+                </mat-form-field>
+            </div>
+            <div class="col-md-4">
+                <mat-form-field>
+                    <input matInput name="landMark" placeholder="Landmark" [(ngModel)]="address.landMark"
+                        formControlName="landMark">
+                </mat-form-field>
+            </div>
+            <div class="col-md-4">
+                <mat-form-field>
+                    <input matInput name="city" placeholder="City" [(ngModel)]="address.city" formControlName="city">
+                </mat-form-field>
+          
+            </div>
+
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+
+                <mat-form-field>
+                    <input matInput name="pinCode" placeholder="Pin Code" [maxLength]="maxLengthPinCode"
+                        [(ngModel)]="address.pinCode" (focusout)="getPinCode()" formControlName="pinCode">
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-4">
+                <mat-form-field>
+                    <input matInput name="area" placeholder="Area" [(ngModel)]="address.area" formControlName="area" readonly> 
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-4">
+                <mat-form-field>
+                    <input matInput name="State" [(ngModel)]="address.state" placeholder="State"
+                        formControlName="state" readonly />
+                </mat-form-field>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div mat-dialog-actions align="end">
+        <button mat-raised-button color="primary" [disabled]="!addressForm.valid">Save</button>
+        <button mat-raised-button mat-dialog-close>Close</button>
+    </div>
+</form>

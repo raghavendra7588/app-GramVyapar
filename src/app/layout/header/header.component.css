@@ -1,0 +1,51 @@
+.spacer{
+    flex: 1 1 auto;
+}
+*:focus {
+    outline: none;
+}
+
+mat-icon{
+    cursor: pointer;
+}
+
+.my-app
+{
+    background:transparent;
+    color: black;
+}
+
+.cart-icon{
+    color: #28a745;
+}
+.cart-text{
+    color: #28a745;
+}
+
+.home-icon{
+    color: #d39e00;
+}
+
+.home-text{
+    color: #d39e00;
+}
+
+.address-icon{
+    color: #545b62;
+}
+
+.address-text{
+    color: #545b62;
+}
+
+.order-icon{
+    color: #17a2b8;
+}
+
+.order-text{
+    color: #17a2b8;
+}
+
+p{
+    cursor: pointer;
+}

@@ -1,0 +1,22 @@
+<div class="d-flex justify-content-center align-items-center container mt-5">
+    <div class="row">
+        <div class="col-md-7 mr-3">
+            <mat-form-field>
+                <input matInput placeholder="userId"  [(ngModel)]="user.username" name="userId" />
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-7">
+            <mat-form-field>
+                <input matInput type="password" placeholder="password" [(ngModel)]="user.password" name="password" />
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <button mat-button (click)="login()">Login</button>
+        </div>
+    </div>
+
+</div>

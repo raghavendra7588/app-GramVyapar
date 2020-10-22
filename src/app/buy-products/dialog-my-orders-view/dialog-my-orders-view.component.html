@@ -1,0 +1,85 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 col-4 col-sm-12 font-weight-bold">
+            <p style="color:blue;">{{vendorName}}</p>
+            <p>order NO : {{orderNo}}</p>
+            <p>Order Date : {{orderDate}}</p>
+            <p>Delivery Slot : {{deliveryTime}}</p>
+            <p>Delivery Type : {{deliveryType}}</p>
+            <p>Payment Type : {{paymentType}}</p>
+
+        </div>
+        <div class="col-md-4 col-4 col-sm-12 font-weight-bold">
+
+            <p style="color:blue;">Customer Information</p>
+            <p>{{customerName}}</p>
+            <p>{{mobileNumber}}</p>
+            <p>{{houseNo}}</p>
+            <p>{{landMark}}</p>
+            <p>{{area}} {{city}}</p>
+            <p></p>
+        </div>
+
+        <div class="col-md-4 col-4 col-sm-12 font-weight-bold">
+            <p style="color:blue;">Order Summary</p>
+            <p>Total Items Ordered : {{totalItemsOrdered}}</p>
+            <p>Total MRP : {{totalMRP}}</p>
+            <p>Total Discount : {{totalDiscount}}</p>
+
+            <p style="color:blue;">Total Payable Amount : {{totalPayableAmount}}</p>
+
+        </div>
+    </div>
+</div>
+<div class="row mb-4"></div>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Product Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="brandName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Brand Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.BrandId}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Units </th>
+        <td mat-cell *matCellDef="let element">
+            {{element.Unit}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="mrp">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> MRP </th>
+        <td mat-cell *matCellDef="let element"> {{element.MRP}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="discount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Discount</th>
+        <td mat-cell *matCellDef="let element"> {{element.Discount}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="finalPrice">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Final Price </th>
+        <td mat-cell *matCellDef="let element; let i = index">
+
+            {{element.FinalPrice}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="requiredQuantity">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantity </th>
+        <td mat-cell *matCellDef="let element">
+            <!-- <mat-form-field style="width: 70px !important;">
+            <input matInput placeholder="Quantity" [(ngModel)]="element.RequiredQuantity">
+          </mat-form-field> -->
+            {{element.RequiredQuantity}}
+        </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>

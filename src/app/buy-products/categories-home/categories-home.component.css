@@ -1,0 +1,12 @@
+*:focus {
+    outline: none;
+}
+
+.width-100{
+    width: 100% !important;
+    min-width: unset!important;
+}
+
+.spacer{
+    flex: 1 1 auto;
+}

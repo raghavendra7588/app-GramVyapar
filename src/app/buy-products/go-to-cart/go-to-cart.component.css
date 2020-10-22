@@ -1,0 +1,15 @@
+.width-100{
+    width: 100% !important;
+    min-width: unset!important;
+}
+
+
+.mat-column-select {
+    flex: none;
+    width: 50px !important;
+ } 
+
+ 
+mat-form-field {
+    min-width: 30px !important;
+ }

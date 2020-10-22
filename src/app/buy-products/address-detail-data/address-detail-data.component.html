@@ -1,0 +1,80 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-sm-8 col-12"></div>
+        <div class="col-md-2 col-sm-2 col-6">
+            <button mat-raised-button (click)="openDialog()">Add Address</button>
+        </div>
+        <div class="col-md-2 col-sm-2 col-6">
+            <button mat-raised-button (click)="GoToCart()">Go To Cart</button>
+        </div>
+
+
+        <div class="col-md-12 my-5">
+
+            <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef> Name</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="mobileNumber">
+                    <mat-header-cell *matHeaderCellDef> mobileNumber </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.mobileNumber}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="houseNo">
+                    <mat-header-cell *matHeaderCellDef> houseNo </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.houseNO}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="society">
+                    <mat-header-cell *matHeaderCellDef> society </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.society}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="landMark">
+                    <mat-header-cell *matHeaderCellDef> landMark </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.landmark}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="pinCode">
+                    <mat-header-cell *matHeaderCellDef> pinCode </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.pincode}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="city">
+                    <mat-header-cell *matHeaderCellDef> city </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.city}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="area">
+                    <mat-header-cell *matHeaderCellDef> area </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.area}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="state">
+                    <mat-header-cell *matHeaderCellDef> state </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.state}} </mat-cell>
+                </ng-container>
+
+
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef> Edit </th>
+                    <td mat-cell *matCellDef="let element">
+                      <button mat-icon-button (click)="editAddress(element)">
+                        <mat-icon class="mat-18">edit</mat-icon>
+                      </button>
+                    </td>
+                  </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+            <!-- 
+            displayedColumns: string[] = ['name', 'mobileNumber', 'houseNo', 'society', 'landMark', 'pinCode', 'city',
+            'area', 'state']; -->
+
+        </div>
+    </div>
+</div>
