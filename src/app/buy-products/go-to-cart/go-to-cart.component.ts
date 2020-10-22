@@ -14,6 +14,7 @@ import { DialogAddAddressComponent } from '../dialog-add-address/dialog-add-addr
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { EmitterService } from 'src/app/shared/emitter.service';
 import { DialogOrderNoComponent } from '../dialog-order-no/dialog-order-no.component';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-go-to-cart',
@@ -93,6 +94,13 @@ export class GoToCartComponent implements OnInit {
   // modalRef: BsModalRef;
   message: string;
   deleteRecordResponse: any;
+
+  isDeliveryType: boolean = false;
+  ispaymentType: boolean = false;
+  isDeliveryDate: boolean = false;
+  isDeliveryTime: boolean = false;
+  events: string[] = [];
+
 
   purchaseProducts: PurchaseProducts = new PurchaseProducts();
 
@@ -194,6 +202,11 @@ export class GoToCartComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
+  addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
+    this.events.push(`${type}: ${event.value}`);
+    this.isDeliveryDate = true;
+  }
+
   openModal(template: TemplateRef<any>, response) {
     this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
     this.deleteRecordResponse = response;
@@ -210,7 +223,7 @@ export class GoToCartComponent implements OnInit {
   decline(): void {
     this.message = 'Declined!';
     this.modalRef.hide();
-    return ;
+    return;
   }
 
 
@@ -570,25 +583,21 @@ export class GoToCartComponent implements OnInit {
     this.emitterService.isProductIsAddedOrRemoved.emit(true);
   }
 
-
-
-
-
-
-
-
-
-
   selectedDeliveryTypeFromList(response) {
     console.log(response);
     this.selectedTimeSlot = response.id;
     console.log('&&&&&& id ', this.selectedTimeSlot);
-
+    this.isDeliveryType = true;
   }
+
   selectedPaymentTermFromList(response) {
     console.log(response);
+    this.ispaymentType = true;
   }
 
+  selectedDeliveryTimeFromList(response) {
+    this.isDeliveryTime = true;
+  }
 
   getAddressData() {
     this.buyProductsService.getAddressDataById(this.vendorId).subscribe(data => {
@@ -596,20 +605,6 @@ export class GoToCartComponent implements OnInit {
       // this.getSpecificAddress(this.addressData, this.addressId);
     });
   }
-
-  // getSpecificAddress(address, id) {
-  //   address.filter(data => {
-  //     if (data.id === id) {
-  //       this.name = data.name;
-  //       this.houseNo = data.houseNO;
-  //       this.society = data.society;
-  //       this.landMark = data.landmark;
-  //       this.pinCode = data.pincode;
-  //       this.city = data.city;
-  //       this.area = data.area;
-  //     }
-  //   });
-  // }
 
   placeOrder() {
     this.purchaseProducts.VendorCode = sessionStorage.getItem('vendorId');

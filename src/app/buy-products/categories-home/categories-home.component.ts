@@ -199,12 +199,6 @@ export class CategoriesHomeComponent implements OnInit {
   }
 
 
-  onCardClick(category) {
-    // console.log('i received the category', category);
-    this.router.navigate(['buyProducts/SubCategories/' + category.id]);
-    sessionStorage.setItem('categoryId', category.id);
-  }
-
   getCategoryListData() {
     this.buyProductsService.getAllCategory(this.parentId, this.vendorId).subscribe(data => {
       // console.log('category list', data);
@@ -213,9 +207,7 @@ export class CategoriesHomeComponent implements OnInit {
   }
 
   getSubCategoryListData() {
-    console.log('parent id', this.parentId);
     this.parentId = '3';
-    console.log('vendor id', this.vendorId);
     this.buyProductsService.getAllSubCategory(this.parentId, this.vendorId).subscribe(data => {
       this.subCategoryListData = data;
       console.log('sub category ', this.subCategoryListData);
@@ -232,8 +224,7 @@ export class CategoriesHomeComponent implements OnInit {
 
 
   getAllBrandsData() {
-    console.log('sub cat id', this.subCategoryId);
-    console.log('vendorId', this.vendorId);
+
     let uniqueBrandNames: any = [];
     this.buyProductsService.getAllProduct(this.subCategoryId, this.vendorId).subscribe(response => {
       this.brandsData = response;
@@ -246,10 +237,8 @@ export class CategoriesHomeComponent implements OnInit {
       this.dataSource = new MatTableDataSource(this.brandsData);
       this.dataSource.paginator = this.paginator;
 
-      console.log('brands data', this.brandsData);
       uniqueBrandNames = this.createUniqueBrandName(this.brandsData);
       this.uniqueBrandNamesArray = this.sortUniqueBrandName(uniqueBrandNames);
-      console.log('unique brand names', this.uniqueBrandNamesArray);
 
     });
   }
@@ -309,8 +298,8 @@ export class CategoriesHomeComponent implements OnInit {
 
     this.selectedProductId = response.productid;
     this.availableQuantity = response.productDetails[i].outOfStockFlag;
-    console.log('selectedProductId', this.selectedProductId);
-    console.log('availableQuantity', this.availableQuantity);
+    // console.log('selectedProductId', this.selectedProductId);
+    // console.log('availableQuantity', this.availableQuantity);
 
   }
 
@@ -318,21 +307,32 @@ export class CategoriesHomeComponent implements OnInit {
 
 
   onQuantityChange(response, quantity, i) {
-    // console.log('i ', i);
-    console.log('response (((((((((((((((((((', response.productDetails[this.selectedIndex]);
-    this.isQuantityValid = Number(response.productDetails[this.selectedIndex].Quantity);
-    console.log('isQuantityValid (((((((((((((((((((', this.isQuantityValid);
+    console.log('response simple', response);
+
+    // console.log('response (((((((((((((((((((', response.productDetails[this.selectedIndex]);
+
+   
     if (this.selectedIndex === undefined || this.selectedIndex === null) {
       i = 0;
+      this.selectedIndex = 0;
     }
-    if (this.availableQuantity === 'True' && this.isQuantityValid < 1) {
+    console.log('selected index', this.selectedIndex);
+    // if (response.productDetails[this.selectedIndex].Quantity === undefined) {
+    //   this.toastr.error('Currently this Product is Out of Stock');
+    //   return;
+    // }
+
+    // this.isQuantityValid = Number(response.productDetails[this.selectedIndex].Quantity);
+    // console.log('isQuantityValid (((((((((((((((((((', this.isQuantityValid);
+
+    if (this.availableQuantity === 'True') {
       this.toastr.error('Currently this Product is Out of Stock');
       return;
     }
-    // console.log('i will not execute after Out of Stock');
+    
     this.purchaseProductArray = JSON.parse(sessionStorage.getItem('cart_items') || '[]');
-    console.log('session array', this.purchaseProductArray);
-    console.log('response ', response);
+    // console.log('session array', this.purchaseProductArray);
+    // console.log('response ', response);
     // if ((this.purchaseProductArray != null || this.purchaseProductArray != undefined || this.purchaseProductArray != [])) {
     //   if (Number(this.purchaseProductArray[0].categoryid) != Number(response.categoryid)) {
     //     this.toastr.error('Can not allowed to add more one categories product');
@@ -367,8 +367,8 @@ export class CategoriesHomeComponent implements OnInit {
   }
 
   pushProduct(arr, response, j) {
-    console.log('response', response);
-    console.log('arr', arr);
+    // console.log('response', response);
+    // console.log('arr', arr);
     if (j === undefined) {
       j = 0;
     }
@@ -376,7 +376,7 @@ export class CategoriesHomeComponent implements OnInit {
     const index = arr.findIndex((o) => o.productid === response.productid && o.id === response.productDetails[j].id);
     if (index === -1) {                 //not exist
 
-      console.log('not exist');
+      // console.log('not exist');
       arr.push({
         brandImageUrl: response.brandImageUrl, imgurl: response.imgurl, name: response.name,
         brandid: response.brandid, productid: response.productid,
@@ -386,7 +386,7 @@ export class CategoriesHomeComponent implements OnInit {
       });
 
     } else {
-      console.log('exist', arr);
+      // console.log('exist', arr);
 
       for (let i = 0; i < arr.length; i++) {
         if (arr[i].productid === response.productid && arr[i].id === response.productDetails[j].id) {
@@ -405,7 +405,7 @@ export class CategoriesHomeComponent implements OnInit {
         }
       }
     }
-    console.table('unique storage array', arr);
+    // console.table('unique storage array', arr);
     return arr;
   }
 
@@ -419,7 +419,7 @@ export class CategoriesHomeComponent implements OnInit {
 
 
   createUniqueBrandName(array: any) {
-    console.log('inside fun ', array);
+    // console.log('inside fun ', array);
     let sortedArray: Array<any> = [];
     for (let i = 0; i < array.length; i++) {
       if ((sortedArray.findIndex(p => p.brandname.trim() == array[i].brandname.trim())) == -1) {
@@ -443,30 +443,21 @@ export class CategoriesHomeComponent implements OnInit {
 
   onBrandSelectAll() {
     this.brandId = "0";
-    console.log('vendor Code', this.vendorId);
-    console.log('category id', this.categoryId);
-    console.log('sub category id', this.SubCategoryId);
-    console.log('brand id', this.brandId);
+
     this.selectedIndex = 0;
     this.buyProductsService.getALLBrandData(this.vendorId, this.categoryId, this.SubCategoryId, this.brandId).subscribe(response => {
       this.allBrandsData = response;
-      console.log('all brands ', this.allBrandsData);
       this.dataSource = new MatTableDataSource(this.allBrandsData);
       this.dataSource.paginator = this.paginator;
     });
   }
 
   onSubCategorySelectAll() {
-    // const data = { 'vendorCode': vendorCode, 'categoryid': categoryid, 'subcategoryid': subcategoryid, 'brandid': brandid }
     this.brandId = "0";
     this.SubCategoryId = "0";
-    console.log('vendor Code', this.vendorId);
-    console.log('category id', this.categoryId);
-    console.log('sub category id', this.SubCategoryId);
-    console.log('brand id', this.brandId);
     this.selectedIndex = 0;
     this.buyProductsService.getALLSubCaetgoryData(this.vendorId, this.categoryId, this.SubCategoryId, this.brandId).subscribe(response => {
-      console.log('@$$$$$$$$$$$$$$$$$$$$$$$$$44', response);
+
       this.allSubCategoryData = response;
 
       this.dataSource = new MatTableDataSource(this.allSubCategoryData);
