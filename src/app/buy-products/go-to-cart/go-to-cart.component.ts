@@ -100,7 +100,7 @@ export class GoToCartComponent implements OnInit {
   isDeliveryDate: boolean = false;
   isDeliveryTime: boolean = false;
   events: string[] = [];
-
+  vendorName: string;
 
   purchaseProducts: PurchaseProducts = new PurchaseProducts();
 
@@ -113,6 +113,8 @@ export class GoToCartComponent implements OnInit {
     public dialog: MatDialog,
     private modalService: BsModalService
   ) {
+    this.vendorName = sessionStorage.getItem('vendorName');
+    console.log('vendor name', this.vendorName);
     this.emitterService.isProductRemoved.subscribe(value => {
       if (value) {
         this.getCartItems();
@@ -479,7 +481,10 @@ export class GoToCartComponent implements OnInit {
 
   }
   goToProductCategoriesPage() {
-    this.router.navigate(['buyProducts/categories']);
+    // {queryParams: {params: id}}
+    // this.router.navigate(['buyProducts/categories'], { queryParams: { name: this.vendorName } });
+
+    this.router.navigate(['buyProducts/categories' + '/' + this.vendorName]);
   }
 
   removeItems(item) {

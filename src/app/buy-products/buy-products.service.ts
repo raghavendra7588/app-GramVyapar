@@ -24,7 +24,7 @@ export class BuyProductsService {
 
   private GET_ALL_SUBCATEGORY_DATA = 'http://203.112.144.38/uat_AdminApi/api/Product/GetProductList';
   private GET_ALL_BRAND_DATA = 'http://203.112.144.38/uat_AdminApi/api/Product/GetProductList';
-
+  private GET_VENDOR_DETAILS = 'http://203.112.144.38/uat_AdminApi/api/User/GetVendorDetails';
 
 
 
@@ -129,5 +129,13 @@ export class BuyProductsService {
     });
 
     return this.http.post(this.GET_ALL_BRAND_DATA, data, { headers: reqHeader });
+  }
+
+  getVendorDetails(name:string) {
+    const data = { 'name': name}
+    let reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.post(this.GET_VENDOR_DETAILS, data, { headers: reqHeader });
   }
 }

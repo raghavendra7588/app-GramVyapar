@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BuyProductsService } from '../buy-products.service';
 import { MatPaginator } from '@angular/material/paginator';
 // import { EmitterService } from 'src/shared/emitter.service';
@@ -66,7 +66,11 @@ export class CategoriesHomeComponent implements OnInit {
   SubCategoryId: string;
   brandId: string;
   isQuantityValid: number;
-
+  name: any;
+  responseVendorCode: any;
+  responseSellerId: any;
+  responseVendorName: any;
+  vendorResponse: any = [];
 
   constructor(
     public formBuilder: FormBuilder,
@@ -75,11 +79,28 @@ export class CategoriesHomeComponent implements OnInit {
     public emitterService: EmitterService,
     public toastr: ToastrService,
     private cdr: ChangeDetectorRef,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private activatedRoute: ActivatedRoute
   ) {
+
+    this.name = this.activatedRoute.snapshot.paramMap.get('name');
+    // console.log('name', this.name);
+    sessionStorage.setItem('vendorName', this.name);
+    this.buyProductsService.getVendorDetails(this.name).subscribe(response => {
+      console.log('res', response);
+      this.vendorResponse = response;
+      this.responseVendorCode = this.vendorResponse.vendorcode;
+      this.responseSellerId = this.vendorResponse.id;
+      this.responseVendorName = this.vendorResponse.name;
+      sessionStorage.setItem('sellerName', this.responseVendorName);
+      sessionStorage.setItem('vendorId', this.responseVendorCode);
+      sessionStorage.setItem('sellerId', this.responseSellerId);
+    });
     this.parentId = '0';
     this.vendorId = sessionStorage.getItem('vendorId');
     //this.sellerId = (sessionStorage.getItem('sellerId')).toString();
+    console.log('this.vendorId', this.vendorId);
+
     this.patientCategory = this.fb.group({
       patientCategory: [null, Validators.required]
     });
@@ -226,6 +247,9 @@ export class CategoriesHomeComponent implements OnInit {
   getAllBrandsData() {
 
     let uniqueBrandNames: any = [];
+
+    console.log('subCategoryId', this.subCategoryId);
+    console.log('vendor Id', this.vendorId);
     this.buyProductsService.getAllProduct(this.subCategoryId, this.vendorId).subscribe(response => {
       this.brandsData = response;
       this.catchBrandArray = response;
@@ -311,7 +335,7 @@ export class CategoriesHomeComponent implements OnInit {
 
     // console.log('response (((((((((((((((((((', response.productDetails[this.selectedIndex]);
 
-   
+
     if (this.selectedIndex === undefined || this.selectedIndex === null) {
       i = 0;
       this.selectedIndex = 0;
@@ -329,7 +353,7 @@ export class CategoriesHomeComponent implements OnInit {
       this.toastr.error('Currently this Product is Out of Stock');
       return;
     }
-    
+
     this.purchaseProductArray = JSON.parse(sessionStorage.getItem('cart_items') || '[]');
     // console.log('session array', this.purchaseProductArray);
     // console.log('response ', response);
@@ -456,6 +480,7 @@ export class CategoriesHomeComponent implements OnInit {
     this.brandId = "0";
     this.SubCategoryId = "0";
     this.selectedIndex = 0;
+    this.uniqueBrandNamesArray = [];
     this.buyProductsService.getALLSubCaetgoryData(this.vendorId, this.categoryId, this.SubCategoryId, this.brandId).subscribe(response => {
 
       this.allSubCategoryData = response;
@@ -465,6 +490,5 @@ export class CategoriesHomeComponent implements OnInit {
     });
 
   }
-
 
 }

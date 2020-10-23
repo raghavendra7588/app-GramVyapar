@@ -22,10 +22,11 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { HeaderComponent } from './header/header.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 
 
 @NgModule({
-  declarations: [HeaderComponent],
+  declarations: [HeaderComponent, LandingPageComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -49,6 +50,6 @@ import { HeaderComponent } from './header/header.component';
     MatListModule,
     MatCheckboxModule
   ],
-  exports: [HeaderComponent]
+  exports: [HeaderComponent, LandingPageComponent]
 })
 export class LayoutModule { }
