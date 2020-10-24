@@ -6,25 +6,26 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class BuyProductsService {
 
-  // private BASE_URL = 'http://203.112.144.38/uat_InventoryService/';
-  private BASE_URL = 'http://localhost:55547/';
+  private BASE_URL = 'http://203.112.144.38/uat_InventoryService/';
+  //private BASE_URL = 'http://localhost:55547/';
+  private ADMIN_BASE_URL = 'http://203.112.144.38/uat_AdminApi/api/';
 
-  private GET_PRODUCT_LIST = 'http://203.112.144.38/AdminApi/api/Product/GetProductList';
-  private GET_ALL_CATEGORY_DATA = 'http://203.112.144.38/AdminApi/api/Category/getall';
-  private GET_ALL_SUBCATEGORIES_DATA = 'http://203.112.144.38/AdminApi/api/Category/getall';
-  private GET_PRODUCT_INFORMATION = 'http://203.112.144.38/AdminApi/api/Product/GetProductInfo';
+  private GET_PRODUCT_LIST = this.ADMIN_BASE_URL + 'Product/GetProductList';
+  private GET_ALL_CATEGORY_DATA = this.ADMIN_BASE_URL + 'Category/getall';
+  private GET_ALL_SUBCATEGORIES_DATA = this.ADMIN_BASE_URL + 'Category/getall';
+  private GET_PRODUCT_INFORMATION = this.ADMIN_BASE_URL + 'Product/GetProductInfo';
   private INSERT_ADDRESS_DATA = this.BASE_URL + 'api/APPAddress';
   private GET_ADDRESS_DATA_BY_ID = this.BASE_URL + 'api/APPAddress';
   private INSERT_PURCHASE_PRODUCT = this.BASE_URL + 'api/PurchaseProducts';
-  private GET_ADDRESS_BASED_ON_PINCODE = 'http://203.112.144.38/uat_AdminApi/api/Pincode/GetCityState';
+  private GET_ADDRESS_BASED_ON_PINCODE = this.ADMIN_BASE_URL + 'Pincode/GetCityState';
   private GET_ALL_MY_ORDERS_DATA = this.BASE_URL + 'api/MyOrders/getMyOrders';
   private GET_ALL_MY_ORDERS_DATA_BY_PURCHASE_PRODUCT_ID = this.BASE_URL + 'api/MyOrders';
   private UPDATE_MY_ORDERS_DATA = this.BASE_URL + 'api/MyOrders/editMyOrders';
   private DELETE_MY_ORDERS_DATA = this.BASE_URL + 'api/MyOrders/deleteMyOrders';
 
-  private GET_ALL_SUBCATEGORY_DATA = 'http://203.112.144.38/uat_AdminApi/api/Product/GetProductList';
-  private GET_ALL_BRAND_DATA = 'http://203.112.144.38/uat_AdminApi/api/Product/GetProductList';
-  private GET_VENDOR_DETAILS = 'http://203.112.144.38/uat_AdminApi/api/User/GetVendorDetails';
+  private GET_ALL_SUBCATEGORY_DATA = this.ADMIN_BASE_URL + 'Product/GetProductList';
+  private GET_ALL_BRAND_DATA = this.ADMIN_BASE_URL + 'Product/GetProductList';
+  private GET_VENDOR_DETAILS = this.ADMIN_BASE_URL + 'User/GetVendorDetails';
 
 
 
