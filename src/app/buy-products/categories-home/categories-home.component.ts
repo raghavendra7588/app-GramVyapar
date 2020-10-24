@@ -48,8 +48,6 @@ export class CategoriesHomeComponent implements OnInit {
   displayedColumns: string[] = ['name', 'brandname', 'selectVarient', 'mrp',
     'discount', 'finalPrice', 'requiredQuantity', 'add'];
 
-  // displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-
   dataSource: any;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -82,9 +80,9 @@ export class CategoriesHomeComponent implements OnInit {
     private fb: FormBuilder,
     private activatedRoute: ActivatedRoute
   ) {
-    
+
     this.activatedRoute.queryParams.subscribe(params => {
-      console.log('name1', );
+      console.log('name1',);
       this.name = params['name']
     });
     // this.name = this.activatedRoute.snapshot.paramMap.get('name');
@@ -249,12 +247,13 @@ export class CategoriesHomeComponent implements OnInit {
 
 
   getAllBrandsData() {
-
+    this.brandId = "0";
     let uniqueBrandNames: any = [];
-
+    console.log('category Id', this.categoryId);
     console.log('subCategoryId', this.subCategoryId);
+    console.log('brand id', this.brandId);
     console.log('vendor Id', this.vendorId);
-    this.buyProductsService.getAllProduct(this.subCategoryId, this.vendorId).subscribe(response => {
+    this.buyProductsService.getAllProduct(this.categoryId, this.subCategoryId, this.brandId, this.vendorId).subscribe(response => {
       this.brandsData = response;
       this.catchBrandArray = response;
       // this.apiResponseBrandsData = response;
@@ -276,6 +275,8 @@ export class CategoriesHomeComponent implements OnInit {
     console.log('seeletce category', response);
     this.parentId = response.id;
     this.categoryId = response.id;
+
+
     this.buyProductsService.getAllSubCategory(this.parentId, this.vendorId).subscribe(data => {
       this.subCategoryListData = data;
       // console.log('sub category ', this.subCategoryListData);
@@ -287,6 +288,7 @@ export class CategoriesHomeComponent implements OnInit {
     console.log('seeletce SubCategory', response);
     this.subCategoryId = response.id;
     this.SubCategoryId = response.id;
+
     this.getAllBrandsData();
     // this.selectedValue = this.catchBrandArray.productDetails[0].Unit;
     // const toSelect = this.catchBrandArray.find(c =>console.log('ccccc',c));

@@ -590,8 +590,7 @@ export class GoToCartComponent implements OnInit {
 
   selectedDeliveryTypeFromList(response) {
     console.log(response);
-    this.selectedTimeSlot = response.id;
-    console.log('&&&&&& id ', this.selectedTimeSlot);
+
     this.isDeliveryType = true;
   }
 
@@ -602,6 +601,8 @@ export class GoToCartComponent implements OnInit {
 
   selectedDeliveryTimeFromList(response) {
     this.isDeliveryTime = true;
+    this.selectedTimeSlot = response.id;
+    console.log('&&&&&& id ', this.selectedTimeSlot);
   }
 
   getAddressData() {
@@ -631,6 +632,8 @@ export class GoToCartComponent implements OnInit {
         minTimeSlot = this.deliveryTime[i].minHour;
         maxTimeSlot = this.deliveryTime[i].maxHour;
         // console.log('you selected ', this.deliveryTime[i]);
+        console.log('maxTimeSlot', maxTimeSlot);
+        // console.log('minTimeSlot', minTimeSlot);
       }
     }
     if ((formattedTodaysDate === selectedDeliveryDate)) {

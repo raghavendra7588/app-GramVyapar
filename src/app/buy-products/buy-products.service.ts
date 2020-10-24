@@ -6,8 +6,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class BuyProductsService {
 
-  private BASE_URL = 'http://203.112.144.38/uat_InventoryService/';
-  //private BASE_URL = 'http://localhost:55547/';
+  // private BASE_URL = 'http://203.112.144.38/uat_InventoryService/';
+  private BASE_URL = 'http://localhost:55547/';
   private ADMIN_BASE_URL = 'http://203.112.144.38/uat_AdminApi/api/';
 
   private GET_PRODUCT_LIST = this.ADMIN_BASE_URL + 'Product/GetProductList';
@@ -59,8 +59,8 @@ export class BuyProductsService {
   }
 
 
-  getAllProduct(subcategoryid: string, vendorCode: string) {
-    const data = { 'vendorCode': vendorCode, subcategoryid: subcategoryid }
+  getAllProduct(categoryId: string, subcategoryid: string, brandId: string, vendorCode: string) {
+    const data = { 'categoryid': categoryId, 'subcategoryid': subcategoryid, 'brandid': brandId, 'vendorCode': vendorCode }
     let reqHeader = new HttpHeaders({
       'Content-Type': 'application/json',
     });
@@ -132,8 +132,8 @@ export class BuyProductsService {
     return this.http.post(this.GET_ALL_BRAND_DATA, data, { headers: reqHeader });
   }
 
-  getVendorDetails(name:string) {
-    const data = { 'name': name}
+  getVendorDetails(name: string) {
+    const data = { 'name': name }
     let reqHeader = new HttpHeaders({
       'Content-Type': 'application/json',
     });
