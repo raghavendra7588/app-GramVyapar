@@ -22,13 +22,8 @@ import { LoginComponent } from './user/login/login.component';
 // ];
 
 const routes: Routes = [
-  {
-    path: 'buyProducts/categories/:name', component: CategoriesHomeComponent
-  },
-  {
-    path: 'buyProducts/categories', component: CategoriesHomeComponent
-  },
-  { path: 'http://203.112.144.38/uat_app-gramvyapar/buyProducts/categories/:name', component: CategoriesHomeComponent },
+  { path: 'buyProducts/categories/:name', component: CategoriesHomeComponent },
+  { path: 'buyProducts/categories', component: CategoriesHomeComponent },
   { path: 'buyProducts/goToCart', component: GoToCartComponent },
   { path: 'buyProducts/addressDetailsData', component: AddressDetailDataComponent },
   { path: 'buyProducts/myOrder', component: MyOrdersComponent },

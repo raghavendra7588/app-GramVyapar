@@ -82,9 +82,13 @@ export class CategoriesHomeComponent implements OnInit {
     private fb: FormBuilder,
     private activatedRoute: ActivatedRoute
   ) {
-
-    this.name = this.activatedRoute.snapshot.paramMap.get('name');
-    // console.log('name', this.name);
+    
+    this.activatedRoute.queryParams.subscribe(params => {
+      console.log('name1', );
+      this.name = params['name']
+    });
+    // this.name = this.activatedRoute.snapshot.paramMap.get('name');
+    console.log('name', this.name);
     sessionStorage.setItem('vendorName', this.name);
     this.buyProductsService.getVendorDetails(this.name).subscribe(response => {
       console.log('res', response);
