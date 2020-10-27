@@ -39,7 +39,7 @@ export class DialogAddAddressComponent implements OnInit {
       area: [''],
       state: ['']
     });
-    console.log('receeived data', data);
+
     this.addressData = data;
     this.assignAddressData();
 
@@ -79,8 +79,7 @@ export class DialogAddAddressComponent implements OnInit {
       this.address.state = 'NULL';
     }
     this.address.vendorId = sessionStorage.getItem('vendorId');
-    console.log((sessionStorage.getItem('vendorId')));
-    console.log(this.address);
+
 
     this.buyProductsService.insertAddressData(this.address).subscribe(data => {
       this.toastr.success('Record Submitted Successfully');
@@ -107,10 +106,8 @@ export class DialogAddAddressComponent implements OnInit {
   }
 
   getPinCode() {
-    console.log('input pinCode', this.address.pinCode);
     let pinCodeBasedData: any = [];
     this.buyProductsService.getAddressDetailsBasedOnPinCode(this.address.pinCode.toString()).subscribe(response => {
-      console.log('response', response);
       pinCodeBasedData = response;
       this.address.area = pinCodeBasedData.city;
       this.address.state = pinCodeBasedData.state;

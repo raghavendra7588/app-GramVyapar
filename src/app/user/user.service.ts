@@ -9,7 +9,9 @@ import { User } from './user.model';
 export class UserService {
 
   public LOGIN_URL = 'http://203.112.144.38/AdminApi/api//user/authenticate';
-  public LOGGED_IN_URL = 'http://203.112.144.38/uat_AdminApi/api/User/authenticate';
+  // public LOGGED_IN_URL = 'http://203.112.144.38/uat_AdminApi/api/User/authenticate';
+  public LOGGED_IN_URL='http://203.112.144.38/uat_AppApi/api/AppUser/validateuser';
+
 
   public seller_token: string;
   public seller_mapped_categories: any = [];

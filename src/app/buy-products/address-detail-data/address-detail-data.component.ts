@@ -15,8 +15,7 @@ import { EmitterService } from 'src/app/shared/emitter.service';
 })
 export class AddressDetailDataComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'mobileNumber', 'houseNo', 'society', 'landMark', 'pinCode', 'city',
-  'area', 'state', 'action'];
+  displayedColumns: string[] = ['name', 'mobileNumber',  'pinCode', 'city', 'state', 'action'];
 
 dataSource: any;
 vendorId: string;

@@ -5,9 +5,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class BuyProductsService {
+  
+  // private BASE_URL = 'http://localhost:55547/';
 
-  // private BASE_URL = 'http://203.112.144.38/uat_InventoryService/';
-  private BASE_URL = 'http://localhost:55547/';
+  private BASE_URL = 'http://203.112.144.38/uat_InventoryService/';
   private ADMIN_BASE_URL = 'http://203.112.144.38/uat_AdminApi/api/';
 
   private GET_PRODUCT_LIST = this.ADMIN_BASE_URL + 'Product/GetProductList';
@@ -27,6 +28,7 @@ export class BuyProductsService {
   private GET_ALL_BRAND_DATA = this.ADMIN_BASE_URL + 'Product/GetProductList';
   private GET_VENDOR_DETAILS = this.ADMIN_BASE_URL + 'User/GetVendorDetails';
 
+  private ADD_TO_CART = ' http://203.112.144.38/uat_AppApi/api/AppCart/AddToCart';
 
 
   constructor(public http: HttpClient) { }
@@ -138,5 +140,9 @@ export class BuyProductsService {
       'Content-Type': 'application/json',
     });
     return this.http.post(this.GET_VENDOR_DETAILS, data, { headers: reqHeader });
+  }
+
+  addToCartItems(cartData) {
+    return this.http.post(this.GET_ALL_BRAND_DATA, cartData);
   }
 }

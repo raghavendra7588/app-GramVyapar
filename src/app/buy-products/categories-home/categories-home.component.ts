@@ -8,12 +8,17 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { ToastrService } from 'ngx-toastr';
 import { EmitterService } from 'src/app/shared/emitter.service';
 
+
 @Component({
   selector: 'app-categories-home',
   templateUrl: './categories-home.component.html',
   styleUrls: ['./categories-home.component.css']
 })
 export class CategoriesHomeComponent implements OnInit {
+
+  displayedColumns: string[] = ['name', 'brandname', 'selectVarient', 'mrp',
+    'discount', 'finalPrice', 'requiredQuantity', 'add'];
+  dataSource: any;
 
   patientCategory: FormGroup;
 
@@ -45,10 +50,6 @@ export class CategoriesHomeComponent implements OnInit {
   finalProductDetails: boolean;
   selectedValue: any;
 
-  displayedColumns: string[] = ['name', 'brandname', 'selectVarient', 'mrp',
-    'discount', 'finalPrice', 'requiredQuantity', 'add'];
-
-  dataSource: any;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   requiredQuantity: boolean = false;
@@ -69,6 +70,7 @@ export class CategoriesHomeComponent implements OnInit {
   responseSellerId: any;
   responseVendorName: any;
   vendorResponse: any = [];
+  cartid: string;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -82,14 +84,11 @@ export class CategoriesHomeComponent implements OnInit {
   ) {
 
     this.activatedRoute.queryParams.subscribe(params => {
-      console.log('name1',);
       this.name = params['name']
     });
-    // this.name = this.activatedRoute.snapshot.paramMap.get('name');
-    console.log('name', this.name);
+
     sessionStorage.setItem('vendorName', this.name);
     this.buyProductsService.getVendorDetails(this.name).subscribe(response => {
-      console.log('res', response);
       this.vendorResponse = response;
       this.responseVendorCode = this.vendorResponse.vendorcode;
       this.responseSellerId = this.vendorResponse.id;
@@ -97,11 +96,27 @@ export class CategoriesHomeComponent implements OnInit {
       sessionStorage.setItem('sellerName', this.responseVendorName);
       sessionStorage.setItem('vendorId', this.responseVendorCode);
       sessionStorage.setItem('sellerId', this.responseSellerId);
+      this.parentId = '0';
+      this.vendorId = sessionStorage.getItem('vendorId');
+
+      this.buyProductsService.getAllCategory(this.parentId, this.vendorId).subscribe(data => {
+
+        this.categoryListData = data;
+
+        this.checkCartItems(this.categoryListData);
+      });
     });
     this.parentId = '0';
     this.vendorId = sessionStorage.getItem('vendorId');
-    //this.sellerId = (sessionStorage.getItem('sellerId')).toString();
-    console.log('this.vendorId', this.vendorId);
+
+
+
+    this.buyProductsService.getAllCategory(this.parentId, this.vendorId).subscribe(data => {
+
+      this.categoryListData = data;
+
+      this.checkCartItems(this.categoryListData);
+    });
 
     this.patientCategory = this.fb.group({
       patientCategory: [null, Validators.required]
@@ -110,68 +125,31 @@ export class CategoriesHomeComponent implements OnInit {
     this.showInitialProductDetails = true;
     this.finalProductDetails = false;
     this.cartItems = JSON.parse(sessionStorage.getItem('cart_items'));
-    // console.log('cart Items', cartItems);
-
 
     if (this.cartItems === null || this.cartItems === undefined || this.cartItems === []) {
-      // console.log('no items in cart');
+
       return;
     }
     else {
-      // console.log('items are present in cart');
+
       for (let i = 0; i < this.cartItems.length; i++) {
         this.categoryIdArray.push(this.cartItems[i].categoryid);
       }
 
-      // console.log('categoryIdArray', this.categoryIdArray);
       this.uniqueCategoriesArray = [... new Set(this.categoryIdArray)];
       let numberArray = this.uniqueCategoriesArray.map(Number);
       this.uniqueCategoriesArray = numberArray;
-      console.log('unique', this.uniqueCategoriesArray);
+
       this.totalProductsCalculation(this.cartItems);
     }
-
-
-
-
-
-    // this.emitterService.isProductIsAddedOrRemoved.subscribe(value => {
-    //   if (value) {
-    //     this.cartItems = JSON.parse(sessionStorage.getItem('cart_items'));
-    //     if (this.cartItems === null || this.cartItems === undefined || this.cartItems === [] || this.cartItems === '') {
-    //       this.totalNoOfProducts = 0;
-    //       console.log('cart is blank', this.totalNoOfProducts);
-    //       return;
-    //     }
-    //     else {
-    //       console.log('cart Items', this.cartItems);
-    //       this.totalProducts = this.totalProductsCalculation(this.cartItems);
-    //       this.totalNoOfProducts = this.totalProducts;
-    //       console.log('totalNoOfProducts', this.totalNoOfProducts);
-    //     }
-    //   }
-    // });
 
 
   }
 
   ngOnInit(): void {
 
-    this.buyProductsService.getAllCategory(this.parentId, this.vendorId).subscribe(data => {
-
-      this.categoryListData = data;
-      console.log(' ***** category list ******', this.categoryListData);
-      this.checkCartItems(this.categoryListData);
-    });
-    // this.getCategoryListData();
-    // this.getSubCategoryListData();
-
-    // if (!(this.cartItems === null || this.cartItems === undefined || this.cartItems === [])) {
-    // console.log('no items in cart');
-    // return;}
-
-    // }
   }
+
   totalProductsCalculation(arr) {
     let items = 0;
     if (arr) {
@@ -182,7 +160,6 @@ export class CategoriesHomeComponent implements OnInit {
       return items;
     }
     else {
-      console.log('inside else');
       this.totalNoOfProducts = 0;
       return items = 0;
     }
@@ -193,38 +170,29 @@ export class CategoriesHomeComponent implements OnInit {
   }
 
   checkCartItems(arr) {
-    console.log('recieved cart items', arr);
-    // console.log(' ***', this.categoryListData);
     if ((this.cartItems === null || this.cartItems === undefined || this.cartItems === [])) {
-
       this.categoryListData;
       return;
     }
     else {
       let particularCategories: any = [];
-      // console.log('this.uniqueCategoriesArray', this.uniqueCategoriesArray);
+
       this.categoryListData = [];
       arr.filter(item => {
-        // console.log('item', item);
+
         if (this.uniqueCategoriesArray.includes(Number(item.id))) {
-          // console.log('required category response', item);
           particularCategories = item;
-          // this.categoryListData = [];
           this.categoryListData.push(particularCategories);
-          // particularCategory = item;
-          // this.particularCategoryArray.push(particularCategory);
         }
 
       });
     }
 
-    console.log('after manipultn this.categoryListData', this.categoryListData);
   }
 
 
   getCategoryListData() {
     this.buyProductsService.getAllCategory(this.parentId, this.vendorId).subscribe(data => {
-      // console.log('category list', data);
       this.categoryListData = data;
     });
   }
@@ -233,7 +201,7 @@ export class CategoriesHomeComponent implements OnInit {
     this.parentId = '3';
     this.buyProductsService.getAllSubCategory(this.parentId, this.vendorId).subscribe(data => {
       this.subCategoryListData = data;
-      console.log('sub category ', this.subCategoryListData);
+ 
       this.parentId = '0';
     });
   }
@@ -249,17 +217,15 @@ export class CategoriesHomeComponent implements OnInit {
   getAllBrandsData() {
     this.brandId = "0";
     let uniqueBrandNames: any = [];
-    console.log('category Id', this.categoryId);
-    console.log('subCategoryId', this.subCategoryId);
-    console.log('brand id', this.brandId);
-    console.log('vendor Id', this.vendorId);
+
+
     this.buyProductsService.getAllProduct(this.categoryId, this.subCategoryId, this.brandId, this.vendorId).subscribe(response => {
+ 
       this.brandsData = response;
       this.catchBrandArray = response;
-      // this.apiResponseBrandsData = response;
-      // mappedData = this.createCustomResponse(this.apiResponseBrandsData, this.storageBrandsData);
-      // this.brandsData = mappedData;
-      // element.productDetails[0].Unit
+      let customResponse = this.createCustomBrandsDataResponse(this.brandsData);
+      this.brandsData = customResponse;
+
 
       this.dataSource = new MatTableDataSource(this.brandsData);
       this.dataSource.paginator = this.paginator;
@@ -272,31 +238,24 @@ export class CategoriesHomeComponent implements OnInit {
 
 
   selectedCategoryFromList(response) {
-    console.log('seeletce category', response);
     this.parentId = response.id;
     this.categoryId = response.id;
 
 
     this.buyProductsService.getAllSubCategory(this.parentId, this.vendorId).subscribe(data => {
       this.subCategoryListData = data;
-      // console.log('sub category ', this.subCategoryListData);
       this.parentId = '0';
     });
   }
 
   selectedSubCategoryFromList(response) {
-    console.log('seeletce SubCategory', response);
     this.subCategoryId = response.id;
     this.SubCategoryId = response.id;
-
     this.getAllBrandsData();
-    // this.selectedValue = this.catchBrandArray.productDetails[0].Unit;
-    // const toSelect = this.catchBrandArray.find(c =>console.log('ccccc',c));
-    // this.patientCategory.get('patientCategory').setValue(toSelect);
   }
 
   selectedBrandFromList(response) {
-    // console.log('selected brands from list', response);
+
     let filteredBrandArray = this.catchBrandArray.filter(function (item) {
       return item.brandname.trim() === response.brandname.trim() && item.brandid === response.brandid;
     });
@@ -307,29 +266,15 @@ export class CategoriesHomeComponent implements OnInit {
 
   selectedVarientFromList(response, i) {
     this.availableQuantity = 'False';
-    console.log('intially availableQuantity', this.availableQuantity);
-
-    console.log(' response.productDetails', response.productDetails);
-    console.log(' response.productDetails', response.productDetails[i]);
-
     this.selectedIndex = i;
-    console.log('selectedIndex', this.selectedIndex);
-
     document.getElementById("mrp" + response.productid).innerHTML = response.productDetails[i].MRP;
     document.getElementById("finalPrice" + response.productid).innerHTML = response.productDetails[i].FinalPrice;
     document.getElementById("discount" + response.productid).innerHTML = response.productDetails[i].Discount;
     this.showInitialProductDetails = false;
     this.finalProductDetails = true;
 
-    // response.productDetails[i].Unit = response.productDetails[i].Unit;
-    // document.getElementById("discount" + response.productid)
-    // console.log('this is required value', (<HTMLInputElement>document.getElementById("mrp" + response.productid)).innerText);
-
-
     this.selectedProductId = response.productid;
     this.availableQuantity = response.productDetails[i].outOfStockFlag;
-    // console.log('selectedProductId', this.selectedProductId);
-    // console.log('availableQuantity', this.availableQuantity);
 
   }
 
@@ -337,23 +282,10 @@ export class CategoriesHomeComponent implements OnInit {
 
 
   onQuantityChange(response, quantity, i) {
-    console.log('response simple', response);
-
-    // console.log('response (((((((((((((((((((', response.productDetails[this.selectedIndex]);
-
-
     if (this.selectedIndex === undefined || this.selectedIndex === null) {
       i = 0;
       this.selectedIndex = 0;
     }
-    console.log('selected index', this.selectedIndex);
-    // if (response.productDetails[this.selectedIndex].Quantity === undefined) {
-    //   this.toastr.error('Currently this Product is Out of Stock');
-    //   return;
-    // }
-
-    // this.isQuantityValid = Number(response.productDetails[this.selectedIndex].Quantity);
-    // console.log('isQuantityValid (((((((((((((((((((', this.isQuantityValid);
 
     if (this.availableQuantity === 'True') {
       this.toastr.error('Currently this Product is Out of Stock');
@@ -361,14 +293,7 @@ export class CategoriesHomeComponent implements OnInit {
     }
 
     this.purchaseProductArray = JSON.parse(sessionStorage.getItem('cart_items') || '[]');
-    // console.log('session array', this.purchaseProductArray);
-    // console.log('response ', response);
-    // if ((this.purchaseProductArray != null || this.purchaseProductArray != undefined || this.purchaseProductArray != [])) {
-    //   if (Number(this.purchaseProductArray[0].categoryid) != Number(response.categoryid)) {
-    //     this.toastr.error('Can not allowed to add more one categories product');
-    //     return;
-    //   }
-    // }
+
 
     if ("cart_items" in sessionStorage) {
       if (Number(this.purchaseProductArray[0].categoryid) != Number(response.categoryid)) {
@@ -386,7 +311,7 @@ export class CategoriesHomeComponent implements OnInit {
       this.purchaseProductArray = this.catchResponse;
 
       sessionStorage.setItem('cart_items', JSON.stringify(this.purchaseProductArray));
-      this.toastr.success('Product is Added Into Cart');
+    
       this.totalProductsCalculation(this.purchaseProductArray);
       this.emitterService.isProductIsAddedOrRemoved.emit(true);
     }
@@ -397,45 +322,35 @@ export class CategoriesHomeComponent implements OnInit {
   }
 
   pushProduct(arr, response, j) {
-    // console.log('response', response);
-    // console.log('arr', arr);
+
+    let sellerID = sessionStorage.getItem('sellerId');
+    let vendorCode = sessionStorage.getItem('vendorId');
+
     if (j === undefined) {
       j = 0;
     }
 
-    const index = arr.findIndex((o) => o.productid === response.productid && o.id === response.productDetails[j].id);
-    if (index === -1) {                 //not exist
 
-      // console.log('not exist');
-      arr.push({
-        brandImageUrl: response.brandImageUrl, imgurl: response.imgurl, name: response.name,
-        brandid: response.brandid, productid: response.productid,
-        id: response.productDetails[j].id, Unit: response.productDetails[j].Unit, Discount: response.productDetails[j].Discount,
-        FinalPrice: response.productDetails[j].FinalPrice, MRP: response.productDetails[j].MRP, Quantity: response.productDetails[j].Quantity,
-        RequiredQuantity: response.mappingid, categoryid: response.categoryid
-      });
-
-    } else {
-      // console.log('exist', arr);
-
-      for (let i = 0; i < arr.length; i++) {
-        if (arr[i].productid === response.productid && arr[i].id === response.productDetails[j].id) {
-          // arr[i].RequiredQuantity = arr[i].RequiredQuantity + response.mappingid;
-          arr[i].RequiredQuantity = response.mappingid;
-          arr[i].brandImageUrl = response.brandImageUrl;
-          arr[i].imgurl = response.imgurl;
-          arr[i].name = response.name;
-          arr[i].id = response.productDetails[j].id;
-          arr[i].Unit = response.productDetails[j].Unit;
-          arr[i].Discount = response.productDetails[j].Discount;
-          arr[i].FinalPrice = response.productDetails[j].FinalPrice;
-          arr[i].MRP = response.productDetails[j].MRP;
-          arr[i].Quantity = response.productDetails[j].Quantity
-          arr[i].categoryid = response.categoryid
-        }
-      }
+    let productItemsObj = {
+      deliverySlot: "", paymentType: "", status: "", isactive: "Y",
+      cartDetails: [{
+        ImageVersion: "0", cartid: "0", discount: response.productDetails[j].Discount.toString(),
+        finalPrice: response.productDetails[j].FinalPrice.toString(), id: response.productDetails[j].id.toString(),
+        mrp: response.productDetails[j].MRP.toString(),
+        productVarientid: 1662, quantity: response.mappingid
+      }],
+      LanguageCode: "en", cartid: "0", deliveryUpto: "", deliveredDate: "", deliveryType: "", userid: sellerID.toString(),
+      vendorCode: vendorCode.toString()
     }
-    // console.table('unique storage array', arr);
+
+
+   
+    this.buyProductsService.addToCartItems(productItemsObj).subscribe(res => {
+      // this.cartid = res.cartid;
+      this.toastr.success('Product is Added Into Cart');
+    });
+    
+
     return arr;
   }
 
@@ -449,7 +364,7 @@ export class CategoriesHomeComponent implements OnInit {
 
 
   createUniqueBrandName(array: any) {
-    // console.log('inside fun ', array);
+   
     let sortedArray: Array<any> = [];
     for (let i = 0; i < array.length; i++) {
       if ((sortedArray.findIndex(p => p.brandname.trim() == array[i].brandname.trim())) == -1) {
@@ -495,6 +410,15 @@ export class CategoriesHomeComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
     });
 
+  }
+
+  createCustomBrandsDataResponse(array) {
+    for (let i = 0; i < array.length; i++) {
+      array[i].mappingid = "0";
+      console.log(array[i].mappingid);
+
+    }
+    return array;
   }
 
 }

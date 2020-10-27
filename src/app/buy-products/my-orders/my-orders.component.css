@@ -1,0 +1,30 @@
+  
+.example-container {
+    height: 400px;
+    overflow-x: auto;
+  }
+  
+  table {
+    width: 100%;
+ 
+  }
+
+
+  .width-100{
+    width: 100% !important;
+    min-width: unset!important;
+}
+
+  /* .mat-column-OrderNo { width: 10%; } */
+  /* .mat-row, .mat-header-row {
+    background: white;
+    min-width: 1200px;
+  } */
+/* 
+  .mat-footer-row,
+.mat-header-row,
+.mat-row {
+    display: inline-flex;
+    min-width: 100%;
+} */
+

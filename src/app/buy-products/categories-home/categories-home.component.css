@@ -10,3 +10,64 @@
 .spacer{
     flex: 1 1 auto;
 }
+
+
+.example-container {
+ height: 400px;
+overflow: auto;
+}
+  
+table {
+width: 100%;
+}
+mat-cell:nth-child(1),
+mat-header-cell:nth-child(1) {
+    flex: 0 0 30%;
+}
+
+mat-cell:nth-child(5),
+mat-header-cell:nth-child(5) {
+    flex: 0 0 10%;
+}
+
+.mat-table__wrapper .mat-table {
+    min-width: auto !important;
+    width: 100% !important;
+}
+
+.mat-header-row {
+    width: 100%;
+}
+
+.mat-row {
+    width: 100%;
+}
+
+/* .mat-column-name {
+    flex: 0 0 25% !important;
+    min-width: 104px !important;
+}
+.mat-column-brandname {
+    flex: 0 0 25% !important;
+    min-width: 104px !important;
+}
+.mat-column-selectVarient {
+    flex: 0 0 25% !important;
+    min-width: 104px !important;
+}
+.mat-column-mrp {
+    flex: 0 0 25% !important;
+    min-width: 104px !important;
+}
+.mat-column-discount {
+    flex: 0 0 25% !important;
+    min-width: 104px !important;
+}
+.mat-column-finalPrice {
+    flex: 0 0 25% !important;
+    min-width: 104px !important;
+}
+.mat-column-requiredQuantity {
+    flex: 0 0 25% !important;
+    min-width: 104px !important;
+} */

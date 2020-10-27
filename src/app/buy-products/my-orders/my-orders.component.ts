@@ -17,7 +17,7 @@ import { DialogMyOrdersViewComponent } from '../dialog-my-orders-view/dialog-my-
 })
 export class MyOrdersComponent implements OnInit {
 
-  displayedColumns: string[] = ['VendorName', 'OrderNo', 'OrderDate', 'DeliveryDate', 'PaymentType',
+  displayedColumns: string[] = ['VendorName', 'OrderNo',  'DeliveryDate', 
   'DeliveryType', 'DeliveryTime', 'view', 'Reorder'];
 
 
@@ -42,9 +42,7 @@ constructor(
 
 ngOnInit(): void {
   this.vendorName = sessionStorage.getItem('sellerName');
-  console.log(this.vendorName);
   this.vendorArray = [{ id: 0, name: this.vendorName }];
-  console.log('vendor array', this.vendorArray);
 }
 
 applyFilter(filter: string) {
@@ -66,7 +64,6 @@ selectedVendorName() {
 }
 
 searchRecords() {
-  console.log('search clicked');
   let prevOrderNo: any;
   prevOrderNo = this.myOrders.orderNo;
 
@@ -95,12 +92,12 @@ searchRecords() {
   }
   this.myOrders.vendorCode = sessionStorage.getItem('vendorId');
   this.myOrders.sellerId = sessionStorage.getItem('sellerId');
-  console.log(this.myOrders);
+
   this.buyProductsService.getALLOrdersData(this.myOrders).subscribe(response => {
     this.myOrdersData = response;
     this.dataSource = new MatTableDataSource(this.myOrdersData);
     this.dataSource.paginator = this.paginator;
-    console.log('got result', response);
+
   });
 
   this.myOrders.orderNo = prevOrderNo;
@@ -118,13 +115,7 @@ editProducts(response) {
 
 viewProducts(response) {
   this.PurchaseProductId = response.PurchaseProductId;
-  console.log('cart array main', this.myOrdersData);
-  // let particularResponse: any = [];
-  // for (let i = 0; i < this.myOrdersData.length; i++) {
-  //   if (this.myOrdersData[i].PurchaseProductId === response.PurchaseProductId) {
-  //     console.log('particular record bro',this.myOrdersData[i]);
-  //   }
-  // }
+
   this.myOrdersViewData = response;
   this.dialog.open(DialogMyOrdersViewComponent, {
     height: '600px',

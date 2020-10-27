@@ -7,10 +7,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-
+  isExisting: string;
   constructor(
     public router: Router,
-  ) { }
+  ) {
+    sessionStorage.setItem('isExisting', "false");
+    this.isExisting = sessionStorage.getItem('isExisting');
+    console.log('isExisting', this.isExisting);
+  }
 
   ngOnInit(): void {
   }
@@ -27,7 +31,14 @@ export class HeaderComponent implements OnInit {
   }
 
   goToMyOrders() {
-    this.router.navigate(['/buyProducts/myOrder']);
+    this.isExisting = sessionStorage.getItem('isExisting');
+    if (this.isExisting === "false") {
+      return;
+    }
+    else {
+      this.router.navigate(['/buyProducts/myOrder']);
+    }
+
   }
 
 }

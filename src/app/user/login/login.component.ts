@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   user: User = new User();
+  shopName: string;
   constructor(
     public router: Router,
     public loginService: UserService,
@@ -24,19 +25,17 @@ export class LoginComponent implements OnInit {
   }
   login() {
     this.loginService.loginUser(this.user).subscribe(data => {
-      console.log('logged in data', data);
-      this.loginService.seller_object = data;
-      this.loginService.seller_token = data.token;
-      this.loginService.seller_mapped_categories = data.categories;
-      this.loginService.seller_id = data.id;
-      this.loginService.seller_name = data.name;
-      sessionStorage.setItem('token', data.token);
+
+      this.shopName = data.name;
+      let str;
+      str = this.shopName.replace(/ +/g, "");
+      this.shopName = str;
       sessionStorage.setItem('sellerName', data.name);
       sessionStorage.setItem('sellerId', data.id.toString());
-      sessionStorage.setItem('categories', JSON.stringify(data.categories));
       sessionStorage.setItem('vendorId', data.vendorcode.toString());
+      sessionStorage.setItem('isExisting', 'true');
+      this.router.navigate(['/buyProducts/categories'], { queryParams: { name: this.shopName } });
 
-      this.router.navigate(['/buyProducts/categories']);
     });
   }
 }

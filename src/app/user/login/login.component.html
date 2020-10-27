@@ -1,22 +1,26 @@
-<div class="d-flex justify-content-center align-items-center container mt-5">
-    <div class="row">
-        <div class="col-md-7 mr-3">
-            <mat-form-field>
-                <input matInput placeholder="userId"  [(ngModel)]="user.username" name="userId" />
-            </mat-form-field>
+<div class="container" style="margin-top: 130px;">
+    <div class="loginDiv" style="height: 200px">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-4 col-sm-4 col-4">
+                <mat-form-field style="width: 100%;">
+                    <input matInput placeholder="userId" [(ngModel)]="user.username" name="userId" />
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-4 col-sm-4 col-4">
+                <mat-form-field style="width: 100%;">
+                    <input matInput type="password" placeholder="password" [(ngModel)]="user.password"
+                        name="password" />
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-4 col-sm-4 col-4">
+                <button mat-raised-button color="primary" class="width-100" (click)="login()">Login</button>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-7">
-            <mat-form-field>
-                <input matInput type="password" placeholder="password" [(ngModel)]="user.password" name="password" />
-            </mat-form-field>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-5">
-            <button mat-button (click)="login()">Login</button>
-        </div>
-    </div>
+
 
 </div>

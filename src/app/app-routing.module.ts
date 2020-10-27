@@ -8,35 +8,15 @@ import { LandingPageComponent } from './layout/landing-page/landing-page.compone
 import { LoginComponent } from './user/login/login.component';
 
 
-
-// const routes: Routes = [
-//   { path: '', redirectTo: 'buyProducts/categories/:name', pathMatch: 'full' },
-//   { path: 'buyProducts/categories/:name', component: CategoriesHomeComponent },
-//   { path: 'buyProducts/goToCart', component: GoToCartComponent },
-//   { path: 'buyProducts/addressDetailsData', component: AddressDetailDataComponent },
-//   { path: 'buyProducts/myOrder', component: MyOrdersComponent }
-//   // {
-//   //   path: '**',
-//   //   redirectTo: ''  
-//   // }
-// ];
-
 const routes: Routes = [
   { path: 'buyProducts/categories/:name', component: CategoriesHomeComponent },
   { path: 'buyProducts/categories', component: CategoriesHomeComponent },
   { path: 'buyProducts/goToCart', component: GoToCartComponent },
   { path: 'buyProducts/addressDetailsData', component: AddressDetailDataComponent },
   { path: 'buyProducts/myOrder', component: MyOrdersComponent },
-  // {
-  //   path: '**',
-  //   redirectTo: '/landingpage'
-  // }
+  { path: 'login', component: LoginComponent }
 ];
 
-
-// { path: 'http://203.112.144.38/uat_app-gramvyapar/buyProducts/categories/:name', component: CategoriesHomeComponent },
-
-// { path: 'buyProducts/categories/:name', component: CategoriesHomeComponent },
 
 
 @NgModule({

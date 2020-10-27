@@ -25,6 +25,9 @@ export class GoToCartComponent implements OnInit {
 
   dataSource: any;
   modalRef: BsModalRef;
+  modalReff: BsModalRef;
+
+
   cartItems: any = [];
   totalFinalPrice: number = 0;
   totalMRP: any = 0;
@@ -101,6 +104,7 @@ export class GoToCartComponent implements OnInit {
   isDeliveryTime: boolean = false;
   events: string[] = [];
   vendorName: string;
+  mobileNo: any;
 
   purchaseProducts: PurchaseProducts = new PurchaseProducts();
 
@@ -114,12 +118,11 @@ export class GoToCartComponent implements OnInit {
     private modalService: BsModalService
   ) {
     this.vendorName = sessionStorage.getItem('vendorName');
-    console.log('vendor name', this.vendorName);
+
     this.emitterService.isProductRemoved.subscribe(value => {
       if (value) {
         this.getCartItems();
         if (this.cartItems.length === 0 || this.cartItems === null || this.cartItems === undefined || this.cartItems === []) {
-          console.log('cndn matched');
           this.isDisplay = false;
         }
       }
@@ -127,13 +130,33 @@ export class GoToCartComponent implements OnInit {
 
     this.emitterService.isAddressCreated.subscribe(value => {
       if (value) {
-        console.log('address updated');
+
         this.getCartItems();
         this.getAddressData();
         this.clearValues();
       }
     });
+    this.emitterService.addressFields.subscribe(response => {
+      if (response) {
+        this.address.name = response.name;
+        this.address.mobileNumber = response.mobileNumber;
+        this.address.houseNo = response.houseNo;
+        this.address.society = response.society;
+        this.address.landMark = response.landMark;
+        this.address.pinCode = response.pinCode;
+        this.address.area = response.area;
+        this.address.city = response.city;
+        this.address.state = response.state;
+        if(response.id){
+          this.addressId = response.id.toString();
+          this.purchaseProducts.AddressId = Number(response.id);
+        }
+       
+        this.isAddressSelected = true;
+        this.addressSelected = true;
+      }
 
+    });
 
     this.minDate = new Date();
   }
@@ -152,7 +175,6 @@ export class GoToCartComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     if (this.cartItems === null || this.cartItems === undefined) {
       this.isDisplay = false;
-      console.log('isDisplay', this.isDisplay);
       this.cartLength = 0;
     }
     else {
@@ -171,7 +193,6 @@ export class GoToCartComponent implements OnInit {
     this.purchaseProducts.OrderNo = (this.getRandomNumbers()).toString();
 
     this.orderDate = new Date();
-    console.log('orderDate', this.orderDate);
     let orderDate = this.convertDate(this.orderDate);
     this.purchaseProducts.OrderDate = orderDate;
 
@@ -195,7 +216,7 @@ export class GoToCartComponent implements OnInit {
 
     this.buyProductsService.getAddressDataById(this.vendorId).subscribe(data => {
       this.addressData = data;
-      console.log('adddress  api data', this.addressData);
+
 
     });
     this.getAddressData();
@@ -212,11 +233,15 @@ export class GoToCartComponent implements OnInit {
   openModal(template: TemplateRef<any>, response) {
     this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
     this.deleteRecordResponse = response;
-    console.log('deleteRecordResponse', this.deleteRecordResponse);
+
+  }
+
+  openConfirmModal(template: TemplateRef<any>) {
+    this.modalReff = this.modalService.show(template, {class: 'modal-sm'});
   }
 
   confirm(): void {
-    console.log('deleteRecordResponse inside confirm', this.deleteRecordResponse);
+
     this.message = 'Confirmed!';
     this.deleteRecord(this.deleteRecordResponse);
     this.modalRef.hide();
@@ -228,6 +253,16 @@ export class GoToCartComponent implements OnInit {
     return;
   }
 
+  confirmUser(): void {
+    this.message = 'Confirmed!';
+    this.modalReff.hide();
+  }
+ 
+  declineUser(): void {
+    this.message = 'Declined!';
+    this.router.navigate(['/login']);
+    this.modalReff.hide();
+  }
 
   applyFilter(filter: string) {
     this.dataSource.filter = filter.trim().toLowerCase();
@@ -334,16 +369,16 @@ export class GoToCartComponent implements OnInit {
       this.multipleEntries.push(this.orderedItems);
 
     });
-    console.log(this.multipleEntries);
+
 
     let prevStorageArray: any = [];
     let finalStorageArray: any = [];
     prevStorageArray = JSON.parse(sessionStorage.getItem('cart_items'));
-    console.log('prevStorageArray ', prevStorageArray);
+
     finalStorageArray = this.mergeOrderItems(prevStorageArray, this.multipleEntries);
     sessionStorage.removeItem('cart_items');
     sessionStorage.setItem('cart_items', JSON.stringify(finalStorageArray));
-    console.log('finalStorageArray ', finalStorageArray);
+
     this.payableCalculation(finalStorageArray);
     this.toastr.success('Records Are Updated');
     this.updateAllRecordsCount = 0;
@@ -360,7 +395,6 @@ export class GoToCartComponent implements OnInit {
       for (let j = 0; j < storageArray.length; j++) {
         if (Number(orderedItems[i].productid) === Number(storageArray[j].productid) &&
           Number(orderedItems[i].id) === Number(storageArray[j].id)) {
-          console.log('cndn matched');
 
           storageArray[j].Discount = orderedItems[i].Discount;
           storageArray[j].FinalPrice = orderedItems[i].FinalPrice;
@@ -403,9 +437,9 @@ export class GoToCartComponent implements OnInit {
 
 
   selectedAddressFromList(response) {
-    // console.log(response);
+
     this.currentlySelectedAddress = response;
-    console.log(' this.currentlySelectedAddress', this.currentlySelectedAddress);
+
     this.address.name = response.name;
     this.address.mobileNumber = response.mobileNumber;
     this.address.houseNo = response.houseNO;
@@ -426,9 +460,7 @@ export class GoToCartComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.cartItems);
     this.dataSource.paginator = this.paginator;
     if (this.cartItems === null || this.cartItems === undefined || this.cartItems === []) {
-      console.log('i checked this getCartItems');
       this.isDisplay = false;
-      console.log('isDisplay', this.isDisplay);
       this.cartLength = 0;
     }
 
@@ -443,8 +475,6 @@ export class GoToCartComponent implements OnInit {
       height: '400px',
       width: '800px'
     });
-
-    // this.router.navigate(['buyProducts/addressDetailsData']);
   }
 
   editExistingAddress() {
@@ -462,7 +492,6 @@ export class GoToCartComponent implements OnInit {
       this.totalDiscount = 0;
       this.totalItemsOrdered = 0;
       this.totalPayableAmount = 0;
-      console.log('i checked this payableCalculation');
       this.isDisplay = false;
     }
     else {
@@ -549,23 +578,7 @@ export class GoToCartComponent implements OnInit {
     document.getElementById("qunatity" + i).innerHTML = currentQuantity;
     response.RequiredQuantity = currentQuantity;
 
-    // sessionStorage.removeItem('cart_items');
-    //   sessionStorage.setItem('cart_items', JSON.stringify(tempCartItemsArray));
-    //   this.emitterService.isProductRemoved.emit(true);
   }
-
-
-  // getAddressData() {
-  //   this.buyProductsService.getAddressDataById(this.vendorId).subscribe(data => {
-  //     this.addressData = data;
-  //   });
-  // }
-
-  // placeOrder() {
-  //   console.log('address id', this.addressId);
-  //   sessionStorage.setItem('address_id', this.addressId.toString());
-  //   this.router.navigate(['buyProducts/placeOrder']);
-  // }
 
 
   deleteRecord(response) {
@@ -576,9 +589,8 @@ export class GoToCartComponent implements OnInit {
     });
     sessionStorage.removeItem('cart_items');
     sessionStorage.setItem('cart_items', JSON.stringify(finalStorageArray));
-    // this.cartItems.length === 0 || this.cartItems === null || this.cartItems === undefined || this.cartItems === []
+ 
     if (finalStorageArray.length === 0 || finalStorageArray === undefined || finalStorageArray === null || finalStorageArray === []) {
-      console.log('empty the cart now');
       sessionStorage.removeItem('cart_items');
     }
 
@@ -589,26 +601,22 @@ export class GoToCartComponent implements OnInit {
   }
 
   selectedDeliveryTypeFromList(response) {
-    console.log(response);
-
     this.isDeliveryType = true;
   }
 
   selectedPaymentTermFromList(response) {
-    console.log(response);
     this.ispaymentType = true;
   }
 
   selectedDeliveryTimeFromList(response) {
     this.isDeliveryTime = true;
     this.selectedTimeSlot = response.id;
-    console.log('&&&&&& id ', this.selectedTimeSlot);
   }
 
   getAddressData() {
     this.buyProductsService.getAddressDataById(this.vendorId).subscribe(data => {
       this.addressData = data;
-      // this.getSpecificAddress(this.addressData, this.addressId);
+ 
     });
   }
 
@@ -623,17 +631,12 @@ export class GoToCartComponent implements OnInit {
 
     let date = new Date();
     let currentHour = date.getHours();
-    console.log('current hr', currentHour);
+
     for (let i = 0; i < this.deliveryTime.length; i++) {
 
       if (this.deliveryTime[i].id === this.selectedTimeSlot) {
-        console.log('formattedTodaysDate', formattedTodaysDate);
-        console.log('selectedDeliveryDate', selectedDeliveryDate);
         minTimeSlot = this.deliveryTime[i].minHour;
         maxTimeSlot = this.deliveryTime[i].maxHour;
-        // console.log('you selected ', this.deliveryTime[i]);
-        console.log('maxTimeSlot', maxTimeSlot);
-        // console.log('minTimeSlot', minTimeSlot);
       }
     }
     if ((formattedTodaysDate === selectedDeliveryDate)) {
@@ -643,7 +646,6 @@ export class GoToCartComponent implements OnInit {
       }
 
     }
-    console.log('i supposed to not exceute');
 
 
     if (this.purchaseProducts.OrderNo === null || this.purchaseProducts.OrderNo === undefined) {
@@ -676,7 +678,7 @@ export class GoToCartComponent implements OnInit {
     this.purchaseProducts.items = JSON.parse(sessionStorage.getItem('cart_items'));
     this.purchaseProducts.VendorName = sessionStorage.getItem('sellerName');
 
-    console.log(this.purchaseProducts);
+
     this.buyProductsService.savePurchaseProduct(this.purchaseProducts).subscribe(data => {
 
       this.ProductsResponse = data;
@@ -712,7 +714,6 @@ export class GoToCartComponent implements OnInit {
     var minm = 100000;
     var maxm = 999999;
     return Math.floor(Math.random() * (maxm - minm + 1)) + minm;
-    // return Math.floor(100000 + Math.random() * 900000);
   }
 
 
@@ -742,5 +743,10 @@ export class GoToCartComponent implements OnInit {
     this.address.state = '';
     this.isAddressSelected = false;
   }
-
+  checkUser() {
+    this.dialog.open(DialogAddAddressComponent, {
+      height: '400px',
+      width: '800px'
+    });
+  }
 }
