@@ -15,24 +15,23 @@ export class BuyProductsService {
   private GET_ALL_CATEGORY_DATA = this.ADMIN_BASE_URL + 'Category/getall';
   private GET_ALL_SUBCATEGORIES_DATA = this.ADMIN_BASE_URL + 'Category/getall';
   private GET_PRODUCT_INFORMATION = this.ADMIN_BASE_URL + 'Product/GetProductInfo';
-  private INSERT_ADDRESS_DATA = this.BASE_URL + 'api/APPAddress';
-  private GET_ADDRESS_DATA_BY_ID = this.BASE_URL + 'api/APPAddress';
-  private INSERT_PURCHASE_PRODUCT = this.BASE_URL + 'api/PurchaseProducts';
   private GET_ADDRESS_BASED_ON_PINCODE = this.ADMIN_BASE_URL + 'Pincode/GetCityState';
+  private GET_ALL_SUBCATEGORY_DATA = this.ADMIN_BASE_URL + 'Product/GetProductList';
+  private GET_ALL_BRAND_DATA = this.ADMIN_BASE_URL + 'Product/GetProductList';
+  private GET_VENDOR_DETAILS = this.ADMIN_BASE_URL + 'User/GetVendorDetails';
+  private VERIFY_USER = this.ADMIN_BASE_URL + 'User/GetUserDetailsWithMobileNumber';
+  private ADD_USER_ADDRESS = this.ADMIN_BASE_URL + 'User/AddAddress';
+  private PLACE_ORDER_API = this.ADMIN_BASE_URL + 'Cart/ConfirmOrder';
+
   private GET_ALL_MY_ORDERS_DATA = this.BASE_URL + 'api/MyOrders/getMyOrders';
   private GET_ALL_MY_ORDERS_DATA_BY_PURCHASE_PRODUCT_ID = this.BASE_URL + 'api/MyOrders';
   private UPDATE_MY_ORDERS_DATA = this.BASE_URL + 'api/MyOrders/editMyOrders';
   private DELETE_MY_ORDERS_DATA = this.BASE_URL + 'api/MyOrders/deleteMyOrders';
+  private INSERT_ADDRESS_DATA = this.BASE_URL + 'api/APPAddress';
+  private GET_ADDRESS_DATA_BY_ID = this.BASE_URL + 'api/APPAddress';
+  private INSERT_PURCHASE_PRODUCT = this.BASE_URL + 'api/PurchaseProducts';
 
-  private GET_ALL_SUBCATEGORY_DATA = this.ADMIN_BASE_URL + 'Product/GetProductList';
-  private GET_ALL_BRAND_DATA = this.ADMIN_BASE_URL + 'Product/GetProductList';
-  private GET_VENDOR_DETAILS = this.ADMIN_BASE_URL + 'User/GetVendorDetails';
-
-  private ADD_TO_CART = 'http://203.112.144.38/uat_AppApi/api/AppCart/AddToCart';
-
-  private VERIFY_USER = 'http://203.112.144.38/uat_AdminApi/api/User/GetUserDetailsWithMobileNumber';
-  private ADD_USER_ADDRESS = 'http://203.112.144.38/uat_AdminApi/api/User/AddAddress';
-  private PLACE_ORDER_API = 'http://203.112.144.38/uat_AdminApi/api/Cart/ConfirmOrder';
+ 
 
   constructor(public http: HttpClient) { }
 
