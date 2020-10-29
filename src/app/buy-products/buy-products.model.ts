@@ -1,18 +1,31 @@
+// export class AddressDetails {
+//     id: number;
+//     sellerId: number;
+//     vendorId: string;
+//     name: string;
+//     mobileNumber: number;
+//     houseNo: string;
+//     society: string;
+//     landMark: string;
+//     pinCode: number;
+//     city: string;
+//     area: string;
+//     state: string;
+// }
 export class AddressDetails {
-    id: number;
-    sellerId: number;
-    vendorId: string;
+    id: string;
     name: string;
-    mobileNumber: number;
-    houseNo: string;
-    society: string;
-    landMark: string;
-    pinCode: number;
-    city: string;
-    area: string;
+    mobilenumber: string;
+    flatNo: string;
+    societyName: string;
+    locality: string;
+    areaName: string;
+    pincode: string;
     state: string;
+    city: string;
+    userId: string;
+    primaryAddressFlag: string;
 }
-
 
 export class OrderedItems {
     Discount: string;
@@ -91,4 +104,42 @@ export class EditMyOrder {
 export class DeleteMyOrder {
     PurchaseProductId?: number;
     PurchaseProductsItemId?: number;
+}
+
+
+export class PlaceOrder {
+    deliverySlot: string;
+    paymentType: string;
+    societyName: string;
+    flatNo: string;
+    pincode: string;
+    city: string;
+    state: string;
+    overallDiscount: number;
+    LanguageCode: string;
+    cartid: string;
+    locality: string;
+    deliveryType: string;
+    deliveryUpto:  string;
+    userid: string;
+    mobilenumber: string;
+    vendorCode: string;
+    deliveryCharges: number;
+    status: string;
+    isactive: string;
+    areaName: string;
+    name: string;
+    referralAmountUsed: number;
+    deliveredDate: string;
+    cartDetails: Array<CartItems>;
+}
+
+export class CartItems {
+    id: string;
+    cartid: string;
+    productVarientid: string;
+    mrp: string;
+    quantity: string;
+    discount: string;
+    finalPrice: string;
 }

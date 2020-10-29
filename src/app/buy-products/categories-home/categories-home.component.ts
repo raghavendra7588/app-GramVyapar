@@ -98,7 +98,7 @@ export class CategoriesHomeComponent implements OnInit {
       sessionStorage.setItem('sellerId', this.responseSellerId);
       this.parentId = '0';
       this.vendorId = sessionStorage.getItem('vendorId');
-
+      this.emitterService.isValidateResponse.emit(true);
       this.buyProductsService.getAllCategory(this.parentId, this.vendorId).subscribe(data => {
 
         this.categoryListData = data;
@@ -201,7 +201,7 @@ export class CategoriesHomeComponent implements OnInit {
     this.parentId = '3';
     this.buyProductsService.getAllSubCategory(this.parentId, this.vendorId).subscribe(data => {
       this.subCategoryListData = data;
- 
+
       this.parentId = '0';
     });
   }
@@ -220,7 +220,7 @@ export class CategoriesHomeComponent implements OnInit {
 
 
     this.buyProductsService.getAllProduct(this.categoryId, this.subCategoryId, this.brandId, this.vendorId).subscribe(response => {
- 
+
       this.brandsData = response;
       this.catchBrandArray = response;
       let customResponse = this.createCustomBrandsDataResponse(this.brandsData);
@@ -311,7 +311,7 @@ export class CategoriesHomeComponent implements OnInit {
       this.purchaseProductArray = this.catchResponse;
 
       sessionStorage.setItem('cart_items', JSON.stringify(this.purchaseProductArray));
-    
+      this.toastr.success('Product is Added Into Cart');
       this.totalProductsCalculation(this.purchaseProductArray);
       this.emitterService.isProductIsAddedOrRemoved.emit(true);
     }
@@ -321,38 +321,117 @@ export class CategoriesHomeComponent implements OnInit {
 
   }
 
+  // pushProduct(arr, response, j) {
+
+  //   let sellerID = sessionStorage.getItem('sellerId');
+  //   let vendorCode = sessionStorage.getItem('vendorId');
+
+  //   if (j === undefined) {
+  //     j = 0;
+  //   }
+
+
+  //   // let productItemsObj = {
+  //   //   deliverySlot: "", paymentType: "", status: "", isactive: "Y",
+  //   //   cartDetails: [{
+  //   //     ImageVersion: "0", cartid: "0", discount: response.productDetails[j].Discount.toString(),
+  //   //     finalPrice: response.productDetails[j].FinalPrice.toString(), id: response.productDetails[j].id.toString(),
+  //   //     mrp: response.productDetails[j].MRP.toString(),
+  //   //     productVarientid: 1662, quantity: response.mappingid
+  //   //   }],
+  //   //   LanguageCode: "en", cartid: "0", deliveryUpto: "", deliveredDate: "", deliveryType: "", userid: sellerID.toString(),
+  //   //   vendorCode: vendorCode.toString()
+  //   // }
+
+
+  //   arr.push({
+  //     brandImageUrl: response.brandImageUrl, imgurl: response.imgurl, name: response.name,
+  //     brandid: response.brandid, productid: response.productid,
+  //     id: response.productDetails[j].id, Unit: response.productDetails[j].Unit, Discount: response.productDetails[j].Discount,
+  //     FinalPrice: response.productDetails[j].FinalPrice, MRP: response.productDetails[j].MRP, Quantity: response.productDetails[j].Quantity,
+  //     RequiredQuantity: response.mappingid, categoryid: response.categoryid
+  //   });
+  //   // this.buyProductsService.addToCartItems(productItemsObj).subscribe(res => {
+  //   //   // this.cartid = res.cartid;
+  //   //   this.toastr.success('Product is Added Into Cart');
+  //   // });
+
+
+  //   return arr;
+  // }
+
+
   pushProduct(arr, response, j) {
 
     let sellerID = sessionStorage.getItem('sellerId');
     let vendorCode = sessionStorage.getItem('vendorId');
+    console.log('seller Id', sellerID);
+    console.log('vendorCode', vendorCode);
+    console.log('arr **', arr);
+    console.log('response **', response);
 
     if (j === undefined) {
       j = 0;
     }
 
+    const index = arr.findIndex((o) => o.productid === response.productid && o.id === response.productDetails[j].id);
 
-    let productItemsObj = {
-      deliverySlot: "", paymentType: "", status: "", isactive: "Y",
-      cartDetails: [{
-        ImageVersion: "0", cartid: "0", discount: response.productDetails[j].Discount.toString(),
-        finalPrice: response.productDetails[j].FinalPrice.toString(), id: response.productDetails[j].id.toString(),
-        mrp: response.productDetails[j].MRP.toString(),
-        productVarientid: 1662, quantity: response.mappingid
-      }],
-      LanguageCode: "en", cartid: "0", deliveryUpto: "", deliveredDate: "", deliveryType: "", userid: sellerID.toString(),
-      vendorCode: vendorCode.toString()
+    if (index === -1) {                 //not exist
+
+
+      // arr.push({
+      //   brandImageUrl: response.brandImageUrl, imgurl: response.imgurl, name: response.name,
+      //   brandid: response.brandid, productid: response.productid,
+      //   id: response.productDetails[j].id, Unit: response.productDetails[j].Unit, Discount: response.productDetails[j].Discount,
+      //   FinalPrice: response.productDetails[j].FinalPrice, MRP: response.productDetails[j].MRP, Quantity: response.productDetails[j].Quantity,
+      //   RequiredQuantity: response.mappingid, categoryid: response.categoryid
+      // });
+
+      arr.push({
+        name: response.name,
+        brandid: response.brandid,
+        productid: response.productid,
+        id: response.productDetails[j].id,
+        Unit: response.productDetails[j].Unit,
+        Discount: response.productDetails[j].Discount,
+        FinalPrice: response.productDetails[j].FinalPrice,
+        MRP: response.productDetails[j].MRP,
+        Quantity: response.productDetails[j].Quantity,
+        RequiredQuantity: response.mappingid,
+        categoryid: response.categoryid
+        // id: "0",
+        // cartid: "0",
+        // productVarientid: response.productDetails[j].id,
+        // mrp: response.productDetails[j].MRP,
+        // quantity: response.productDetails[j].Quantity,
+        // discount:response.productDetails[j].Discount,
+        // finalPrice: response.productDetails[j].FinalPrice
+      });
+
+    } else {
+
+
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].productid === response.productid && arr[i].id === response.productDetails[j].id) {
+          // arr[i].RequiredQuantity = arr[i].RequiredQuantity + response.mappingid;
+          arr[i].RequiredQuantity = response.mappingid;
+          arr[i].brandImageUrl = response.brandImageUrl;
+          arr[i].imgurl = response.imgurl;
+          arr[i].name = response.name;
+          arr[i].id = response.productDetails[j].id;
+          arr[i].Unit = response.productDetails[j].Unit;
+          arr[i].Discount = response.productDetails[j].Discount;
+          arr[i].FinalPrice = response.productDetails[j].FinalPrice;
+          arr[i].MRP = response.productDetails[j].MRP;
+          arr[i].Quantity = response.productDetails[j].Quantity
+          arr[i].categoryid = response.categoryid
+        }
+      }
     }
-
-
-   
-    this.buyProductsService.addToCartItems(productItemsObj).subscribe(res => {
-      // this.cartid = res.cartid;
-      this.toastr.success('Product is Added Into Cart');
-    });
-    
-
+    // console.table('unique storage array', arr);
     return arr;
   }
+
 
 
   applyFilter(filter: string) {
@@ -364,7 +443,7 @@ export class CategoriesHomeComponent implements OnInit {
 
 
   createUniqueBrandName(array: any) {
-   
+
     let sortedArray: Array<any> = [];
     for (let i = 0; i < array.length; i++) {
       if ((sortedArray.findIndex(p => p.brandname.trim() == array[i].brandname.trim())) == -1) {

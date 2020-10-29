@@ -16,6 +16,8 @@ export class EmitterService {
   public isProductRemoved: EventEmitter<boolean>;
   public isProductIsAddedOrRemoved: EventEmitter<boolean>;
   public addressFields: EventEmitter<object>;
+  public addedAddressData: EventEmitter<any>;
+  public isValidateResponse: EventEmitter<boolean>;
 
   constructor() {
     this.isRecord = new EventEmitter();
@@ -29,5 +31,7 @@ export class EmitterService {
     this.isProductRemoved = new EventEmitter();
     this.isProductIsAddedOrRemoved = new EventEmitter();
     this.addressFields = new EventEmitter();
+    this.addedAddressData = new EventEmitter();
+    this.isValidateResponse = new EventEmitter();
   }
 }

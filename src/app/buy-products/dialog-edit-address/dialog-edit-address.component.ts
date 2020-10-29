@@ -6,13 +6,12 @@ import { BuyProductsService } from '../buy-products.service';
 import { ToastrService } from 'ngx-toastr';
 import { EmitterService } from 'src/app/shared/emitter.service';
 
-
 @Component({
-  selector: 'app-dialog-add-address',
-  templateUrl: './dialog-add-address.component.html',
-  styleUrls: ['./dialog-add-address.component.css']
+  selector: 'app-dialog-edit-address',
+  templateUrl: './dialog-edit-address.component.html',
+  styleUrls: ['./dialog-edit-address.component.css']
 })
-export class DialogAddAddressComponent implements OnInit {
+export class DialogEditAddressComponent implements OnInit {
 
   addressForm: FormGroup;
   address: AddressDetails = new AddressDetails();
@@ -27,7 +26,7 @@ export class DialogAddAddressComponent implements OnInit {
   constructor(
     public formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<DialogAddAddressComponent>,
+    private dialogRef: MatDialogRef<DialogEditAddressComponent>,
     public buyProductsService: BuyProductsService,
     public toastr: ToastrService,
     public emitterService: EmitterService) {
@@ -43,19 +42,45 @@ export class DialogAddAddressComponent implements OnInit {
       area: [''],
       state: ['']
     });
-
+    console.log('received in edit address', data);
     this.addressData = data;
-    this.address.mobilenumber = this.addressData.mobilenumber;
-    this.isMobileNo = true;
     console.log('got address data ***', this.addressData);
     this.assignAddressData();
 
   }
 
   ngOnInit(): void {
-    this.address.mobilenumber = this.addressData.mobilenumber;
+  }
+
+  assignAddressData() {
+    if (this.addressData) {
+      this.address.name = this.addressData.name;
+      this.address.mobilenumber = this.addressData.mobilenumber;
+      this.address.flatNo = this.addressData.flatNo;
+      this.address.societyName = this.addressData.societyName;
+      this.address.locality = this.addressData.locality;
+      this.address.pincode = this.addressData.pincode;
+      this.address.areaName = this.addressData.areaName;
+      this.address.city = this.addressData.city;
+      this.address.state = this.addressData.state;
+    }
+  }
+
+  getPinCode() {
+    let pinCodeBasedData: any = [];
+    this.buyProductsService.getAddressDetailsBasedOnPinCode(this.address.pincode.toString()).subscribe(response => {
+      pinCodeBasedData = response;
+      this.address.areaName = pinCodeBasedData.city;
+      this.address.state = pinCodeBasedData.state;
+      this.isPinCode = true;
+    });
+  }
+
+  nameInput() {
+    this.isName = true;
+  }
+  mobileNumberInput() {
     this.isMobileNo = true;
-    // this.address.sellerId = Number(sessionStorage.getItem('sellerId'));
   }
 
   onSubmit() {
@@ -86,53 +111,17 @@ export class DialogAddAddressComponent implements OnInit {
     if (this.address.state === null || this.address.state === undefined || this.address.state === '') {
       this.address.state = 'NULL';
     }
-    this.address.id = "0";
+    this.address.id = this.addressData.id;
     this.address.userId = sessionStorage.getItem('customerId').toString();
     this.address.primaryAddressFlag = "";
 
     this.buyProductsService.addUserAddress(this.address).subscribe(data => {
       this.addressResponse = data;
-      this.toastr.success('Record Submitted Successfully');
+      this.toastr.success('Record Updated Successfully');
       this.emitterService.addedAddressData.emit(this.addressResponse);
       this.emitterService.isAddressCreated.emit(true);
       this.dialogRef.close();
     });
   }
 
-  assignAddressData() {
-    if (this.addressData) {
-      this.address.name = this.addressData.name;
-      this.address.mobilenumber = this.addressData.mobileNumber;
-      this.address.flatNo = this.addressData.houseNO;
-      this.address.societyName = this.addressData.society;
-      this.address.locality = this.addressData.landmark;
-      this.address.pincode = this.addressData.pincode;
-      this.address.city = this.addressData.city;
-      this.address.areaName = this.addressData.area;
-      this.address.state = this.addressData.state;
-      this.address.id = this.addressData.id;
-    }
-  }
-
-  getPinCode() {
-    let pinCodeBasedData: any = [];
-    this.buyProductsService.getAddressDetailsBasedOnPinCode(this.address.pincode.toString()).subscribe(response => {
-      pinCodeBasedData = response;
-      this.address.areaName = pinCodeBasedData.city;
-      this.address.state = pinCodeBasedData.state;
-      this.isPinCode = true;
-    });
-  }
-
-  nameInput() {
-    this.isName = true;
-  }
-  mobileNumberInput() {
-    this.isMobileNo = true;
-  }
-
-  closeDialog() {
-    this.dialogRef.close();
-    this.emitterService.isAddressCreated.emit(true);
-  }
 }

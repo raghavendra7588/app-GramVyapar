@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="row justify-content-center">
-    <div class="col-md-3 mt-4">
+    <div class="col-md-3 mt-2">
       <mat-form-field style="width: 100% !important;">
         <mat-select placeholder="Category List" [(ngModel)]="selectedCategory">
           <mat-option *ngFor="let item of categoryListData;" [value]="item.id" (click)="selectedCategoryFromList(item)">
@@ -9,7 +9,7 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="col-md-3 mt-4">
+    <div class="col-md-3 mt-2">
       <mat-form-field style="width: 100% !important;">
         <mat-select placeholder="Sub Category List" [(ngModel)]="selectedSubCategory">
           <mat-option value="all" (click)="onSubCategorySelectAll()">All</mat-option>
@@ -20,7 +20,7 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="col-md-3 mt-4">
+    <div class="col-md-3 mt-2">
       <mat-form-field style="width: 100% !important;">
         <mat-select placeholder="Brand List" [(ngModel)]="selectedBrands">
           <mat-option value="all" (click)="onBrandSelectAll()">All</mat-option>

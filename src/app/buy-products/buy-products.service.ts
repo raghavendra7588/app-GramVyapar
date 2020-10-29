@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class BuyProductsService {
-  
+
   // private BASE_URL = 'http://localhost:55547/';
 
   private BASE_URL = 'http://203.112.144.38/uat_InventoryService/';
@@ -28,8 +28,11 @@ export class BuyProductsService {
   private GET_ALL_BRAND_DATA = this.ADMIN_BASE_URL + 'Product/GetProductList';
   private GET_VENDOR_DETAILS = this.ADMIN_BASE_URL + 'User/GetVendorDetails';
 
-  private ADD_TO_CART = ' http://203.112.144.38/uat_AppApi/api/AppCart/AddToCart';
+  private ADD_TO_CART = 'http://203.112.144.38/uat_AppApi/api/AppCart/AddToCart';
 
+  private VERIFY_USER = 'http://203.112.144.38/uat_AdminApi/api/User/GetUserDetailsWithMobileNumber';
+  private ADD_USER_ADDRESS = 'http://203.112.144.38/uat_AdminApi/api/User/AddAddress';
+  private PLACE_ORDER_API = 'http://203.112.144.38/uat_AdminApi/api/Cart/ConfirmOrder';
 
   constructor(public http: HttpClient) { }
 
@@ -145,4 +148,22 @@ export class BuyProductsService {
   addToCartItems(cartData) {
     return this.http.post(this.GET_ALL_BRAND_DATA, cartData);
   }
+
+
+  verifyUserDetails(contactNumber: string) {
+    const data = { 'mobilenumber': contactNumber }
+    let reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.post(this.VERIFY_USER, data, { headers: reqHeader });
+  }
+
+  addUserAddress(addressData) {
+    return this.http.post(this.ADD_USER_ADDRESS, addressData);
+  }
+
+  placeOrderData(placeOrder) {
+    return this.http.post(this.PLACE_ORDER_API, placeOrder);
+  }
+  
 }

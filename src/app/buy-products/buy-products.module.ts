@@ -38,6 +38,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { DialogMyOrdersViewComponent } from './dialog-my-orders-view/dialog-my-orders-view.component';
 import { DialogMyOrdersEditComponent } from './dialog-my-orders-edit/dialog-my-orders-edit.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { NumberDirective } from './number.directive';
+import { DialogEditAddressComponent } from './dialog-edit-address/dialog-edit-address.component';
 
 
 
@@ -47,7 +49,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     DialogAddAddressComponent,
     DialogOrderNoComponent,
     DialogMyOrdersViewComponent,
-    DialogMyOrdersEditComponent],
+    DialogMyOrdersEditComponent,
+    NumberDirective,
+    DialogEditAddressComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -74,10 +78,10 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatPaginatorModule,
     ToastrModule.forRoot(),
     ModalModule.forRoot(),
-    MatNativeDateModule 
+    MatNativeDateModule
   ],
   exports: [CategoriesHomeComponent, GoToCartComponent, MyOrdersComponent, AddressDetailDataComponent],
-  entryComponents: [DialogAddAddressComponent, DialogOrderNoComponent, DialogMyOrdersViewComponent, DialogMyOrdersEditComponent],
+  entryComponents: [DialogAddAddressComponent, DialogOrderNoComponent, DialogMyOrdersViewComponent, DialogMyOrdersEditComponent, DialogEditAddressComponent],
   providers: [BuyProductsService]
 })
 export class BuyProductsModule { }

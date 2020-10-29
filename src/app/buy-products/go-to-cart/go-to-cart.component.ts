@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 // import { Address } from 'src/app/purchase/purchase.model';
 
-import { AddressDetails, OrderedItems, PurchaseProducts } from '../buy-products.model';
+import { AddressDetails, CartItems, OrderedItems, PlaceOrder, PurchaseProducts } from '../buy-products.model';
 import { BuyProductsService } from '../buy-products.service';
 import { ToastrService } from 'ngx-toastr';
 // import { DialogOrderNoComponent } from '../dialog-order-no/dialog-order-no.component';
@@ -15,6 +15,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { EmitterService } from 'src/app/shared/emitter.service';
 import { DialogOrderNoComponent } from '../dialog-order-no/dialog-order-no.component';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { DialogEditAddressComponent } from '../dialog-edit-address/dialog-edit-address.component';
 
 @Component({
   selector: 'app-go-to-cart',
@@ -38,8 +39,12 @@ export class GoToCartComponent implements OnInit {
   addressData: any = [];
   vendorId: string;
   addressId: string;
+
   address: AddressDetails = new AddressDetails();
   orderedItems: OrderedItems = new OrderedItems();
+  placeOrderData: PlaceOrder = new PlaceOrder();
+  cartItemsData: CartItems = new CartItems();
+
   isDisplay: boolean;
   cartLength: number;
 
@@ -105,8 +110,15 @@ export class GoToCartComponent implements OnInit {
   events: string[] = [];
   vendorName: string;
   mobileNo: any;
+  customerId: string;
+  verifyUserDetails: any = [];
+  isMobileNumberEntered: boolean = false;
 
   purchaseProducts: PurchaseProducts = new PurchaseProducts();
+  maxLengthPhone = 10;
+
+  placeOrderResponse: any = [];
+
 
   constructor(
     public router: Router,
@@ -132,30 +144,46 @@ export class GoToCartComponent implements OnInit {
       if (value) {
 
         this.getCartItems();
-        this.getAddressData();
+        // this.getAddressData();
         this.clearValues();
+        if (this.addressData.length === 0 || this.addressData === undefined || this.addressData === null) {
+          this.isAddressSelected = false;
+          this.addressSelected = false;
+          this.isMobileNumberEntered = false;
+        }
       }
     });
-    this.emitterService.addressFields.subscribe(response => {
-      if (response) {
-        this.address.name = response.name;
-        this.address.mobileNumber = response.mobileNumber;
-        this.address.houseNo = response.houseNo;
-        this.address.society = response.society;
-        this.address.landMark = response.landMark;
-        this.address.pinCode = response.pinCode;
-        this.address.area = response.area;
-        this.address.city = response.city;
-        this.address.state = response.state;
-        if(response.id){
-          this.addressId = response.id.toString();
-          this.purchaseProducts.AddressId = Number(response.id);
-        }
-       
-        this.isAddressSelected = true;
-        this.addressSelected = true;
-      }
+    // this.emitterService.addressFields.subscribe(response => {
+    //   if (response) {
+    //     this.address.name = response.name;
+    //     this.address.mobilenumber = response.mobileNumber;
+    //     this.address.flatNo = response.houseNo;
+    //     this.address.societyName = response.society;
+    //     this.address.locality = response.landMark;
+    //     this.address.pincode = response.pinCode;
+    //     this.address.areaName = response.area;
+    //     this.address.city = response.city;
+    //     this.address.state = response.state;
+    //     if (response.id) {
+    //       this.addressId = response.id.toString();
+    //       this.purchaseProducts.AddressId = Number(response.id);
+    //     }
 
+    //     this.isAddressSelected = true;
+    //     this.addressSelected = true;
+    //   }
+
+    // });
+
+    this.emitterService.addedAddressData.subscribe(value => {
+      if (value) {
+        console.log('added address response', value.addresses);
+        this.addressData = value.addresses;
+        if (this.addressData.length === 0 || this.addressData === undefined || this.addressData === null) {
+          this.isAddressSelected = false;
+          this.addressSelected = false;
+        }
+      }
     });
 
     this.minDate = new Date();
@@ -214,12 +242,12 @@ export class GoToCartComponent implements OnInit {
       { id: 3, type: 'Anytime Ok', minHour: 0, maxHour: 24 }
     ];
 
-    this.buyProductsService.getAddressDataById(this.vendorId).subscribe(data => {
-      this.addressData = data;
+    // this.buyProductsService.getAddressDataById(this.vendorId).subscribe(data => {
+    //   this.addressData = data;
 
 
-    });
-    this.getAddressData();
+    // });
+    // this.getAddressData();
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -237,7 +265,7 @@ export class GoToCartComponent implements OnInit {
   }
 
   openConfirmModal(template: TemplateRef<any>) {
-    this.modalReff = this.modalService.show(template, {class: 'modal-sm'});
+    this.modalReff = this.modalService.show(template, { class: 'modal-sm' });
   }
 
   confirm(): void {
@@ -257,7 +285,7 @@ export class GoToCartComponent implements OnInit {
     this.message = 'Confirmed!';
     this.modalReff.hide();
   }
- 
+
   declineUser(): void {
     this.message = 'Declined!';
     this.router.navigate(['/login']);
@@ -439,14 +467,14 @@ export class GoToCartComponent implements OnInit {
   selectedAddressFromList(response) {
 
     this.currentlySelectedAddress = response;
-
+    console.log('currentlySelectedAddress ***', this.currentlySelectedAddress);
     this.address.name = response.name;
-    this.address.mobileNumber = response.mobileNumber;
-    this.address.houseNo = response.houseNO;
-    this.address.society = response.society;
-    this.address.landMark = response.landmark;
-    this.address.pinCode = response.pincode;
-    this.address.area = response.area;
+    this.address.mobilenumber = response.mobilenumber;
+    this.address.flatNo = response.flatNo;
+    this.address.societyName = response.societyName;
+    this.address.locality = response.locality;
+    this.address.pincode = response.pincode;
+    this.address.areaName = response.areaName;
     this.address.city = response.city;
     this.address.state = response.state;
     this.addressId = response.id.toString();
@@ -589,7 +617,7 @@ export class GoToCartComponent implements OnInit {
     });
     sessionStorage.removeItem('cart_items');
     sessionStorage.setItem('cart_items', JSON.stringify(finalStorageArray));
- 
+
     if (finalStorageArray.length === 0 || finalStorageArray === undefined || finalStorageArray === null || finalStorageArray === []) {
       sessionStorage.removeItem('cart_items');
     }
@@ -602,23 +630,26 @@ export class GoToCartComponent implements OnInit {
 
   selectedDeliveryTypeFromList(response) {
     this.isDeliveryType = true;
+    console.log('delivery type ', this.purchaseProducts.DeliveryType);
   }
 
   selectedPaymentTermFromList(response) {
     this.ispaymentType = true;
+    console.log('selectedPaymentTermFromList type ', this.purchaseProducts.PaymentType);
   }
 
   selectedDeliveryTimeFromList(response) {
     this.isDeliveryTime = true;
     this.selectedTimeSlot = response.id;
+    console.log('selectedDeliveryTimeFromList', this.purchaseProducts.DeliveryTime);
   }
 
-  getAddressData() {
-    this.buyProductsService.getAddressDataById(this.vendorId).subscribe(data => {
-      this.addressData = data;
- 
-    });
-  }
+  // getAddressData() {
+  //   this.buyProductsService.getAddressDataById(this.vendorId).subscribe(data => {
+  //     this.addressData = data;
+
+  //   });
+  // }
 
   placeOrder() {
     this.purchaseProducts.VendorCode = sessionStorage.getItem('vendorId');
@@ -646,7 +677,54 @@ export class GoToCartComponent implements OnInit {
       }
 
     }
+    // this.address.name = response.name;
+    // this.address.mobilenumber = response.mobilenumber;
+    // this.address.flatNo = response.flatNo;
+    // this.address.societyName = response.societyName;
+    // this.address.locality = response.locality;
+    // this.address.pincode = response.pincode;
+    // this.address.areaName = response.areaName;
+    // this.address.city = response.city;
+    // this.address.state = response.state;
+    // this.addressId = response.id.toString();
+    let userid = sessionStorage.getItem('customerId');
+    let vendorCode = sessionStorage.getItem('vendorId');
+    let selectedProductStorageArray = JSON.parse(sessionStorage.getItem('cart_items'));
+    console.log('cart items', selectedProductStorageArray);
+    console.log('required user ID', userid);
+    console.log('required vendorCode', vendorCode);
+    console.log('mobile no', this.mobileNo);
+    let ProductStorageArray: any = [];
+    ProductStorageArray = this.createProductArray(selectedProductStorageArray);
+    console.log('ProductStorageArray with custom Dta', ProductStorageArray);
 
+    let placOrderObj = {
+      deliverySlot: this.purchaseProducts.DeliveryTime,
+      paymentType: this.purchaseProducts.PaymentType,
+      societyName: this.currentlySelectedAddress.societyName,
+      flatNo: this.currentlySelectedAddress.flatNo,
+      pincode: this.currentlySelectedAddress.pincode,
+      city: this.currentlySelectedAddress.city,
+      state: this.currentlySelectedAddress.state,
+      overallDiscount: 0,
+      LanguageCode: "en",
+      cartid: "0",
+      locality: this.currentlySelectedAddress.locality,
+      deliveryType: this.purchaseProducts.DeliveryType,
+      deliveryUpto: "2020-10-26",
+      userid: userid,
+      mobilenumber: this.mobileNo,
+      vendorCode: vendorCode,
+      deliveryCharges: 0,
+      status: "ConfirmOrder",
+      isactive: "Y",
+      areaName: this.currentlySelectedAddress.areaName,
+      name: this.currentlySelectedAddress.name,
+      referralAmountUsed: 0,
+      deliveredDate: "",
+      cartDetails: ProductStorageArray
+    }
+    console.log('placOrderObj', placOrderObj);
 
     if (this.purchaseProducts.OrderNo === null || this.purchaseProducts.OrderNo === undefined) {
       this.purchaseProducts.OrderNo = 'NULL';
@@ -679,18 +757,44 @@ export class GoToCartComponent implements OnInit {
     this.purchaseProducts.VendorName = sessionStorage.getItem('sellerName');
 
 
-    this.buyProductsService.savePurchaseProduct(this.purchaseProducts).subscribe(data => {
+    // this.buyProductsService.savePurchaseProduct(this.purchaseProducts).subscribe(data => {
 
-      this.ProductsResponse = data;
+    //   this.ProductsResponse = data;
+    //   this.toastr.success('Your Order Is Placed');
+    //   sessionStorage.removeItem('cart_items');
+    //   sessionStorage.removeItem('categoryId');
+    //   sessionStorage.removeItem('address_id');
+    //   this.openDialog();
+    //   this.emitterService.isProductIsAddedOrRemoved.emit(true);
+    //   this.purchaseProducts.DeliveryDate = this.prevDeliveryDate;
+    // });
+    this.buyProductsService.placeOrderData(placOrderObj).subscribe(response => {
+      this.placeOrderResponse = response;
       this.toastr.success('Your Order Is Placed');
-      sessionStorage.removeItem('cart_items');
-      sessionStorage.removeItem('categoryId');
-      sessionStorage.removeItem('address_id');
+      console.log('IMP response', response);
       this.openDialog();
-      this.emitterService.isProductIsAddedOrRemoved.emit(true);
+      sessionStorage.removeItem('cart_items');
       this.purchaseProducts.DeliveryDate = this.prevDeliveryDate;
+      this.emitterService.isProductIsAddedOrRemoved.emit(true);
     });
 
+  }
+  createProductArray(selectedProductStorageArray) {
+    let arr: any = [];
+    for (let i = 0; i < selectedProductStorageArray.length; i++) {
+      console.log(selectedProductStorageArray[i]);
+      var itemsObj = {
+        id: "0",
+        cartid: "0",
+        productVarientid: selectedProductStorageArray[i].id,
+        mrp: selectedProductStorageArray[i].MRP,
+        quantity: selectedProductStorageArray[i].RequiredQuantity,
+        discount: selectedProductStorageArray[i].Discount,
+        finalPrice: selectedProductStorageArray[i].FinalPrice
+      }
+      arr.push(itemsObj);
+    }
+    return arr;
   }
 
   GoToCart() {
@@ -721,7 +825,7 @@ export class GoToCartComponent implements OnInit {
     this.dialog.open(DialogOrderNoComponent, {
       height: '150px',
       width: '400px',
-      data: this.purchaseProducts.OrderNo,
+      data: this.placeOrderResponse,
       disableClose: true
     });
   }
@@ -733,20 +837,61 @@ export class GoToCartComponent implements OnInit {
   clearValues() {
     this.selectedAddressId = '';
     this.address.name = '';
-    this.address.mobileNumber = 0;
-    this.address.houseNo = '';
-    this.address.society = '';
-    this.address.landMark = '';
-    this.address.pinCode = 0;
+    this.address.mobilenumber = '';
+    this.address.flatNo = '';
+    this.address.societyName = '';
+    this.address.locality = '';
+    this.address.pincode = '';
     this.address.city = '';
-    this.address.area = '';
+    this.address.areaName = '';
     this.address.state = '';
     this.isAddressSelected = false;
   }
+
   checkUser() {
     this.dialog.open(DialogAddAddressComponent, {
       height: '400px',
       width: '800px'
+    });
+  }
+
+  verifyUserData() {
+    this.buyProductsService.verifyUserDetails(this.mobileNo).subscribe(response => {
+      console.log('response api user', response);
+      this.verifyUserDetails = response;
+      this.customerId = this.verifyUserDetails.customerId;
+      sessionStorage.setItem('customerId', this.customerId);
+      this.isMobileNumberEntered = true;
+      console.log('user response', this.verifyUserDetails.addresses.length);
+      this.selectedAddressId = '';
+      this.clearValues();
+
+      if (this.verifyUserDetails.addresses.length === 0 || this.verifyUserDetails.addresses === undefined
+        || this.verifyUserDetails.addresses === null) {
+        this.dialog.open(DialogAddAddressComponent, {
+          height: '400px',
+          width: '800px',
+          data: this.verifyUserDetails
+        });
+      }
+      // else if (this.addressData.length === 0 || this.addressData === undefined || this.addressData === null) {
+      //   this.isAddressSelected = false;
+      //   this.addressSelected = false;
+      // }
+      else {
+        this.toastr.info('Kindly Select An Desired Address');
+        this.addressData = this.verifyUserDetails.addresses;
+      }
+
+    });
+  }
+
+  editAddress() {
+
+    this.dialog.open(DialogEditAddressComponent, {
+      height: '400px',
+      width: '800px',
+      data: this.currentlySelectedAddress
     });
   }
 }

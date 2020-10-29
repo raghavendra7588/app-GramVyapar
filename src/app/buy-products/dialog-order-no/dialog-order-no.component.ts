@@ -10,15 +10,17 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dial
 })
 export class DialogOrderNoComponent implements OnInit {
   orderNo: any;
+  placeOrderResponse: any = [];
 
   constructor(
     public router: Router,
     public route: ActivatedRoute,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<DialogOrderNoComponent>) {
-      console.log('dtaa received ',data);
+    console.log('dtaa received ', data);
+    this.placeOrderResponse = data;
     // this.orderNo = data.OrderNo;
-    this.orderNo = data;
+    this.orderNo =  this.placeOrderResponse.orderid;
   }
 
 

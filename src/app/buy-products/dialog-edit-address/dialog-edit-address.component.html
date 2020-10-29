@@ -1,4 +1,3 @@
-<!-- <form [formGroup]="addressForm" (ngSubmit)="onSubmit()"> -->
 <form [formGroup]="addressForm">
     <div class="container">
         <div class="row">
@@ -28,8 +27,8 @@
             <div class="col-md-4 col-sm-4 col-12">
 
                 <mat-form-field style="width: 100%;">
-                    <input matInput name="society" placeholder="Society / Apartment Name"
-                        [(ngModel)]="address.societyName" formControlName="society">
+                    <input matInput name="society" placeholder="Society / Apartment Name" [(ngModel)]="address.societyName"
+                        formControlName="society">
                 </mat-form-field>
             </div>
             <div class="col-md-4 col-sm-4 col-12">
@@ -84,11 +83,10 @@
             </div> -->
             <div class="col-md-4 mt-2 col-sm-12 col-6">
                 <button mat-raised-button color="primary" class="width-100"
-                    [disabled]="!addressForm.valid || !isPinCode || !isName || !isMobileNo" (click)="onSubmit()">Add New
-                    Address</button>
+                    (click)="onSubmit()">Update</button>
             </div>
             <div class="col-md-4 mt-2 col-sm-12 col-6">
-                <button mat-raised-button class="width-100" (click)="closeDialog()">Close</button>
+                <button mat-raised-button class="width-100" mat-dialog-close>Close</button>
             </div>
         </div>
     </div>
