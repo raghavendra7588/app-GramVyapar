@@ -20,7 +20,9 @@ export class DialogOrderNoComponent implements OnInit {
     console.log('dtaa received ', data);
     this.placeOrderResponse = data;
     // this.orderNo = data.OrderNo;
-    this.orderNo =  this.placeOrderResponse.orderid;
+    
+    let slicedOrderNo = this.placeOrderResponse.orderid.slice(this.placeOrderResponse.orderid.length - 6);
+    this.orderNo = slicedOrderNo;
   }
 
 
