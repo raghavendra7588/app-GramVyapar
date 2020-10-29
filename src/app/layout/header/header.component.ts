@@ -17,9 +17,9 @@ export class HeaderComponent implements OnInit {
     public router: Router,
     public emitterService: EmitterService
   ) {
-    sessionStorage.setItem('isExisting', "false");
-    this.isExisting = sessionStorage.getItem('isExisting');
-    console.log('isExisting', this.isExisting);
+    // sessionStorage.setItem('isExisting', "false");
+    // this.isExisting = sessionStorage.getItem('isExisting');
+    // console.log('isExisting', this.isExisting);
     // this.sellerName = sessionStorage.getItem('sellerName');
     // this.vendorCode = sessionStorage.getItem('vendorId');
 
@@ -50,12 +50,17 @@ export class HeaderComponent implements OnInit {
 
   goToMyOrders() {
     this.isExisting = sessionStorage.getItem('isExisting');
-    // if (this.isExisting === "true") {
+    // if (this.isExisting === "false") {
     //   return;
     // }
-    // else {
+    // if (this.isExisting === "true") {
     //   this.router.navigate(['/buyProducts/myOrder']);
     // }
+    if ("isExisting" in sessionStorage) {
+      this.router.navigate(['/buyProducts/myOrder']);
+    } else {
+      return; 
+    }
 
   }
 

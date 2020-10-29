@@ -16,12 +16,17 @@ import { EmitterService } from 'src/app/shared/emitter.service';
 })
 export class CategoriesHomeComponent implements OnInit {
 
+  // displayedColumns: string[] = ['name', 'brandname', 'selectVarient', 'mrp',
+  //   'discount', 'finalPrice', 'requiredQuantity', 'add'];
+
+
   displayedColumns: string[] = ['name', 'brandname', 'selectVarient', 'mrp',
-    'discount', 'finalPrice', 'requiredQuantity', 'add'];
+    'discount', 'requiredQuantity', 'add'];
+
   dataSource: any;
-
+  searchResult: any;
   patientCategory: FormGroup;
-
+  isDataLoaded: boolean = false;
   categoryListData: any = [];
   parentId: string;
   vendorId: string;
@@ -102,7 +107,7 @@ export class CategoriesHomeComponent implements OnInit {
       this.buyProductsService.getAllCategory(this.parentId, this.vendorId).subscribe(data => {
 
         this.categoryListData = data;
-
+        // this.isDataLoaded = true;
         this.checkCartItems(this.categoryListData);
       });
     });
@@ -251,6 +256,7 @@ export class CategoriesHomeComponent implements OnInit {
   selectedSubCategoryFromList(response) {
     this.subCategoryId = response.id;
     this.SubCategoryId = response.id;
+    this.isDataLoaded = true;
     this.getAllBrandsData();
   }
 
@@ -298,6 +304,7 @@ export class CategoriesHomeComponent implements OnInit {
     if ("cart_items" in sessionStorage) {
       if (Number(this.purchaseProductArray[0].categoryid) != Number(response.categoryid)) {
         this.toastr.error('Can not allowed to add more one categories product');
+
         return;
       }
 
@@ -434,9 +441,16 @@ export class CategoriesHomeComponent implements OnInit {
 
 
 
-  applyFilter(filter: string) {
+  applyFilterOnKey(filter: string) {
     this.dataSource.filter = filter.trim().toLowerCase();
   }
+
+
+  applyFilter() {
+    console.log('searchResult', this.searchResult);
+    this.dataSource.filter = this.searchResult.trim().toLowerCase();
+  }
+
   goCart() {
     this.router.navigate(['/buyProducts/goToCart']);
   }

@@ -76,7 +76,10 @@ import { DialogEditAddressComponent } from './dialog-edit-address/dialog-edit-ad
     MatListModule,
     MatCheckboxModule,
     MatPaginatorModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      timeOut: 1200,
+      preventDuplicates: true,
+    }),
     ModalModule.forRoot(),
     MatNativeDateModule
   ],

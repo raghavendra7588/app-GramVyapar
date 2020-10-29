@@ -16,18 +16,18 @@ mat-icon{
 }
 
 .cart-icon{
-    color: #28a745;
+    color: #008000;
 }
 .cart-text{
-    color: #28a745;
+    color: #008000;
 }
 
 .home-icon{
-    color: #d39e00;
+    color: #FF8C00;
 }
 
 .home-text{
-    color: #d39e00;
+    color: #FF8C00;
 }
 
 .address-icon{
@@ -39,11 +39,11 @@ mat-icon{
 }
 
 .order-icon{
-    color: #17a2b8;
+    color: #1C86EE;
 }
 
 .order-text{
-    color: #17a2b8;
+    color:#1C86EE;
 }
 
 p{

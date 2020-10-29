@@ -6,9 +6,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class BuyProductsService {
 
-  // private BASE_URL = 'http://localhost:55547/';
+  private BASE_URL = 'http://localhost:55547/';
 
-  private BASE_URL = 'http://203.112.144.38/uat_InventoryService/';
+  // private BASE_URL = 'http://203.112.144.38/uat_InventoryService/';
   private ADMIN_BASE_URL = 'http://203.112.144.38/uat_AdminApi/api/';
 
   private GET_PRODUCT_LIST = this.ADMIN_BASE_URL + 'Product/GetProductList';
@@ -30,8 +30,8 @@ export class BuyProductsService {
   private INSERT_ADDRESS_DATA = this.BASE_URL + 'api/APPAddress';
   private GET_ADDRESS_DATA_BY_ID = this.BASE_URL + 'api/APPAddress';
   private INSERT_PURCHASE_PRODUCT = this.BASE_URL + 'api/PurchaseProducts';
+  private GET_ORDER_LIST_DATA = 'http://203.112.144.38/uat_AdminApi/api/Order/GetCustomerOrderList';
 
- 
 
   constructor(public http: HttpClient) { }
 
@@ -164,5 +164,13 @@ export class BuyProductsService {
   placeOrderData(placeOrder) {
     return this.http.post(this.PLACE_ORDER_API, placeOrder);
   }
-  
+
+  getMyOrdersData(languageCode: string, userId: string) {
+    const data = { "LanguageCode": languageCode, "userId": userId }
+    let reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.post(this.GET_ORDER_LIST_DATA, data, { headers: reqHeader });
+  }
+
 }

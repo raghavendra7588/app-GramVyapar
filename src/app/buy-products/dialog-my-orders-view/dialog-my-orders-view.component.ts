@@ -12,7 +12,9 @@ import { MatTableDataSource } from '@angular/material/table';
 export class DialogMyOrdersViewComponent implements OnInit {
 
   PurchaseProductId: number;
-  displayedColumns: string[] = ['name','brandName' ,'quantity', 'mrp', 'discount', 'finalPrice', 'requiredQuantity'];
+  // displayedColumns: string[] = ['name', 'brandName', 'quantity', 'mrp', 'discount', 'finalPrice', 'requiredQuantity'];
+
+  displayedColumns: string[] = ['PrdName', 'ProductName', 'MRP', 'Discount', 'QuantityOrdered'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   myOrdersData: any = [];
@@ -36,7 +38,10 @@ export class DialogMyOrdersViewComponent implements OnInit {
   area: string;
   city: string;
   orderNo: string;
-
+  orderDataResponse: any = [];
+  state: string;
+  formattedAddress: string;
+  mobilenumber: string;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -44,35 +49,48 @@ export class DialogMyOrdersViewComponent implements OnInit {
     public buyProductsService: BuyProductsService,
   ) {
 
-    this.PurchaseProductId = data;
-    this.buyProductsService.getAllOrdersDataByPurchaseProductId(this.PurchaseProductId).subscribe(data => {
-      console.log('received data ******', data);
-      this.myOrdersData = data;
-      this.dataSource = new MatTableDataSource(this.myOrdersData);
+    this.orderDataResponse = data;
+    console.log('order response', this.orderDataResponse);
+    this.dataSource = new MatTableDataSource(this.orderDataResponse.orderDetails);
+    // this.buyProductsService.getAllOrdersDataByPurchaseProductId(this.PurchaseProductId).subscribe(data => {
+    //   console.log('received data ******', data);
+    //   this.myOrdersData = data;
+    //   this.dataSource = new MatTableDataSource(this.myOrdersData);
 
+    this.formattedAddress = this.orderDataResponse.address.replace(/;/g, " ,");
+    console.log("*******", this.formattedAddress);
 
-      this.orderNo = this.myOrdersData[0].OrderNo;
-      this.customerName = this.myOrdersData[0].customerName;
+    this.customerName = this.orderDataResponse.customerName;
+    console.log("*******", this.customerName);
 
-      this.vendorName = this.myOrdersData[0].VendorName;
-      this.mobileNumber = this.myOrdersData[0].mobileNumber;
+    this.mobilenumber = this.orderDataResponse.mobilenumber;
+    console.log("*******", this.mobilenumber);
 
-      this.paymentType = this.myOrdersData[0].PaymentType;
-      this.orderDate = this.myOrdersData[0].OrderDate;
+    this.city = this.orderDataResponse.city;
+    this.state = this.orderDataResponse.state;
 
-      this.deliveryTime = this.myOrdersData[0].DeliveryTime;
-      this.deliveryType = this.myOrdersData[0].DeliveryType;
+    this.orderNo = this.orderDataResponse.orderid;
+    //   this.customerName = this.myOrdersData[0].customerName;
 
-      this.houseNo = this.myOrdersData[0].houseNO;
-      this.landMark = this.myOrdersData[0].landmark;
+    //   this.vendorName = this.myOrdersData[0].VendorName;
+    //   this.mobileNumber = this.myOrdersData[0].mobileNumber;
 
-      this.area = this.myOrdersData[0].area;
-      this.city = this.myOrdersData[0].city;
+    this.paymentType = this.orderDataResponse.paymentType;
+    this.orderDate = this.orderDataResponse.deliveryUpto;
 
-      this.payableCalculation(this.myOrdersData);
-      this.dataSource.paginator = this.paginator;
+    this.deliveryTime = this.orderDataResponse.deliverySlot;
+    this.deliveryType = this.orderDataResponse.deliveryType;
 
-    });
+    //   this.houseNo = this.myOrdersData[0].houseNO;
+    //   this.landMark = this.myOrdersData[0].landmark;
+
+    //   this.area = this.myOrdersData[0].area;
+    //   this.city = this.myOrdersData[0].city;
+
+    this.payableCalculation(this.orderDataResponse.orderDetails);
+    //   this.dataSource.paginator = this.paginator;
+
+    // });
   }
 
   payableCalculation(arr) {
@@ -82,9 +100,9 @@ export class DialogMyOrdersViewComponent implements OnInit {
     this.totalItemsOrdered = 0;
     this.totalPayableAmount = 0;
     for (let i = 0; i < arr.length; i++) {
-      this.totalMRP += Number(arr[i].MRP) * Number(arr[i].RequiredQuantity);
-      this.totalDiscount += Number(arr[i].Discount) * Number(arr[i].RequiredQuantity);
-      this.totalItemsOrdered += Number(arr[i].RequiredQuantity);
+      this.totalMRP += Number(arr[i].MRP) * Number(arr[i].QuantityOrdered);
+      this.totalDiscount += Number(arr[i].Discount) * Number(arr[i].QuantityOrdered);
+      this.totalItemsOrdered += Number(arr[i].QuantityOrdered);
       // this.totalFinalPrice += arr[i].FinalPrice;
     }
     this.totalPayableAmount = this.totalMRP - this.totalDiscount;

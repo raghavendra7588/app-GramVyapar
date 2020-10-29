@@ -142,7 +142,7 @@ export class GoToCartComponent implements OnInit {
 
     this.emitterService.isAddressCreated.subscribe(value => {
       if (value) {
-
+        console.log('adddress not enetreed');
         this.getCartItems();
         // this.getAddressData();
         this.clearValues();
@@ -697,6 +697,8 @@ export class GoToCartComponent implements OnInit {
     let ProductStorageArray: any = [];
     ProductStorageArray = this.createProductArray(selectedProductStorageArray);
     console.log('ProductStorageArray with custom Dta', ProductStorageArray);
+    let formattedDeliveryDate = this.convertDateInYMD(this.purchaseProducts.DeliveryDate);
+    console.log('formattedDeliveryDate formattedDeliveryDate formattedDeliveryDate', formattedDeliveryDate);
 
     let placOrderObj = {
       deliverySlot: this.purchaseProducts.DeliveryTime,
@@ -711,7 +713,7 @@ export class GoToCartComponent implements OnInit {
       cartid: "0",
       locality: this.currentlySelectedAddress.locality,
       deliveryType: this.purchaseProducts.DeliveryType,
-      deliveryUpto: "2020-10-26",
+      deliveryUpto: formattedDeliveryDate,
       userid: userid,
       mobilenumber: this.mobileNo,
       vendorCode: vendorCode,
@@ -776,6 +778,7 @@ export class GoToCartComponent implements OnInit {
       sessionStorage.removeItem('cart_items');
       this.purchaseProducts.DeliveryDate = this.prevDeliveryDate;
       this.emitterService.isProductIsAddedOrRemoved.emit(true);
+      sessionStorage.setItem('isExisting', 'true');
     });
 
   }
@@ -809,10 +812,21 @@ export class GoToCartComponent implements OnInit {
     const year = date.getFullYear();
     const month = `${date.getMonth() + 1}`.padStart(2, "0");
     const day = `${date.getDate()}`.padStart(2, "0");
-    const stringDate = [day, month, year].join("/");
+    const stringDate = [day, month, year].join("-");
     let fullDate = stringDate;
     return fullDate
   }
+
+  convertDateInYMD(receivedDate) {
+    let date = new Date(receivedDate);
+    const year = date.getFullYear();
+    const month = `${date.getMonth() + 1}`.padStart(2, "0");
+    const day = `${date.getDate()}`.padStart(2, "0");
+    const stringDate = [year, month, day].join("/");
+    let fullDate = stringDate;
+    return fullDate
+  }
+
 
   getRandomNumbers() {
     var minm = 100000;
@@ -865,7 +879,7 @@ export class GoToCartComponent implements OnInit {
       console.log('user response', this.verifyUserDetails.addresses.length);
       this.selectedAddressId = '';
       this.clearValues();
-
+      this.addressData = [];
       if (this.verifyUserDetails.addresses.length === 0 || this.verifyUserDetails.addresses === undefined
         || this.verifyUserDetails.addresses === null) {
         this.dialog.open(DialogAddAddressComponent, {
@@ -879,7 +893,7 @@ export class GoToCartComponent implements OnInit {
       //   this.addressSelected = false;
       // }
       else {
-        this.toastr.info('Kindly Select An Desired Address');
+        this.toastr.info('Kindly Select Desire Address From The List');
         this.addressData = this.verifyUserDetails.addresses;
       }
 

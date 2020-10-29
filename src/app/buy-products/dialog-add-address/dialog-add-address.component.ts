@@ -45,8 +45,15 @@ export class DialogAddAddressComponent implements OnInit {
     });
 
     this.addressData = data;
-    this.address.mobilenumber = this.addressData.mobilenumber;
-    this.isMobileNo = true;
+    if (this.address.mobilenumber === null || this.address.mobilenumber === undefined) {
+      this.address.mobilenumber = '';
+      this.isMobileNo = true;
+    }
+    else {
+      this.address.mobilenumber = this.addressData.mobilenumber;
+      this.isMobileNo = true;
+    }
+
     console.log('got address data ***', this.addressData);
     this.assignAddressData();
 
