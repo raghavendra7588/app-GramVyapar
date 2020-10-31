@@ -22,6 +22,7 @@ export class BuyProductsService {
   private VERIFY_USER = this.ADMIN_BASE_URL + 'User/GetUserDetailsWithMobileNumber';
   private ADD_USER_ADDRESS = this.ADMIN_BASE_URL + 'User/AddAddress';
   private PLACE_ORDER_API = this.ADMIN_BASE_URL + 'Cart/ConfirmOrder';
+  private GET_ORDER_LIST_DATA = this.ADMIN_BASE_URL + 'Order/GetCustomerOrderList';
 
   private GET_ALL_MY_ORDERS_DATA = this.BASE_URL + 'api/MyOrders/getMyOrders';
   private GET_ALL_MY_ORDERS_DATA_BY_PURCHASE_PRODUCT_ID = this.BASE_URL + 'api/MyOrders';
@@ -30,7 +31,7 @@ export class BuyProductsService {
   private INSERT_ADDRESS_DATA = this.BASE_URL + 'api/APPAddress';
   private GET_ADDRESS_DATA_BY_ID = this.BASE_URL + 'api/APPAddress';
   private INSERT_PURCHASE_PRODUCT = this.BASE_URL + 'api/PurchaseProducts';
-  private GET_ORDER_LIST_DATA = 'http://203.112.144.38/uat_AdminApi/api/Order/GetCustomerOrderList';
+  
 
 
   constructor(public http: HttpClient) { }

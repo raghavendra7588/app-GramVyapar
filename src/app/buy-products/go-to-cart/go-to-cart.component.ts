@@ -237,8 +237,8 @@ export class GoToCartComponent implements OnInit {
 
     this.deliveryTime = [
       { id: 0, type: '9.00 AM - 1.00PM', minHour: 9, maxHour: 13 },
-      { id: 1, type: '1.00 AM - 5.00PM', minHour: 13, maxHour: 17 },
-      { id: 2, type: '5.00 AM - 9.00PM', minHour: 17, maxHour: 21 },
+      { id: 1, type: '1.00 PM - 5.00PM', minHour: 13, maxHour: 17 },
+      { id: 2, type: '5.00 PM - 9.00PM', minHour: 17, maxHour: 21 },
       { id: 3, type: 'Anytime Ok', minHour: 0, maxHour: 24 }
     ];
 
