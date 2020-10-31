@@ -40,7 +40,7 @@ import { DialogMyOrdersEditComponent } from './dialog-my-orders-edit/dialog-my-o
 import { MatNativeDateModule } from '@angular/material/core';
 import { NumberDirective } from './number.directive';
 import { DialogEditAddressComponent } from './dialog-edit-address/dialog-edit-address.component';
-
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -76,6 +76,7 @@ import { DialogEditAddressComponent } from './dialog-edit-address/dialog-edit-ad
     MatListModule,
     MatCheckboxModule,
     MatPaginatorModule,
+    NgbPaginationModule,
     ToastrModule.forRoot({
       timeOut: 1200,
       preventDuplicates: true,

@@ -20,7 +20,7 @@ export class DialogOrderNoComponent implements OnInit {
     console.log('dtaa received ', data);
     this.placeOrderResponse = data;
     // this.orderNo = data.OrderNo;
-    
+
     let slicedOrderNo = this.placeOrderResponse.orderid.slice(this.placeOrderResponse.orderid.length - 6);
     this.orderNo = slicedOrderNo;
   }
@@ -30,11 +30,15 @@ export class DialogOrderNoComponent implements OnInit {
   }
 
   agreeToPrint() {
-    this.router.navigate(['buyProducts/categories']);
+    let shopName = sessionStorage.getItem('vendorName').toString();
+    this.router.navigate(['/buyProducts/categories'], { queryParams: { name: shopName } });
     this.dialogRef.close(true);
   }
   notPrint() {
-    this.router.navigate(['buyProducts/categories']);
+    let shopName = sessionStorage.getItem('vendorName').toString();
+   
+    this.router.navigate(['/buyProducts/categories'], { queryParams: { name: shopName } });
+    // this.router.navigate(['buyProducts/categories']);
     this.dialogRef.close(true);
   }
 

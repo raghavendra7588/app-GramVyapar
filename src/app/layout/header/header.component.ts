@@ -37,7 +37,11 @@ export class HeaderComponent implements OnInit {
   }
 
   goToCategories() {
-    this.router.navigate(['/buyProducts/categories']);
+
+    let shopName = sessionStorage.getItem('vendorName').toString();
+    // this.router.navigate(['buyProducts/categories']);
+
+    this.router.navigate(['/buyProducts/categories'], { queryParams: { name: shopName } });
   }
 
   goToCart() {
@@ -59,7 +63,7 @@ export class HeaderComponent implements OnInit {
     if ("isExisting" in sessionStorage) {
       this.router.navigate(['/buyProducts/myOrder']);
     } else {
-      return; 
+      return;
     }
 
   }

@@ -40,124 +40,115 @@
     <div class="col-md-6 col-sm-6 col-6">
       <mat-form-field style="width: 100%;">
 
-        <input matInput placeholder="Search Products" [(ngModel)]="searchResult" (keyup)="applyFilterOnKey($event.target.value)"
-         autocomplete="off">
+        <input matInput placeholder="Search Products" [(ngModel)]="searchResult"
+          (keyup)="applyFilterOnKey($event.target.value)" autocomplete="off">
       </mat-form-field>
     </div>
-    <!-- (keyup)="applyFilter($event.target.value)"  -->
+
 
     <div class="col-md-4 col-sm-6 col-6">
-      <!-- <button mat-raised-button class="float-right mb-2 width-100" color="primary" (click)="goCart()">Basket
-          (<span>{{totalNoOfProducts > 0 ? totalNoOfProducts : '0'}}</span>)
-        </button> -->
 
-      <!-- <button mat-raised-button class="mb-2" color="primary" (click)="goCart()">Basket
-        (<span>{{totalNoOfProducts > 0 ? totalNoOfProducts : '0'}}</span>)
-      </button> -->
       <button mat-raised-button class=" mt-2 width-100" color="primary" (click)="applyFilter()">Search
       </button>
-      <!-- <button mat-raised-button color="primary" class="float-right mb-2 width-100" (click)="applyFilter()" class="mt-2">Search</button> -->
+
     </div>
 
   </div>
 </div>
-<!-- btn-lg btn-block -->
 
-<!-- <div class="container-fluid my-4" *ngIf="brandsData.length > 0"> -->
-<!-- <div class="container-fluid my-4 col-md-12 col-sm-12 col-12"> -->
 
-  <div *ngIf="isDataLoaded">
+<div *ngIf="isDataLoaded">
 
  
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef>Name</th>
-    <td mat-cell *matCellDef="let element">
-      <h5>
-        {{element.name}}
-      </h5>
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="brandname">
-    <th mat-header-cell *matHeaderCellDef>Brand</th>
-    <td mat-cell *matCellDef="let element">
-      <h5>
-        {{element.brandname}}
-      </h5>
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="selectVarient">
-    <th mat-header-cell *matHeaderCellDef>Varient</th>
-    <td mat-cell *matCellDef="let element">
-      <mat-form-field style="min-width:auto;max-width: 40px;">
-        <mat-select id="productDetails" placeholder="Varient" [(value)]="element.productDetails[0].Unit">
-
-          <mat-option *ngFor="let brand of element.productDetails;let i = index;" [value]="brand.Unit"
-            (click)="selectedVarientFromList(element,i)">
-            {{brand.Unit}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="mrp">
-    <th mat-header-cell *matHeaderCellDef>MRP</th>
-    <td mat-cell *matCellDef="let element">
-      <span [id]="'mrp'+element.productid">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let element">
         <h5>
-          {{element.productDetails[0].MRP}}
+          {{element.name}}
         </h5>
-      </span>
-
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="discount">
-    <th mat-header-cell *matHeaderCellDef>Discount</th>
-    <td mat-cell *matCellDef="let element">
-      <h5>
-
-        <span [id]="'discount'+element.productid"> {{element.productDetails[0].Discount}}</span>
-      </h5>
-    </td>
-  </ng-container>
-
-  <!-- <ng-container matColumnDef="finalPrice">
-    <th mat-header-cell *matHeaderCellDef>Final Price</th>
-    <td mat-cell *matCellDef="let element">
-      <h5>
-
-        <span [id]="'finalPrice'+element.productid"> {{element.productDetails[0].FinalPrice}}</span>
-      </h5>
-
-    </td>
-  </ng-container> -->
-
-  <ng-container matColumnDef="requiredQuantity">
-    <th mat-header-cell *matHeaderCellDef>Quantity</th>
-    <td mat-cell *matCellDef="let element">
-      <mat-form-field floatLabel="never" style="min-width:auto;max-width: 25px;">
-        <input matInput placeholder="Quantity" [(ngModel)]="element.mappingid">
-      </mat-form-field>
-
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="add">
-    <th mat-header-cell *matHeaderCellDef>Add</th>
-    <td mat-cell *matCellDef="let element">
-      <button mat-raised-button color="primary" (click)="onQuantityChange(element,element.mappingid,i)">Add</button>
-    </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
-
-<mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
-</div>
+      </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="brandname">
+      <th mat-header-cell *matHeaderCellDef>Brand</th>
+      <td mat-cell *matCellDef="let element">
+        <h5>
+          {{element.brandname}}
+        </h5>
+      </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="selectVarient">
+      <th mat-header-cell *matHeaderCellDef>Varient</th>
+      <td mat-cell *matCellDef="let element">
+        <mat-form-field style="min-width:auto;max-width: 40px;">
+          <mat-select id="productDetails" placeholder="Varient" [(value)]="element.productDetails[0].Unit">
+  
+            <mat-option *ngFor="let brand of element.productDetails;let i = index;" [value]="brand.Unit"
+              (click)="selectedVarientFromList(element,i)">
+              {{brand.Unit}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+  
+      </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="mrp">
+      <th mat-header-cell *matHeaderCellDef>MRP</th>
+      <td mat-cell *matCellDef="let element">
+        <span [id]="'mrp'+element.productid">
+          <h5>
+            {{element.productDetails[0].MRP}}
+          </h5>
+        </span>
+  
+      </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="discount">
+      <th mat-header-cell *matHeaderCellDef>Discount</th>
+      <td mat-cell *matCellDef="let element">
+        <h5>
+  
+          <span [id]="'discount'+element.productid"> {{element.productDetails[0].Discount}}</span>
+        </h5>
+      </td>
+    </ng-container>
+  
+    <!-- <ng-container matColumnDef="finalPrice">
+      <th mat-header-cell *matHeaderCellDef>Final Price</th>
+      <td mat-cell *matCellDef="let element">
+        <h5>
+  
+          <span [id]="'finalPrice'+element.productid"> {{element.productDetails[0].FinalPrice}}</span>
+        </h5>
+  
+      </td>
+    </ng-container> -->
+  
+    <ng-container matColumnDef="requiredQuantity">
+      <th mat-header-cell *matHeaderCellDef>Quantity</th>
+      <td mat-cell *matCellDef="let element">
+        <mat-form-field floatLabel="never" style="min-width:auto;max-width: 25px;">
+          <input matInput placeholder="Quantity" [(ngModel)]="element.mappingid">
+        </mat-form-field>
+  
+      </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="add">
+      <th mat-header-cell *matHeaderCellDef>Add</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-raised-button color="primary" (click)="onQuantityChange(element,element.mappingid,i)">Add</button>
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  
+  <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+  </div>

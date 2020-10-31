@@ -845,7 +845,11 @@ export class GoToCartComponent implements OnInit {
   }
 
   goToCategoriesPage() {
-    this.router.navigate(['buyProducts/categories']);
+
+    let shopName = sessionStorage.getItem('vendorName').toString();
+    // this.router.navigate(['buyProducts/categories']);
+
+    this.router.navigate(['/buyProducts/categories'], { queryParams: { name: shopName } });
   }
 
   clearValues() {

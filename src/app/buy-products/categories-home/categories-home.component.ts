@@ -76,6 +76,16 @@ export class CategoriesHomeComponent implements OnInit {
   responseVendorName: any;
   vendorResponse: any = [];
   cartid: string;
+  tableData: any = [];
+
+  page = 1;
+  pageSize = 15;
+  collectionSize: any;
+  countries: any;
+  // page = 1;
+  // pageSize = 4;
+  // collectionSize = COUNTRIES.length;
+  // countries: Country[];
 
   constructor(
     public formBuilder: FormBuilder,
@@ -148,7 +158,7 @@ export class CategoriesHomeComponent implements OnInit {
       this.totalProductsCalculation(this.cartItems);
     }
 
-
+    this.refreshCountries();
   }
 
   ngOnInit(): void {
@@ -231,7 +241,9 @@ export class CategoriesHomeComponent implements OnInit {
       let customResponse = this.createCustomBrandsDataResponse(this.brandsData);
       this.brandsData = customResponse;
 
-
+      this.tableData = this.brandsData;
+      this.collectionSize = this.brandsData.length;
+      console.log('collectionsize', this.collectionSize);
       this.dataSource = new MatTableDataSource(this.brandsData);
       this.dataSource.paginator = this.paginator;
 
@@ -508,10 +520,14 @@ export class CategoriesHomeComponent implements OnInit {
   createCustomBrandsDataResponse(array) {
     for (let i = 0; i < array.length; i++) {
       array[i].mappingid = "0";
-      console.log(array[i].mappingid);
-
     }
     return array;
   }
 
+
+  refreshCountries() {
+    this.countries = this.tableData
+      .map((country, i) => ({ id: i + 1, ...country }))
+      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
+  }
 }

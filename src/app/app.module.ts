@@ -13,6 +13,7 @@ import { SharedModule } from './shared/shared.module';
 import { BuyProductsService } from './buy-products/buy-products.service';
 import { EmitterService } from './shared/emitter.service';
 import { UserService } from './user/user.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { UserService } from './user/user.service';
     LayoutModule,
     UserModule,
     BuyProductsModule,
-    SharedModule
+    SharedModule,
+    NgbModule
   ],
   providers: [BuyProductsService, EmitterService, UserService],
   bootstrap: [AppComponent]
