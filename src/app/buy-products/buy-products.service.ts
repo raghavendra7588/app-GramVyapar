@@ -6,13 +6,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class BuyProductsService {
 
-  private BASE_URL = 'http://localhost:55547/';
+  //private BASE_URL = 'http://localhost:55547/';
 
-  // private BASE_URL = 'http://203.112.144.38/uat_InventoryService/';
+  private BASE_URL = 'http://203.112.144.38/uat_InventoryService/';
   private ADMIN_BASE_URL = 'http://203.112.144.38/uat_AdminApi/api/';
 
   private GET_PRODUCT_LIST = this.ADMIN_BASE_URL + 'Product/GetProductList';
-  private GET_ALL_CATEGORY_DATA = this.ADMIN_BASE_URL + 'Category/getall';
+  private GET_ALL_CATEGORY_DATA = this.ADMIN_BASE_URL + 'Category/getsellercategories';
   private GET_ALL_SUBCATEGORIES_DATA = this.ADMIN_BASE_URL + 'Category/getall';
   private GET_PRODUCT_INFORMATION = this.ADMIN_BASE_URL + 'Product/GetProductInfo';
   private GET_ADDRESS_BASED_ON_PINCODE = this.ADMIN_BASE_URL + 'Pincode/GetCityState';
@@ -37,10 +37,9 @@ export class BuyProductsService {
 
 
 
-  getAllCategory(parentid: string, vendorcode: string) {
+  getAllCategory(vendorcode: string) {
     const data = {
-      "parentid": parentid,
-      "vendorcode": vendorcode
+      "vendorCode": vendorcode
     }
     let reqHeader = new HttpHeaders({
       'Content-Type': 'application/json',

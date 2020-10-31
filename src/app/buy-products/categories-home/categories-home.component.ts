@@ -104,7 +104,7 @@ export class CategoriesHomeComponent implements OnInit {
       this.parentId = '0';
       this.vendorId = sessionStorage.getItem('vendorId');
       this.emitterService.isValidateResponse.emit(true);
-      this.buyProductsService.getAllCategory(this.parentId, this.vendorId).subscribe(data => {
+      this.buyProductsService.getAllCategory(this.vendorId).subscribe(data => {
 
         this.categoryListData = data;
         // this.isDataLoaded = true;
@@ -116,12 +116,12 @@ export class CategoriesHomeComponent implements OnInit {
 
 
 
-    this.buyProductsService.getAllCategory(this.parentId, this.vendorId).subscribe(data => {
+    // this.buyProductsService.getAllCategory(this.parentId, this.vendorId).subscribe(data => {
 
-      this.categoryListData = data;
+    //   this.categoryListData = data;
 
-      this.checkCartItems(this.categoryListData);
-    });
+    //   this.checkCartItems(this.categoryListData);
+    // });
 
     this.patientCategory = this.fb.group({
       patientCategory: [null, Validators.required]
@@ -196,11 +196,11 @@ export class CategoriesHomeComponent implements OnInit {
   }
 
 
-  getCategoryListData() {
-    this.buyProductsService.getAllCategory(this.parentId, this.vendorId).subscribe(data => {
-      this.categoryListData = data;
-    });
-  }
+  // getCategoryListData() {
+  //   this.buyProductsService.getAllCategory(this.parentId, this.vendorId).subscribe(data => {
+  //     this.categoryListData = data;
+  //   });
+  // }
 
   getSubCategoryListData() {
     this.parentId = '3';
