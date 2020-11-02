@@ -18,7 +18,9 @@ import { DialogMyOrdersViewComponent } from '../dialog-my-orders-view/dialog-my-
 export class MyOrdersComponent implements OnInit {
 
 
-  displayedColumns: string[] = ['customerName', 'orderid', 'primaryMobileNumber', 'deliveryUpto', 'deliveryType', 'paymentType', 'view'];
+  // displayedColumns: string[] = ['customerName', 'orderid', 'primaryMobileNumber', 'deliveryUpto', 'deliveryType', 'paymentType', 'view'];
+
+  displayedColumns: string[] = ['customerName', 'orderid', 'deliveryUpto', 'view'];
 
   dataSource: any;
   vendorArray: any = [];
@@ -45,10 +47,18 @@ export class MyOrdersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.vendorName = sessionStorage.getItem('sellerName');
+
+    if ("sellerName" in sessionStorage) {
+      this.vendorName = sessionStorage.getItem('sellerName');
+    }
+    if ("customerId" in sessionStorage) {
+      this.userId = sessionStorage.getItem('customerId');
+    }
+
+    // this.vendorName = sessionStorage.getItem('sellerName');
     this.vendorArray = [{ id: 0, name: this.vendorName }];
     this.languageCode = "en";
-    this.userId = sessionStorage.getItem('customerId');
+    // this.userId = sessionStorage.getItem('customerId');
 
     console.log('user id', this.userId);
     this.buyProductsService.getMyOrdersData(this.languageCode, this.userId).subscribe(response => {
@@ -86,7 +96,13 @@ export class MyOrdersComponent implements OnInit {
     prevOrderNo = this.myOrders.orderNo;
 
     if (this.myOrders.vendorName === null || this.myOrders.vendorName === undefined || this.myOrders.vendorName === '') {
-      this.myOrders.vendorName = sessionStorage.getItem('sellerName');
+      if ("sellerName" in sessionStorage) {
+        this.myOrders.vendorName = sessionStorage.getItem('sellerName');
+      }
+      else {
+        this.myOrders.vendorName = '';
+      }
+
     }
 
     if (this.myOrders.orderNo === null || this.myOrders.orderNo === undefined || this.myOrders.orderNo === '') {
@@ -108,8 +124,18 @@ export class MyOrdersComponent implements OnInit {
       let endDate = this.convertDate(this.DeliveryDate);
       this.myOrders.DeliveryDate = endDate;
     }
-    this.myOrders.vendorCode = sessionStorage.getItem('vendorId');
-    this.myOrders.sellerId = sessionStorage.getItem('sellerId');
+
+
+    if ("vendorId" in sessionStorage) {
+      this.myOrders.vendorCode = sessionStorage.getItem('vendorId');
+    }
+
+    if ("sellerId" in sessionStorage) {
+      this.myOrders.sellerId = sessionStorage.getItem('sellerId');
+    }
+
+
+
 
     this.buyProductsService.getALLOrdersData(this.myOrders).subscribe(response => {
       this.myOrdersData = response;

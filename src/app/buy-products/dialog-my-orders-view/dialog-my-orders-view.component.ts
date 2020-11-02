@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BuyProductsService } from '../buy-products.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { AnonymousSubject } from 'rxjs/internal/Subject';
 
 @Component({
   selector: 'app-dialog-my-orders-view',
@@ -14,7 +15,7 @@ export class DialogMyOrdersViewComponent implements OnInit {
   PurchaseProductId: number;
   // displayedColumns: string[] = ['name', 'brandName', 'quantity', 'mrp', 'discount', 'finalPrice', 'requiredQuantity'];
 
-  displayedColumns: string[] = ['PrdName', 'ProductName', 'MRP', 'Discount', 'QuantityOrdered'];
+  displayedColumns: string[] = ['PrdName', 'ProductName', 'finalPrice', 'QuantityOrdered'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   myOrdersData: any = [];
@@ -42,6 +43,8 @@ export class DialogMyOrdersViewComponent implements OnInit {
   state: string;
   formattedAddress: string;
   mobilenumber: string;
+  sellerName: any;
+  vendorCode: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -93,6 +96,11 @@ export class DialogMyOrdersViewComponent implements OnInit {
     // });
   }
 
+
+  ngOnInit(): void {
+    this.sellerName = sessionStorage.getItem('sellerName');
+    this.vendorCode = sessionStorage.getItem('vendorId');
+  }
   payableCalculation(arr) {
 
     this.totalMRP = 0;
@@ -106,9 +114,6 @@ export class DialogMyOrdersViewComponent implements OnInit {
       // this.totalFinalPrice += arr[i].FinalPrice;
     }
     this.totalPayableAmount = this.totalMRP - this.totalDiscount;
-  }
-
-  ngOnInit(): void {
   }
 
 }

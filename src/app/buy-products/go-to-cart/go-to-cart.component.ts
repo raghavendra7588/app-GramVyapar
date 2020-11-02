@@ -51,7 +51,7 @@ export class GoToCartComponent implements OnInit {
   isAddressSelected: boolean = false;
 
   selection = new SelectionModel<any>(true, []);
-  displayedColumns: string[] = ['select', 'name', 'quantity', 'mrp', 'discount', 'finalPrice', 'requiredQuantity', 'delete'];
+  displayedColumns: string[] = ['select', 'name', 'quantity', 'finalPrice', 'requiredQuantity', 'delete'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 

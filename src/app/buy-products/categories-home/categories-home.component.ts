@@ -20,8 +20,12 @@ export class CategoriesHomeComponent implements OnInit {
   //   'discount', 'finalPrice', 'requiredQuantity', 'add'];
 
 
-  displayedColumns: string[] = ['name', 'brandname', 'selectVarient', 'mrp',
-    'discount', 'requiredQuantity', 'add'];
+  // displayedColumns: string[] = ['name', 'brandname', 'selectVarient', 'mrp',
+  //   'discount', 'requiredQuantity', 'add'];
+
+
+  displayedColumns: string[] = ['name', 'brandname', 'selectVarient','finalPrice',
+     'requiredQuantity', 'add'];
 
   dataSource: any;
   searchResult: any;

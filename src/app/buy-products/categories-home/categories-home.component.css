@@ -71,3 +71,26 @@ mat-header-cell:nth-child(5) {
     flex: 0 0 25% !important;
     min-width: 104px !important;
 } */
+
+.mat-column-finalPrice {
+   text-align: center;
+}
+.mat-column-name {
+    word-wrap: break-word;
+    text-align: left;
+    max-width: 60px !important;
+}
+.mat-column-brandname {
+    word-wrap: break-word;
+    max-width: 60px !important;
+}
+
+.mat-column-requiredQuantity {
+    text-align: right;
+}
+
+.mat-column-add {
+    text-align: center;
+}
+
+

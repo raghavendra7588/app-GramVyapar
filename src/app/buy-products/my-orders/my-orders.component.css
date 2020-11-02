@@ -49,3 +49,11 @@
     min-width: 100%;
 } */
 
+.mat-column-customerName {
+  word-wrap: break-word;
+  text-align: left;
+  max-width: 60px !important;
+
+}
+
+

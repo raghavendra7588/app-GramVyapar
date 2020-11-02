@@ -24,6 +24,23 @@ table {
         width: 100%;
     }
 
-    .mat-column-Discount{
+    .mat-column-QuantityOrdered{
      text-align: center;
+    }
+
+.mat-column-finalPrice{
+    text-align: center;
+}
+   
+
+    .mat-column-PrdName {
+        word-wrap: break-word;
+        text-align: left;
+        max-width: 60px !important;
+    }
+
+    .mat-column-ProductName {
+        word-wrap: break-word;
+        text-align: left;
+        max-width: 60px !important;
     }
