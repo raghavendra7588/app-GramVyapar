@@ -257,7 +257,7 @@
   <div class="container-fluid my-5">
     <div class="row">
       <div class="col-md-3 col-sm-3 col-3">
-        <p style="text-align: left;" class="font-weight-bold">Delivery Type </p>
+        <p style="text-align: left;" class="font-weight-bold">Delivery Type</p>
         <mat-form-field style="width: 100% !important;">
           <mat-select [(ngModel)]="purchaseProducts.DeliveryType">
             <mat-option *ngFor="let item of deliveryType;" [value]="item.type"
@@ -268,7 +268,7 @@
         </mat-form-field>
       </div>
       <div class="col-md-3 col-sm-3 col-3">
-        <p style="text-align: left;" class="font-weight-bold">Payment Type </p>
+        <p style="text-align: left;" class="font-weight-bold">Payment</p>
         <mat-form-field style="width: 100% !important;">
           <mat-select [(ngModel)]="purchaseProducts.PaymentType">
             <mat-option *ngFor="let item of paymentType;" [value]="item.type"
@@ -279,7 +279,7 @@
         </mat-form-field>
       </div>
       <div class="col-md-3 col-sm-3 col-3">
-        <p style="text-align: left;" class="font-weight-bold">Delivery Date </p>
+        <p style="text-align: left;" class="font-weight-bold">Delivery Date</p>
         <mat-form-field style="width: 100% !important;">
 
           <input matInput [matDatepicker]="picker1" autocomplete="off" [min]="minDate"
@@ -290,7 +290,7 @@
         </mat-form-field>
       </div>
       <div class="col-md-3 col-sm-3 col-3">
-        <p style="text-align: left;" class="font-weight-bold">Delivery Time </p>
+        <p style="text-align: left;" class="font-weight-bold">Delivery Time</p>
         <mat-form-field style="width: 100% !important;">
           <mat-select [(ngModel)]="purchaseProducts.DeliveryTime">
             <mat-option *ngFor="let item of deliveryTime;" [value]="item.type"

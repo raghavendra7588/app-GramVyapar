@@ -145,7 +145,8 @@
     <ng-container matColumnDef="add">
       <th mat-header-cell *matHeaderCellDef>Add</th>
       <td mat-cell *matCellDef="let element">
-        <button mat-raised-button color="primary" (click)="onQuantityChange(element,element.mappingid,i)">Add</button>
+        <!-- <button mat-raised-button color="primary" (click)="onQuantityChange(element,element.mappingid,i)">Add</button> -->
+        <i class="fa fa-cart-plus fa-2x cart-icon" style="cursor: pointer;" aria-hidden="true" (click)="onQuantityChange(element,element.mappingid,i)"></i>
       </td>
     </ng-container>
   
