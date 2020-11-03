@@ -49,3 +49,11 @@ mat-icon{
 p{
     cursor: pointer;
 }
+
+.login-icon{
+    color: #ffff31;
+}
+
+.login-text{
+    color: #ffff31;
+}

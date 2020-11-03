@@ -71,9 +71,7 @@ export class HeaderComponent implements OnInit {
   }
 
   goToCategories() {
-
     let shopName = sessionStorage.getItem('vendorName').toString();
-    // this.router.navigate(['buyProducts/categories']);
     console.log('vendor name', shopName);
     this.router.navigate(['/buyProducts/categories'], { queryParams: { name: shopName } });
   }
@@ -88,19 +86,15 @@ export class HeaderComponent implements OnInit {
 
   goToMyOrders() {
     this.isExisting = sessionStorage.getItem('isExisting');
-    // if (this.isExisting === "false") {
-    //   return;
-    // }
-    // if (this.isExisting === "true") {
-    //   this.router.navigate(['/buyProducts/myOrder']);
-    // }
     if ("isExisting" in sessionStorage) {
       this.router.navigate(['/buyProducts/myOrder']);
     } else {
-      // return;
       this.router.navigate(['/buyProducts/myOrder']);
     }
+  }
 
+  goToLogin() {
+    this.router.navigate(['/login']);
   }
 
   calculateProductCount(arr) {

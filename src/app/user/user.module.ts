@@ -28,9 +28,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 import { LoginComponent } from './login/login.component';
+import { ValidateUserComponent } from './validate-user/validate-user.component';
 
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [LoginComponent, ValidateUserComponent],
   imports: [
     CommonModule,
     FormsModule,
