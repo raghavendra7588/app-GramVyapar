@@ -83,10 +83,11 @@
       <th mat-header-cell *matHeaderCellDef>Varient</th>
       <td mat-cell *matCellDef="let element;let j = index">
         <mat-form-field style="min-width:auto;max-width: 40px;">
-          <mat-select id="productDetails" placeholder="Varient" [(value)]="element.productDetails[0].Unit">
-            <mat-option *ngFor="let brand of element.productDetails;let i = index;" [value]="brand.Unit"
+          <mat-label>Select Varient</mat-label>
+          <mat-select id="productDetails" placeholder="Varient" >
+            <mat-option *ngFor="let item of element.productDetails;let i = index;" [value]="item.Unit"
               (click)="selectedVarientFromList(element,i)">
-              {{brand.Unit}}
+              {{item.Unit}}
             </mat-option>
           </mat-select>
         </mat-form-field>
