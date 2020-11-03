@@ -97,7 +97,8 @@ export class HeaderComponent implements OnInit {
     if ("isExisting" in sessionStorage) {
       this.router.navigate(['/buyProducts/myOrder']);
     } else {
-      return;
+      // return;
+      this.router.navigate(['/buyProducts/myOrder']);
     }
 
   }

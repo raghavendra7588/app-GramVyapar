@@ -51,7 +51,7 @@ export class GoToCartComponent implements OnInit {
   isAddressSelected: boolean = false;
 
   selection = new SelectionModel<any>(true, []);
-  displayedColumns: string[] = ['select', 'name', 'quantity', 'finalPrice', 'requiredQuantity', 'delete'];
+  displayedColumns: string[] = ['select', 'name', 'quantity', 'finalPrice', 'requiredQuantity', 'update', 'delete'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -118,8 +118,8 @@ export class GoToCartComponent implements OnInit {
   maxLengthPhone = 10;
 
   placeOrderResponse: any = [];
-
-
+  disableCondition: boolean;
+  updateResponse: any = [];
   constructor(
     public router: Router,
     public route: ActivatedRoute,
@@ -264,6 +264,11 @@ export class GoToCartComponent implements OnInit {
 
   }
 
+  openUpdateModal(template: TemplateRef<any>, response) {
+    this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
+    this.updateResponse = response;
+  }
+
   openConfirmModal(template: TemplateRef<any>) {
     this.modalReff = this.modalService.show(template, { class: 'modal-sm' });
   }
@@ -279,6 +284,12 @@ export class GoToCartComponent implements OnInit {
     this.message = 'Declined!';
     this.modalRef.hide();
     return;
+  }
+
+  updateConfirm(){
+    this.message = 'Confirmed!';
+    this.updateSingleQuantity(this.updateResponse);
+    this.modalRef.hide();
   }
 
   confirmUser(): void {
@@ -311,6 +322,7 @@ export class GoToCartComponent implements OnInit {
     }
     else {
       this.dataSource.data.forEach((row) => {
+        console.log('seletced row in master toggle else', row);
         this.selection.select(row);
       });
     }
@@ -320,6 +332,7 @@ export class GoToCartComponent implements OnInit {
   onChange(event) {
     if (event.checked === true) {
       this.updateAllRecordsCount++;
+
     }
     else {
       this.updateAllRecordsCount--;
@@ -804,7 +817,10 @@ export class GoToCartComponent implements OnInit {
     this.router.navigate(['buyProducts/goToCart']);
   }
   goToCategories() {
-    this.router.navigate(['/buyProducts/categories']);
+    let shopName = sessionStorage.getItem('vendorName').toString();
+    // this.router.navigate(['buyProducts/categories']);
+    console.log('vendor name', shopName);
+    this.router.navigate(['/buyProducts/categories'], { queryParams: { name: shopName } });
   }
 
   convertDate(receivedDate) {
@@ -911,5 +927,42 @@ export class GoToCartComponent implements OnInit {
       width: '800px',
       data: this.currentlySelectedAddress
     });
+  }
+
+  updateSingleQuantity(response) {
+    console.log('response', response);
+    let inputValue = Number(response.RequiredQuantity);
+    let availableQty = Number(response.Quantity);
+    let productId = Number(response.productid);
+    let id = Number(response.id);
+
+
+    if (inputValue < 1) {
+      this.toastr.error('check Quantity');
+    }
+    else {
+      if (inputValue > availableQty) {
+        this.toastr.error('Quantity Exceeds than Available');
+      }
+      else {
+        response.RequiredQuantity = inputValue.toString();
+
+        let cartItemResponse = JSON.parse(sessionStorage.getItem('cart_items'));
+        for (let i = 0; i < cartItemResponse.length; i++) {
+          if (Number(cartItemResponse[i].productid) === productId && Number(cartItemResponse[i].id) === id) {
+            console.log('update quantity cndn matched ');
+            cartItemResponse[i].RequiredQuantity = inputValue.toString();
+          }
+        }
+        console.log('cart **', cartItemResponse);
+        sessionStorage.removeItem('cart_items');
+        sessionStorage.setItem('cart_items', JSON.stringify(cartItemResponse));
+
+        this.payableCalculation(cartItemResponse);
+        this.toastr.success('Product Is Updated');
+        this.emitterService.isProductIsAddedOrRemoved.emit(true);
+
+      }
+    }
   }
 }

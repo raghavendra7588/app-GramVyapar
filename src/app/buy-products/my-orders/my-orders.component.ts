@@ -8,6 +8,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { DialogMyOrdersEditComponent } from '../dialog-my-orders-edit/dialog-my-orders-edit.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DialogMyOrdersViewComponent } from '../dialog-my-orders-view/dialog-my-orders-view.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -36,14 +37,23 @@ export class MyOrdersComponent implements OnInit {
   ordersData: any = [];
   orderDataResponse: any = [];
   searchProducts: any;
+  isDisplay: boolean;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
 
   constructor(
     public buyProductsService: BuyProductsService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public router: Router,
+    public route: ActivatedRoute
   ) {
+    if ("isExisting" in sessionStorage) {
+      this.isDisplay = true;
+    } else {
+      this.isDisplay = false;
+    }
+
   }
 
   ngOnInit(): void {
@@ -166,6 +176,10 @@ export class MyOrdersComponent implements OnInit {
       width: '1200px',
       data: this.orderDataResponse
     });
+  }
+  goToCategoriesPage() {
+    let shopName = sessionStorage.getItem('vendorName').toString();
+    this.router.navigate(['/buyProducts/categories'], { queryParams: { name: shopName } });
   }
 
 

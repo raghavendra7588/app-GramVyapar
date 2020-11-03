@@ -91,7 +91,7 @@
       </ng-container>
 
       <ng-container matColumnDef="requiredQuantity">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Qty</th>
         <td mat-cell *matCellDef="let element">
           <mat-form-field style="min-width:auto;max-width: 30px;">
             <input matInput placeholder="Quantity" [(ngModel)]="element.RequiredQuantity">
@@ -99,7 +99,14 @@
 
         </td>
       </ng-container>
-
+      <ng-container matColumnDef="update">
+        <th mat-header-cell *matHeaderCellDef><span style=" color: #008000;">Update</span></th>
+        <td mat-cell *matCellDef="let element">
+          <i class="fa fa-plus-square fa-2x cart-icon" style="cursor: pointer;" aria-hidden="true"
+            (click)="openUpdateModal(updatetemplate,element)"></i>
+            <!-- (click)="updateSingleQuantity(element)"  -->
+        </td>
+      </ng-container>
       <ng-container matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef>Delete</th>
         <td mat-cell *matCellDef="let element">
@@ -124,12 +131,12 @@
     <div class="row">
       <div class="col-md-3 col-6 col-sm-2">
         <mat-form-field style="width: 100%;">
-          <input matInput placeholder="Mobile Number" autocomplete="off" [(ngModel)]="mobileNo" appNumber [maxLength]="maxLengthPhone" />
+          <input matInput placeholder="Mobile Number" autocomplete="off" [(ngModel)]="mobileNo" appNumber
+            [maxLength]="maxLengthPhone" />
         </mat-form-field>
       </div>
       <div class="col-md-2 col-6 col-sm-2">
-        <button mat-raised-button color="primary" class="width-100 mt-2"
-        (click)="verifyUserData()" >Proceed
+        <button mat-raised-button color="primary" class="width-100 mt-2" (click)="verifyUserData()">Proceed
         </button>
       </div>
 
@@ -144,17 +151,19 @@
       </div>
 
       <div class="col-md-2 col-sm-4 col-12">
-        <button mat-raised-button color="primary" [disabled]="!isMobileNumberEntered" (click)="addNewAddress()" class="width-100 mt-2">Add Address
+        <button mat-raised-button color="primary" [disabled]="!isMobileNumberEntered" (click)="addNewAddress()"
+          class="width-100 mt-2">Add Address
         </button>
       </div>
 
       <div class="col-md-2 col-sm-4 col-12">
-        <button mat-raised-button color="primary" [disabled]="!isMobileNumberEntered" (click)="editAddress()" class="width-100 mt-2">Edit Address
+        <button mat-raised-button color="primary" [disabled]="!isMobileNumberEntered" (click)="editAddress()"
+          class="width-100 mt-2">Edit Address
         </button>
       </div>
     </div>
   </div>
- 
+
   <!-- <div class="container-fluid">
     <div class="row">
       <div class="col-md-4 col-sm-4 col-12">
@@ -363,6 +372,13 @@
   </div>
 </ng-template>
 
+<ng-template #updatetemplate>
+  <div class="modal-body text-center">
+    <p>Do you want To Update This Product?</p>
+    <button type="button" class="btn btn-primary mr-1" (click)="updateConfirm()">Yes</button>
+    <button type="button" class="btn btn-danger" (click)="decline()">No</button>
+  </div>
+</ng-template>
 
 <!-- <ng-template #templatee>
   <div class="modal-body text-center">
@@ -372,5 +388,5 @@
   </div>
 </ng-template> -->
 
- <!-- (click)="openConfirmModal(templatee)" -->
- <!-- class="mt-2 mx-auto d-block" -->
+<!-- (click)="openConfirmModal(templatee)" -->
+<!-- class="mt-2 mx-auto d-block" -->

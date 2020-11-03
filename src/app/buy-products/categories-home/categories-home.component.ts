@@ -24,8 +24,8 @@ export class CategoriesHomeComponent implements OnInit {
   //   'discount', 'requiredQuantity', 'add'];
 
 
-  displayedColumns: string[] = ['name', 'brandname', 'selectVarient','finalPrice',
-     'requiredQuantity', 'add'];
+  displayedColumns: string[] = ['name', 'brandname', 'selectVarient', 'finalPrice',
+    'requiredQuantity', 'add'];
 
   dataSource: any;
   searchResult: any;
@@ -67,6 +67,7 @@ export class CategoriesHomeComponent implements OnInit {
   uniqueCategoriesArray: any = [];
   cartItems: any = [];
   selectedIndex: number;
+
   allBrandsData: any = [];
   allSubCategoryData: any = [];
   sellerId: string;
@@ -244,7 +245,7 @@ export class CategoriesHomeComponent implements OnInit {
       this.catchBrandArray = response;
       let customResponse = this.createCustomBrandsDataResponse(this.brandsData);
       this.brandsData = customResponse;
-
+      console.log('brandData', this.brandsData);
       this.tableData = this.brandsData;
       this.collectionSize = this.brandsData.length;
       console.log('collectionsize', this.collectionSize);
@@ -287,14 +288,27 @@ export class CategoriesHomeComponent implements OnInit {
   }
 
   selectedVarientFromList(response, i) {
+    console.log('resonse', response);
     this.availableQuantity = 'False';
     this.selectedIndex = i;
-    document.getElementById("mrp" + response.productid).innerHTML = response.productDetails[i].MRP;
-    document.getElementById("finalPrice" + response.productid).innerHTML = response.productDetails[i].FinalPrice;
-    document.getElementById("discount" + response.productid).innerHTML = response.productDetails[i].Discount;
+    console.log('selectedIndex', this.selectedIndex);
+    // document.getElementById("mrp" + response.productid).innerHTML = response.productDetails[i].MRP;
+    document.getElementById("finalPrice" + response.productid).innerHTML = (Number(response.productDetails[i].FinalPrice)).toString();
+    // document.getElementById("discount" + response.productid).innerHTML = response.productDetails[i].Discount;
     this.showInitialProductDetails = false;
     this.finalProductDetails = true;
 
+    // for (let i = 0; i < this.brandsData.length; i++) {
+    //   for (let j = 0; j < response.productDetails.length; j++) {
+    //     if (Number(response.productid) === Number(this.brandsData[i].productid) &&
+    //       (response.name) === (this.brandsData[i].name) &&
+    //       Number(response.brandid) === Number(this.brandsData[i].brandid)
+    //     ) {
+    //       console.log( this.brandsData[i].productDetails[j].Unit);
+    //       response.productDetails[j].Unit = this.brandsData[i].productDetails[j].Unit;
+    //     }
+    //   }
+    // }
     this.selectedProductId = response.productid;
     this.availableQuantity = response.productDetails[i].outOfStockFlag;
 

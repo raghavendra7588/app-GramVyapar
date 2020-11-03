@@ -61,13 +61,13 @@ export class DialogMyOrdersViewComponent implements OnInit {
     //   this.dataSource = new MatTableDataSource(this.myOrdersData);
 
     this.formattedAddress = this.orderDataResponse.address.replace(/;/g, " ,");
-    console.log("*******", this.formattedAddress);
+    // console.log("*******", this.formattedAddress);
 
     this.customerName = this.orderDataResponse.customerName;
-    console.log("*******", this.customerName);
+    // console.log("*******", this.customerName);
 
     this.mobilenumber = this.orderDataResponse.mobilenumber;
-    console.log("*******", this.mobilenumber);
+    // console.log("*******", this.mobilenumber);
 
     this.city = this.orderDataResponse.city;
     this.state = this.orderDataResponse.state;

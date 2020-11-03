@@ -55,3 +55,14 @@ mat-header-cell:nth-child(5) {
     text-align: center;
 
 }
+
+.mat-column-delete {
+    text-align: center;
+}
+.mat-column-update {
+    text-align: center;
+}
+
+.cart-icon {
+    color: #008000;
+  }
