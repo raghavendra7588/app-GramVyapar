@@ -97,3 +97,7 @@ mat-header-cell:nth-child(5) {
 .cart-icon {
     color: #008000;
   }
+
+  .happy{
+max-width: 50px !important;
+  }

@@ -89,6 +89,9 @@ export class CategoriesHomeComponent implements OnInit {
   countries: any;
   isHomeDelivery: string;
   homeDeliveryLimit: number;
+
+  quantityList: any = [];
+  selectedQuantity: number;
   // page = 1;
   // pageSize = 4;
   // collectionSize = COUNTRIES.length;
@@ -176,7 +179,13 @@ export class CategoriesHomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.quantityList = [
+      { id: 0, title: 1 },
+      { id: 1, title: 2 },
+      { id: 2, title: 3 },
+      { id: 3, title: 4 },
+      { id: 4, title: 5 }
+    ];
   }
 
   totalProductsCalculation(arr) {
@@ -343,7 +352,6 @@ export class CategoriesHomeComponent implements OnInit {
     if ("cart_items" in sessionStorage) {
       if (Number(this.purchaseProductArray[0].categoryid) != Number(response.categoryid)) {
         this.toastr.error('Can not allowed to add more one categories product');
-
         return;
       }
 
@@ -351,11 +359,12 @@ export class CategoriesHomeComponent implements OnInit {
       console.log("");
     }
 
-    if (Number(quantity) > 0) {
+    if (Number(this.selectedQuantity) > 0) {
+      console.log('this.selectedQuantity', this.selectedQuantity);
       // this.catchResponse = this.pushProduct(this.purchaseProductArray, response, i);
       this.catchResponse = this.pushProduct(this.purchaseProductArray, response, this.selectedIndex);
       this.purchaseProductArray = this.catchResponse;
-
+      this.selectedQuantity = 0;
       sessionStorage.setItem('cart_items', JSON.stringify(this.purchaseProductArray));
       this.toastr.success('Product is Added Into Cart');
       this.totalProductsCalculation(this.purchaseProductArray);
@@ -443,7 +452,7 @@ export class CategoriesHomeComponent implements OnInit {
         FinalPrice: response.productDetails[j].FinalPrice,
         MRP: response.productDetails[j].MRP,
         Quantity: response.productDetails[j].Quantity,
-        RequiredQuantity: response.mappingid,
+        RequiredQuantity: this.selectedQuantity,
         categoryid: response.categoryid
         // id: "0",
         // cartid: "0",
@@ -556,5 +565,10 @@ export class CategoriesHomeComponent implements OnInit {
     this.countries = this.tableData
       .map((country, i) => ({ id: i + 1, ...country }))
       .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
+  }
+
+  selectedQuantityFromList(product: any) {
+    console.log('product **', product);
+    this.selectedQuantity = Number(product.title);
   }
 }

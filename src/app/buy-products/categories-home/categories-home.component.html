@@ -84,7 +84,7 @@
       <td mat-cell *matCellDef="let element;let j = index">
         <mat-form-field style="min-width:auto;max-width: 40px;">
           <mat-label>Select Varient</mat-label>
-          <mat-select id="productDetails" placeholder="Varient" >
+          <mat-select id="productDetails" placeholder="Varient" panelClass="happy">
             <mat-option *ngFor="let item of element.productDetails;let i = index;" [value]="item.Unit"
               (click)="selectedVarientFromList(element,i)">
               {{item.Unit}}
@@ -130,8 +130,16 @@
     <ng-container matColumnDef="requiredQuantity">
       <th mat-header-cell *matHeaderCellDef><span style=" color: #008000;">Add Qty</span></th>
       <td mat-cell *matCellDef="let element">
-        <mat-form-field floatLabel="never" style="min-width:auto;max-width: 25px;">
+        <!-- <mat-form-field floatLabel="never" style="min-width:auto;max-width: 25px;">
           <input matInput placeholder="Quantity" [(ngModel)]="element.mappingid" autocomplete="off">
+        </mat-form-field> -->
+        <mat-form-field style="min-width:auto;max-width: 40px;">
+          <mat-select placeholder="Quantity">
+            <mat-option *ngFor="let item of quantityList;" [value]="item.title"
+              (click)="selectedQuantityFromList(item)">
+              {{item.title}}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
 
       </td>
@@ -140,7 +148,6 @@
     <ng-container matColumnDef="add">
       <th mat-header-cell *matHeaderCellDef>Add</th>
       <td mat-cell *matCellDef="let element">
-
         <i class="fa fa-cart-plus fa-2x cart-icon" style="cursor: pointer;" aria-hidden="true"
           (click)="onQuantityChange(element,element.mappingid,i)"></i>
       </td>
