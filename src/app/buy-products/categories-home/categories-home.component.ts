@@ -87,6 +87,8 @@ export class CategoriesHomeComponent implements OnInit {
   pageSize = 15;
   collectionSize: any;
   countries: any;
+  isHomeDelivery: string;
+  homeDeliveryLimit: number;
   // page = 1;
   // pageSize = 4;
   // collectionSize = COUNTRIES.length;
@@ -113,9 +115,16 @@ export class CategoriesHomeComponent implements OnInit {
       this.responseVendorCode = this.vendorResponse.vendorcode;
       this.responseSellerId = this.vendorResponse.id;
       this.responseVendorName = this.vendorResponse.name;
+      this.isHomeDelivery = this.vendorResponse.homedelivery;
+      this.homeDeliveryLimit = Number(this.vendorResponse.homedeliverylimit);
+
+
       sessionStorage.setItem('sellerName', this.responseVendorName);
       sessionStorage.setItem('vendorId', this.responseVendorCode);
       sessionStorage.setItem('sellerId', this.responseSellerId);
+      sessionStorage.setItem('isHomeDelivery', this.isHomeDelivery);
+      sessionStorage.setItem('homeDeliveryLimit', this.homeDeliveryLimit.toString());
+
       this.parentId = '0';
       this.vendorId = sessionStorage.getItem('vendorId');
       this.emitterService.isValidateResponse.emit(true);

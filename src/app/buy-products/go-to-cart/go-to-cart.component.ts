@@ -120,6 +120,11 @@ export class GoToCartComponent implements OnInit {
   placeOrderResponse: any = [];
   disableCondition: boolean;
   updateResponse: any = [];
+
+  isHomeDelivery: string;
+  homeDeliveryLimit: number;
+
+
   constructor(
     public router: Router,
     public route: ActivatedRoute,
@@ -142,7 +147,6 @@ export class GoToCartComponent implements OnInit {
 
     this.emitterService.isAddressCreated.subscribe(value => {
       if (value) {
-        console.log('adddress not enetreed');
         this.getCartItems();
         // this.getAddressData();
         this.clearValues();
@@ -177,7 +181,7 @@ export class GoToCartComponent implements OnInit {
 
     this.emitterService.addedAddressData.subscribe(value => {
       if (value) {
-        console.log('added address response', value.addresses);
+
         this.addressData = value.addresses;
         if (this.addressData.length === 0 || this.addressData === undefined || this.addressData === null) {
           this.isAddressSelected = false;
@@ -286,7 +290,7 @@ export class GoToCartComponent implements OnInit {
     return;
   }
 
-  updateConfirm(){
+  updateConfirm() {
     this.message = 'Confirmed!';
     this.updateSingleQuantity(this.updateResponse);
     this.modalRef.hide();
@@ -322,7 +326,6 @@ export class GoToCartComponent implements OnInit {
     }
     else {
       this.dataSource.data.forEach((row) => {
-        console.log('seletced row in master toggle else', row);
         this.selection.select(row);
       });
     }
@@ -480,7 +483,7 @@ export class GoToCartComponent implements OnInit {
   selectedAddressFromList(response) {
 
     this.currentlySelectedAddress = response;
-    console.log('currentlySelectedAddress ***', this.currentlySelectedAddress);
+
     this.address.name = response.name;
     this.address.mobilenumber = response.mobilenumber;
     this.address.flatNo = response.flatNo;
@@ -643,26 +646,18 @@ export class GoToCartComponent implements OnInit {
 
   selectedDeliveryTypeFromList(response) {
     this.isDeliveryType = true;
-    console.log('delivery type ', this.purchaseProducts.DeliveryType);
+
   }
 
   selectedPaymentTermFromList(response) {
     this.ispaymentType = true;
-    console.log('selectedPaymentTermFromList type ', this.purchaseProducts.PaymentType);
   }
 
   selectedDeliveryTimeFromList(response) {
     this.isDeliveryTime = true;
     this.selectedTimeSlot = response.id;
-    console.log('selectedDeliveryTimeFromList', this.purchaseProducts.DeliveryTime);
   }
 
-  // getAddressData() {
-  //   this.buyProductsService.getAddressDataById(this.vendorId).subscribe(data => {
-  //     this.addressData = data;
-
-  //   });
-  // }
 
   placeOrder() {
     this.purchaseProducts.VendorCode = sessionStorage.getItem('vendorId');
@@ -703,15 +698,12 @@ export class GoToCartComponent implements OnInit {
     let userid = sessionStorage.getItem('customerId');
     let vendorCode = sessionStorage.getItem('vendorId');
     let selectedProductStorageArray = JSON.parse(sessionStorage.getItem('cart_items'));
-    console.log('cart items', selectedProductStorageArray);
-    console.log('required user ID', userid);
-    console.log('required vendorCode', vendorCode);
-    console.log('mobile no', this.mobileNo);
+
     let ProductStorageArray: any = [];
     ProductStorageArray = this.createProductArray(selectedProductStorageArray);
-    console.log('ProductStorageArray with custom Dta', ProductStorageArray);
+
     let formattedDeliveryDate = this.convertDateInYMD(this.purchaseProducts.DeliveryDate);
-    console.log('formattedDeliveryDate formattedDeliveryDate formattedDeliveryDate', formattedDeliveryDate);
+
 
     let placOrderObj = {
       deliverySlot: this.purchaseProducts.DeliveryTime,
@@ -739,7 +731,23 @@ export class GoToCartComponent implements OnInit {
       deliveredDate: "",
       cartDetails: ProductStorageArray
     }
-    console.log('placOrderObj', placOrderObj);
+
+    this.isHomeDelivery = sessionStorage.getItem('isHomeDelivery');
+    this.homeDeliveryLimit = Number(sessionStorage.getItem('homeDeliveryLimit'));
+    let homeDeliveryValueLimit = this.homeDeliveryLimit;
+    console.log('home delivery Limit', this.homeDeliveryLimit);
+    console.log('totalPayableAmount Limit', this.totalPayableAmount);
+
+    if (this.isHomeDelivery === 'N') {
+      this.toastr.error('Home Delivery Not Available For this Seller');
+      return;
+    }
+
+    if (this.totalPayableAmount <= this.homeDeliveryLimit) {
+      console.log('Home Delivery Amt ***');
+      this.toastr.error(`Home Delivery Is Available Above ${homeDeliveryValueLimit} Amount`);
+      return;
+    }
 
     if (this.purchaseProducts.OrderNo === null || this.purchaseProducts.OrderNo === undefined) {
       this.purchaseProducts.OrderNo = 'NULL';
@@ -786,7 +794,7 @@ export class GoToCartComponent implements OnInit {
     this.buyProductsService.placeOrderData(placOrderObj).subscribe(response => {
       this.placeOrderResponse = response;
       this.toastr.success('Your Order Is Placed');
-      console.log('IMP response', response);
+
       this.openDialog();
       sessionStorage.removeItem('cart_items');
       this.purchaseProducts.DeliveryDate = this.prevDeliveryDate;
@@ -798,7 +806,7 @@ export class GoToCartComponent implements OnInit {
   createProductArray(selectedProductStorageArray) {
     let arr: any = [];
     for (let i = 0; i < selectedProductStorageArray.length; i++) {
-      console.log(selectedProductStorageArray[i]);
+
       var itemsObj = {
         id: "0",
         cartid: "0",
@@ -818,8 +826,6 @@ export class GoToCartComponent implements OnInit {
   }
   goToCategories() {
     let shopName = sessionStorage.getItem('vendorName').toString();
-    // this.router.navigate(['buyProducts/categories']);
-    console.log('vendor name', shopName);
     this.router.navigate(['/buyProducts/categories'], { queryParams: { name: shopName } });
   }
 
@@ -891,12 +897,12 @@ export class GoToCartComponent implements OnInit {
 
   verifyUserData() {
     this.buyProductsService.verifyUserDetails(this.mobileNo).subscribe(response => {
-      console.log('response api user', response);
+
       this.verifyUserDetails = response;
       this.customerId = this.verifyUserDetails.customerId;
       sessionStorage.setItem('customerId', this.customerId);
       this.isMobileNumberEntered = true;
-      console.log('user response', this.verifyUserDetails.addresses.length);
+
       this.selectedAddressId = '';
       this.clearValues();
       this.addressData = [];
@@ -930,7 +936,7 @@ export class GoToCartComponent implements OnInit {
   }
 
   updateSingleQuantity(response) {
-    console.log('response', response);
+
     let inputValue = Number(response.RequiredQuantity);
     let availableQty = Number(response.Quantity);
     let productId = Number(response.productid);
@@ -950,11 +956,11 @@ export class GoToCartComponent implements OnInit {
         let cartItemResponse = JSON.parse(sessionStorage.getItem('cart_items'));
         for (let i = 0; i < cartItemResponse.length; i++) {
           if (Number(cartItemResponse[i].productid) === productId && Number(cartItemResponse[i].id) === id) {
-            console.log('update quantity cndn matched ');
+
             cartItemResponse[i].RequiredQuantity = inputValue.toString();
           }
         }
-        console.log('cart **', cartItemResponse);
+
         sessionStorage.removeItem('cart_items');
         sessionStorage.setItem('cart_items', JSON.stringify(cartItemResponse));
 
