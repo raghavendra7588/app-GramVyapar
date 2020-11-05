@@ -176,6 +176,7 @@ export class CategoriesHomeComponent implements OnInit {
     }
 
     this.refreshCountries();
+    
   }
 
   ngOnInit(): void {
@@ -186,6 +187,8 @@ export class CategoriesHomeComponent implements OnInit {
       { id: 3, title: 4 },
       { id: 4, title: 5 }
     ];
+
+    
   }
 
   totalProductsCalculation(arr) {
@@ -245,7 +248,6 @@ export class CategoriesHomeComponent implements OnInit {
   }
   onCategoriesClick(response) {
 
-    console.log(response);
     this.subCategoryId = response.id;
     this.getAllBrandsData();
   }
@@ -263,10 +265,10 @@ export class CategoriesHomeComponent implements OnInit {
       this.catchBrandArray = response;
       let customResponse = this.createCustomBrandsDataResponse(this.brandsData);
       this.brandsData = customResponse;
-      console.log('brandData', this.brandsData);
+
       this.tableData = this.brandsData;
       this.collectionSize = this.brandsData.length;
-      console.log('collectionsize', this.collectionSize);
+
       this.dataSource = new MatTableDataSource(this.brandsData);
       this.dataSource.paginator = this.paginator;
 
@@ -285,6 +287,7 @@ export class CategoriesHomeComponent implements OnInit {
     this.buyProductsService.getAllSubCategory(this.parentId, this.vendorId).subscribe(data => {
       this.subCategoryListData = data;
       this.parentId = '0';
+      // this.getAllSubCategoryData();
     });
   }
 
@@ -306,10 +309,9 @@ export class CategoriesHomeComponent implements OnInit {
   }
 
   selectedVarientFromList(response, i) {
-    console.log('resonse', response);
+
     this.availableQuantity = 'False';
     this.selectedIndex = i;
-    console.log('selectedIndex', this.selectedIndex);
     // document.getElementById("mrp" + response.productid).innerHTML = response.productDetails[i].MRP;
     document.getElementById("finalPrice" + response.productid).innerHTML = (Number(response.productDetails[i].FinalPrice)).toString();
     // document.getElementById("discount" + response.productid).innerHTML = response.productDetails[i].Discount;
@@ -351,7 +353,7 @@ export class CategoriesHomeComponent implements OnInit {
 
     if ("cart_items" in sessionStorage) {
       if (Number(this.purchaseProductArray[0].categoryid) != Number(response.categoryid)) {
-        this.toastr.error('Can not allowed to add more one categories product');
+        this.toastr.error('Two Different Category Products Can Not Be Ordered Together');
         return;
       }
 
@@ -359,8 +361,8 @@ export class CategoriesHomeComponent implements OnInit {
       console.log("");
     }
 
-    if (Number(this.selectedQuantity) > 0) {
-      console.log('this.selectedQuantity', this.selectedQuantity);
+    if (Number(quantity) > 0) {
+
       // this.catchResponse = this.pushProduct(this.purchaseProductArray, response, i);
       this.catchResponse = this.pushProduct(this.purchaseProductArray, response, this.selectedIndex);
       this.purchaseProductArray = this.catchResponse;
@@ -420,10 +422,6 @@ export class CategoriesHomeComponent implements OnInit {
 
     let sellerID = sessionStorage.getItem('sellerId');
     let vendorCode = sessionStorage.getItem('vendorId');
-    console.log('seller Id', sellerID);
-    console.log('vendorCode', vendorCode);
-    console.log('arr **', arr);
-    console.log('response **', response);
 
     if (j === undefined) {
       j = 0;
@@ -432,7 +430,7 @@ export class CategoriesHomeComponent implements OnInit {
     const index = arr.findIndex((o) => o.productid === response.productid && o.id === response.productDetails[j].id);
 
     if (index === -1) {                 //not exist
-
+      console.log('not exist');
 
       // arr.push({
       //   brandImageUrl: response.brandImageUrl, imgurl: response.imgurl, name: response.name,
@@ -452,7 +450,7 @@ export class CategoriesHomeComponent implements OnInit {
         FinalPrice: response.productDetails[j].FinalPrice,
         MRP: response.productDetails[j].MRP,
         Quantity: response.productDetails[j].Quantity,
-        RequiredQuantity: this.selectedQuantity,
+        RequiredQuantity: response.mappingid,
         categoryid: response.categoryid
         // id: "0",
         // cartid: "0",
@@ -465,7 +463,7 @@ export class CategoriesHomeComponent implements OnInit {
 
     } else {
 
-
+      console.log('exist');
       for (let i = 0; i < arr.length; i++) {
         if (arr[i].productid === response.productid && arr[i].id === response.productDetails[j].id) {
           // arr[i].RequiredQuantity = arr[i].RequiredQuantity + response.mappingid;
@@ -495,7 +493,6 @@ export class CategoriesHomeComponent implements OnInit {
 
 
   applyFilter() {
-    console.log('searchResult', this.searchResult);
     this.dataSource.filter = this.searchResult.trim().toLowerCase();
   }
 
@@ -550,7 +547,24 @@ export class CategoriesHomeComponent implements OnInit {
       this.dataSource = new MatTableDataSource(this.allSubCategoryData);
       this.dataSource.paginator = this.paginator;
     });
+    // console.log('received allSubCategoryData', this.allSubCategoryData);
+    // this.dataSource = new MatTableDataSource(this.allSubCategoryData);
+    // this.dataSource.paginator = this.paginator;
+  }
+  getAllSubCategoryData() {
+    this.brandId = "0";
+    this.SubCategoryId = "0";
+    this.selectedIndex = 0;
+    this.uniqueBrandNamesArray = [];
+    console.log('this.categoryId', this.categoryId);
+    console.log('this.vendorId', this.vendorId);
+    console.log('this.SubCategoryId', this.SubCategoryId);
+    console.log('this.brandId', this.brandId);
 
+    this.buyProductsService.getALLSubCaetgoryData(this.vendorId, this.categoryId, this.SubCategoryId, this.brandId).subscribe(response => {
+      this.allSubCategoryData = response;
+      console.log('allSubCategoryData', this.allSubCategoryData);
+    });
   }
 
   createCustomBrandsDataResponse(array) {
@@ -567,8 +581,10 @@ export class CategoriesHomeComponent implements OnInit {
       .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
   }
 
-  selectedQuantityFromList(product: any) {
-    console.log('product **', product);
+  selectedQuantityFromList(product: any, response: any) {
+
     this.selectedQuantity = Number(product.title);
+    response.mappingid = this.selectedQuantity.toString();
+    console.log('Quantity', response);
   }
 }

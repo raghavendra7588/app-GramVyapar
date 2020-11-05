@@ -136,7 +136,7 @@
         <mat-form-field style="min-width:auto;max-width: 40px;">
           <mat-select placeholder="Quantity">
             <mat-option *ngFor="let item of quantityList;" [value]="item.title"
-              (click)="selectedQuantityFromList(item)">
+              (click)="selectedQuantityFromList(item,element)">
               {{item.title}}
             </mat-option>
           </mat-select>
