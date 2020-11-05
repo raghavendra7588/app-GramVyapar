@@ -127,6 +127,8 @@ export class CategoriesHomeComponent implements OnInit {
       sessionStorage.setItem('sellerId', this.responseSellerId);
       sessionStorage.setItem('isHomeDelivery', this.isHomeDelivery);
       sessionStorage.setItem('homeDeliveryLimit', this.homeDeliveryLimit.toString());
+      sessionStorage.setItem('onlineYN',this.vendorResponse.onlineYN);
+      sessionStorage.setItem('creditYN',this.vendorResponse.creditYN);
 
       this.parentId = '0';
       this.vendorId = sessionStorage.getItem('vendorId');

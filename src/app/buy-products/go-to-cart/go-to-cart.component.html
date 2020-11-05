@@ -342,7 +342,7 @@
 
           <input matInput [matDatepicker]="picker1" autocomplete="off" [min]="minDate"
             [(ngModel)]="purchaseProducts.DeliveryDate" (dateInput)="addEvent('input', $event)"
-            (dateChange)="addEvent('change', $event)">
+            (dateChange)="addEvent('change', $event)" readonly>
           <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
           <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>

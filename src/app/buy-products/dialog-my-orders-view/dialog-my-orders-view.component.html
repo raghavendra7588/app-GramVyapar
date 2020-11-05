@@ -1,21 +1,21 @@
-
 <div class="container-fluid mt-3">
     <div class="row">
         <div class="col d-flex align-items-center justify-content-center">
-            <img src="http://203.112.144.38/uat_app-gramvyapar/assets/images/logo1.png" alt="image" class="img-responsive">
+            <img src="http://203.112.144.38/uat_app-gramvyapar/assets/images/logo1.png" alt="image"
+                class="img-responsive">
         </div>
 
     </div>
     <div class="row">
         <div class="col d-flex align-items-center justify-content-center">
-         <p style="color: #008000 ;" class="font-weight-bold mt-2">  Vendor Name :  {{sellerName}}</p>
+            <p style="color: #008000 ;" class="font-weight-bold mt-2"> Vendor Name : {{sellerName}}</p>
         </div>
-      
+
     </div>
     <div class="row">
         <div class="col d-flex align-items-center justify-content-center">
-            <p style="color:#FF8C00 ;" class="font-weight-bold mt-1"> Vendor Code :  {{vendorCode}}</p>
-         </div>
+            <p style="color:#FF8C00 ;" class="font-weight-bold mt-1"> Vendor Code : {{vendorCode}}</p>
+        </div>
     </div>
 
 
@@ -23,20 +23,20 @@
 <div class="container-fluid font-weight-bold">
     <div class="row">
         <div class="col-md-3 col-6 col-sm-3 ">
-            <h4 class="font-weight-bold">order NO : </h4>
-            <h4 class="font-weight-bold">{{orderNo | slice:-6 }}</h4>
+            <h4 class="font-weight-bold">order NO:<br>{{orderNo | slice:-6 }}</h4>
+            <!-- <h4 class="font-weight-bold">{{orderNo | slice:-6 }}</h4> -->
         </div>
         <div class="col-md-3 col-6 col-sm-3 font-weight-bold">
-            <h4 class="font-weight-bold">Delivery Date: </h4>
-            <h4 class="font-weight-bold">{{orderDate}}</h4>
+            <h4 class="font-weight-bold">Delivery Date:<br>{{orderDate}} </h4>
+            <!-- <h4 class="font-weight-bold">{{orderDate}}</h4> -->
         </div>
         <div class="col-md-3 col-6 col-sm-3 font-weight-bold">
-            <h4 class="font-weight-bold">Delivery Type : </h4>
-            <h4 class="font-weight-bold">{{deliveryType}}</h4>
+            <h4 class="font-weight-bold">Delivery Type:<br>{{deliveryType}} </h4>
+            <!-- <h4 class="font-weight-bold">{{deliveryType}}</h4> -->
         </div>
         <div class="col-md-3 col-6 col-sm-3 font-weight-bold">
-            <h4 class="font-weight-bold">Payment Type : </h4>
-            <h4 class="font-weight-bold">{{paymentType}}</h4>
+            <h4 class="font-weight-bold">Payment Type:<br>{{paymentType}}</h4>
+            <!-- <h4 class="font-weight-bold">{{paymentType}}</h4> -->
 
         </div>
 
@@ -58,20 +58,20 @@
 
     <div class="row">
         <div class="col-md-3 col-6 col-sm-3 ">
-            <h4 class="font-weight-bold">Total Items Ordered :</h4>
-            <h4 class="font-weight-bold">{{totalItemsOrdered}}</h4>
+            <h4 class="font-weight-bold">Items Ordered:<br>{{totalItemsOrdered}}</h4>
+            <!-- <h4 class="font-weight-bold">{{totalItemsOrdered}}</h4> -->
         </div>
         <div class="col-md-3 col-6 col-sm-3 font-weight-bold">
-            <h4 class="font-weight-bold">Total MRP : </h4>
-            <h4 class="font-weight-bold">{{totalMRP}}</h4>
+            <h4 class="font-weight-bold">Total Cost:<br>{{totalMRP}} </h4>
+            <!-- <h4 class="font-weight-bold">{{totalMRP}}</h4> -->
         </div>
         <div class="col-md-3 col-6 col-sm-3 font-weight-bold">
-            <h4 class="font-weight-bold">Total Discount : </h4>
-            <h4 class="font-weight-bold">{{totalDiscount}}</h4>
+            <h4 class="font-weight-bold">Total Discount:<br>{{totalDiscount}}</h4>
+            <!-- <h4 class="font-weight-bold">{{totalDiscount}}</h4> -->
         </div>
         <div class="col-md-3 col-6 col-sm-3 font-weight-bold">
-            <h4 class="font-weight-bold" style="color:blue;">Total Payable Amount :</h4>
-            <h4 class="font-weight-bold" style="color:blue;"> {{totalPayableAmount}}</h4>
+            <h4 class="font-weight-bold" style="color:blue;">Payable Amt:<br>{{totalPayableAmount}}</h4>
+            <!-- <h4 class="font-weight-bold" style="color:blue;"> {{totalPayableAmount}}</h4> -->
 
         </div>
 
@@ -100,12 +100,28 @@
             <p> {{formattedAddress}}</p>
 
         </div> -->
-    <div class="container-fluid text-center">
+        <mat-divider></mat-divider>
+    <div class="container-fluid text-center mt-1">
         <div class="row">
             <div class="col-md-12 col-sm-12 col-12">
-                <h4 class="font-weight-bold">{{customerName}} ({{mobilenumber}})</h4>
-                <h4 class="font-weight-bold"> {{formattedAddress}}</h4>
-                <h4 class="font-weight-bold">{{city}} {{state}}</h4>
+                <h4 class="font-weight-bold">Billing</h4>
+                <h4>{{customerName}} <br> ({{mobilenumber}}) <br> {{formattedAddress}}
+                    <br>{{city}}
+                    {{state}}</h4>
+                <!-- <h4 class="font-weight-bold"> {{formattedAddress}}</h4> -->
+                <!-- <h4 class="font-weight-bold">{{city}} {{state}}</h4> -->
+            </div>
+        </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="container-fluid text-center mt-1">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-12">
+                <h4 class="font-weight-bold">Shipping</h4>
+                <h4>{{shipping_name}} <br> ({{mobilenumber}})</h4>
+                <h4> {{shipping_flatNo}} {{shipping_society}} {{shipping_locality}}
+                    {{shipping_area}}</h4>
+                <h4>{{shipping_city}} {{shipping_state}}</h4>
             </div>
         </div>
     </div>
@@ -133,15 +149,16 @@
         </td>
     </ng-container>
 
-    <!-- <ng-container matColumnDef="MRP">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> MRP </th>
+    <ng-container matColumnDef="MRP">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+        <!-- <th mat-header-cell *matHeaderCellDef mat-sort-header> (Post Discount) </th> -->
         <td mat-cell *matCellDef="let element">
             <h5>
-                {{element.MRP}}
+                {{(element.MRP-element.Discount)  |number}}
             </h5>
 
         </td>
-    </ng-container> -->
+    </ng-container>
     <!-- 
     <ng-container matColumnDef="Discount">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Discount </th>
@@ -151,24 +168,27 @@
             </h5>
         </td>
     </ng-container> -->
-
-
-    <ng-container matColumnDef="finalPrice">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
-        <td mat-cell *matCellDef="let element; let i = index">
-
-            {{element.FinalPrice |number}}
-        </td>
-    </ng-container>
-
     <ng-container matColumnDef="QuantityOrdered">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Qty</th>
         <td mat-cell *matCellDef="let element">
             <h5>
                 {{element.QuantityOrdered |number}}
             </h5>
         </td>
     </ng-container>
+
+    <ng-container matColumnDef="finalPrice">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header><span class="font-weight-bold"
+                style="color: #008000">Total</span></th>
+        <td mat-cell *matCellDef="let element; let i = index">
+            <h5>
+                {{element.FinalPrice  |number}}
+            </h5>
+
+        </td>
+    </ng-container>
+
+
 
 
     <!-- <ng-container matColumnDef="requiredQuantity">
@@ -188,4 +208,4 @@
 
 <div mat-dialog-actions align="end">
     <button mat-raised-button mat-dialog-close color="warn">Close</button>
-  </div>
+</div>

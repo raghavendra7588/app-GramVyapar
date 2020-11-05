@@ -82,12 +82,12 @@
                 <button mat-raised-button color="primary" class="width-100" [disabled]="!addressForm.valid || !isPinCode">Continue With This
                     Address</button>
             </div> -->
-            <div class="col-md-4 mt-2 col-sm-12 col-6">
+            <div class="col-md-4 mt-2 col-sm-8 col-8">
                 <button mat-raised-button color="primary" class="width-100"
                     [disabled]="!addressForm.valid || !isPinCode || !isName || !isMobileNo" (click)="onSubmit()">Add New
                     Address</button>
             </div>
-            <div class="col-md-4 mt-2 col-sm-12 col-6">
+            <div class="col-md-4 mt-2 col-sm-4 col-4">
                 <button mat-raised-button class="width-100" (click)="closeDialog()">Close</button>
             </div>
         </div>
