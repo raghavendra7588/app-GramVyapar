@@ -56,8 +56,17 @@ export class DialogMyOrdersViewComponent implements OnInit {
   shipping_city: string;
   shipping_area: string;
   shipping_state: string;
+  shipping_mobileNo: string;
 
-
+  billing_name: string;
+  billing_flatNo: string;
+  billing_society: string;
+  billing_locality: string;
+  billing_pincode: string;
+  billing_city: string;
+  billing_area: string;
+  billing_state: string;
+  billing_mobileNo: string;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -70,28 +79,15 @@ export class DialogMyOrdersViewComponent implements OnInit {
     this.finalMyOrdersResponse = this.orderDataResponse.orderDetails;
     this.dataSource = new MatTableDataSource(this.finalMyOrdersResponse);
     this.dataSource.paginator = this.paginator;
-    // this.buyProductsService.getAllOrdersDataByPurchaseProductId(this.PurchaseProductId).subscribe(data => {
-    //   console.log('received data ******', data);
-    //   this.myOrdersData = data;
-    //   this.dataSource = new MatTableDataSource(this.myOrdersData);
 
-    this.formattedAddress = this.orderDataResponse.address.replace(/;/g, " ,");
-    // console.log("*******", this.formattedAddress);
-
-    this.customerName = this.orderDataResponse.customerName;
-    // console.log("*******", this.customerName);
-
-    this.mobilenumber = this.orderDataResponse.mobilenumber;
-    // console.log("*******", this.mobilenumber);
-
-    this.city = this.orderDataResponse.city;
-    this.state = this.orderDataResponse.state;
+    // this.formattedAddress = this.orderDataResponse.address.replace(/;/g, " ,");
+    // this.customerName = this.orderDataResponse.customerName;
+    // this.mobilenumber = this.orderDataResponse.mobilenumber;
+    // this.city = this.orderDataResponse.city;
+    // this.state = this.orderDataResponse.state;
 
     this.orderNo = this.orderDataResponse.orderid;
-    //   this.customerName = this.myOrdersData[0].customerName;
 
-    //   this.vendorName = this.myOrdersData[0].VendorName;
-    //   this.mobileNumber = this.myOrdersData[0].mobileNumber;
 
     this.paymentType = this.orderDataResponse.paymentType;
     this.orderDate = this.orderDataResponse.deliveryUpto;
@@ -99,11 +95,6 @@ export class DialogMyOrdersViewComponent implements OnInit {
     this.deliveryTime = this.orderDataResponse.deliverySlot;
     this.deliveryType = this.orderDataResponse.deliveryType;
 
-    //   this.houseNo = this.myOrdersData[0].houseNO;
-    //   this.landMark = this.myOrdersData[0].landmark;
-
-    //   this.area = this.myOrdersData[0].area;
-    //   this.city = this.myOrdersData[0].city;
     this.shipping_name = this.orderDataResponse.name;
     this.shipping_flatNo = this.orderDataResponse.flatNo;
     this.shipping_society = this.orderDataResponse.societyName;
@@ -111,6 +102,16 @@ export class DialogMyOrdersViewComponent implements OnInit {
     this.shipping_city = this.orderDataResponse.city;
     this.shipping_area = this.orderDataResponse.areaName;
     this.shipping_state = this.orderDataResponse.state;
+    this.shipping_mobileNo = this.orderDataResponse.shippingMobileNumber;
+
+    this.billing_name = this.orderDataResponse.billingName;
+    this.billing_flatNo = this.orderDataResponse.billingFlatNo;
+    this.billing_locality = this.orderDataResponse.billingLocality;
+    this.billing_society = this.orderDataResponse.billingSocietyName;
+    this.billing_area = this.orderDataResponse.billingAreaName;
+    this.billing_city = this.orderDataResponse.billingCity;
+    this.billing_state = this.orderDataResponse.billingState;
+    this.billing_mobileNo = this.orderDataResponse.billingMobileNumber;
 
 
 

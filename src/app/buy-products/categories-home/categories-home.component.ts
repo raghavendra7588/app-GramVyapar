@@ -117,7 +117,7 @@ export class CategoriesHomeComponent implements OnInit {
     this.buyProductsService.getVendorDetails(this.name).subscribe(response => {
 
       this.vendorResponse = response;
-      console.log('getVendorDetails', this.vendorResponse);
+      // console.log('getVendorDetails', this.vendorResponse);
       this.responseVendorCode = this.vendorResponse.vendorcode;
       this.responseSellerId = this.vendorResponse.id;
       this.responseVendorName = this.vendorResponse.name;
@@ -562,14 +562,14 @@ export class CategoriesHomeComponent implements OnInit {
     this.SubCategoryId = "0";
     this.selectedIndex = 0;
     this.uniqueBrandNamesArray = [];
-    console.log('this.categoryId', this.categoryId);
-    console.log('this.vendorId', this.vendorId);
-    console.log('this.SubCategoryId', this.SubCategoryId);
-    console.log('this.brandId', this.brandId);
+    // console.log('this.categoryId', this.categoryId);
+    // console.log('this.vendorId', this.vendorId);
+    // console.log('this.SubCategoryId', this.SubCategoryId);
+    // console.log('this.brandId', this.brandId);
 
     this.buyProductsService.getALLSubCaetgoryData(this.vendorId, this.categoryId, this.SubCategoryId, this.brandId).subscribe(response => {
       this.allSubCategoryData = response;
-      console.log('allSubCategoryData', this.allSubCategoryData);
+      // console.log('allSubCategoryData', this.allSubCategoryData);
     });
   }
 
