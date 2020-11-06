@@ -129,6 +129,7 @@ export class GoToCartComponent implements OnInit {
   selectedDeliveryType: string;
   totalOrder: number;
   prevTotalOrder: number;
+ 
 
   constructor(
     public router: Router,
@@ -666,7 +667,7 @@ export class GoToCartComponent implements OnInit {
   }
 
   selectedDeliveryTypeFromList(response) {
-    console.log(response);
+    // console.log(response);
     this.isDeliveryType = true;
     this.selectedDeliveryType = response.type;
     console.log('selectedDeliveryType', this.selectedDeliveryType);
@@ -767,7 +768,7 @@ export class GoToCartComponent implements OnInit {
       return;
     }
 
-
+    console.log('selectedDeliveryType', this.selectedDeliveryType);
 
     if (this.totalPayableAmount <= this.homeDeliveryLimit && this.selectedDeliveryType === "Home Delivery") {
       console.log('Home Delivery Amt ***');
@@ -944,7 +945,7 @@ export class GoToCartComponent implements OnInit {
 
   verifyUserData() {
     this.buyProductsService.verifyUserDetails(this.mobileNo).subscribe(response => {
-
+      sessionStorage.removeItem('totalOrder');
       this.verifyUserDetails = response;
       console.log('verifyUserDetails', this.verifyUserDetails);
       this.customerId = this.verifyUserDetails.customerId;
@@ -952,6 +953,14 @@ export class GoToCartComponent implements OnInit {
       this.isMobileNumberEntered = true;
       this.prevTotalOrder = Number(this.verifyUserDetails.TotalOrder);
       console.log('prevTotalOrder', this.prevTotalOrder);
+      if (this.prevTotalOrder === 0) {
+        console.log();
+      }
+      else {
+        sessionStorage.setItem('totalOrder', this.prevTotalOrder.toString());
+      }
+
+
 
       this.selectedAddressId = '';
       this.clearValues();
