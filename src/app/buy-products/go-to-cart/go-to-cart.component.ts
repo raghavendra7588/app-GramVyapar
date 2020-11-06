@@ -127,6 +127,8 @@ export class GoToCartComponent implements OnInit {
   creditYN: string;
   onlineYN: string;
   selectedDeliveryType: string;
+  totalOrder: number;
+  prevTotalOrder: number;
 
   constructor(
     public router: Router,
@@ -824,6 +826,10 @@ export class GoToCartComponent implements OnInit {
       this.purchaseProducts.DeliveryDate = this.prevDeliveryDate;
       this.emitterService.isProductIsAddedOrRemoved.emit(true);
       sessionStorage.setItem('isExisting', 'true');
+      sessionStorage.removeItem('totalOrder');
+      this.prevTotalOrder = Number(this.prevTotalOrder + 1);
+      console.log('prev total order', this.prevTotalOrder);
+      sessionStorage.setItem('totalOrder', this.prevTotalOrder.toString());
     });
 
   }
@@ -940,9 +946,12 @@ export class GoToCartComponent implements OnInit {
     this.buyProductsService.verifyUserDetails(this.mobileNo).subscribe(response => {
 
       this.verifyUserDetails = response;
+      console.log('verifyUserDetails', this.verifyUserDetails);
       this.customerId = this.verifyUserDetails.customerId;
       sessionStorage.setItem('customerId', this.customerId);
       this.isMobileNumberEntered = true;
+      this.prevTotalOrder = Number(this.verifyUserDetails.TotalOrder);
+      console.log('prevTotalOrder', this.prevTotalOrder);
 
       this.selectedAddressId = '';
       this.clearValues();
