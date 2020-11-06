@@ -129,7 +129,9 @@ export class GoToCartComponent implements OnInit {
   selectedDeliveryType: string;
   totalOrder: number;
   prevTotalOrder: number;
- 
+  isMobileNoValid: boolean = false;
+  mobileNoLength: number;
+
 
   constructor(
     public router: Router,
@@ -1028,6 +1030,22 @@ export class GoToCartComponent implements OnInit {
         this.emitterService.isProductIsAddedOrRemoved.emit(true);
 
       }
+    }
+  }
+
+
+
+
+  mobileNoCount() {
+    console.log("called");
+    this.mobileNoLength = Number(this.mobileNo.length);
+    console.log('mobileNoLength', this.mobileNoLength);
+
+    if (this.mobileNoLength === 10) {
+      this.isMobileNoValid = true;
+    }
+    else {
+      this.isMobileNoValid = false;
     }
   }
 }
