@@ -89,7 +89,8 @@ export class MyOrdersComponent implements OnInit {
         this.ordersData = response;
         console.log('this.ordersData total order count', this.ordersData.TotalOrder);
         this.dataSource = new MatTableDataSource(this.ordersData);
-        this.dataSource.paginator = this.paginator;
+        setTimeout(() => this.dataSource.paginator = this.paginator);
+        // this.dataSource.paginator = this.paginator;
         this.isDisplay = true;
       });
     }

@@ -78,7 +78,8 @@ export class DialogMyOrdersViewComponent implements OnInit {
     console.log('order response', this.orderDataResponse);
     this.finalMyOrdersResponse = this.orderDataResponse.orderDetails;
     this.dataSource = new MatTableDataSource(this.finalMyOrdersResponse);
-    this.dataSource.paginator = this.paginator;
+    setTimeout(() => this.dataSource.paginator = this.paginator);
+    // this.dataSource.paginator = this.paginator;
 
     // this.formattedAddress = this.orderDataResponse.address.replace(/;/g, " ,");
     // this.customerName = this.orderDataResponse.customerName;

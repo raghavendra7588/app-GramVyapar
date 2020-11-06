@@ -104,7 +104,7 @@
         <td mat-cell *matCellDef="let element">
           <i class="fa fa-cart-plus fa-2x cart-icon" style="cursor: pointer;" aria-hidden="true"
             (click)="openUpdateModal(updatetemplate,element)"></i>
-            <!-- (click)="updateSingleQuantity(element)"  -->
+          <!-- (click)="updateSingleQuantity(element)"  -->
         </td>
       </ng-container>
       <ng-container matColumnDef="delete">
@@ -132,11 +132,12 @@
       <div class="col-md-3 col-6 col-sm-2">
         <mat-form-field style="width: 100%;">
           <input matInput placeholder="Mobile Number" autocomplete="off" [(ngModel)]="mobileNo" appNumber
-            [maxLength]="maxLengthPhone" />
+            (input)="mobileNoCount()" [maxLength]="maxLengthPhone" />
         </mat-form-field>
       </div>
       <div class="col-md-2 col-6 col-sm-2">
-        <button mat-raised-button color="primary" class="width-100 mt-2" (click)="verifyUserData()">Proceed
+        <button mat-raised-button color="primary" class="width-100 mt-2" (click)="verifyUserData()"
+          [disabled]="!isMobileNoValid">Proceed
         </button>
       </div>
 
@@ -348,7 +349,7 @@
         </mat-form-field>
       </div>
       <div class="col-md-3 col-sm-3 col-6">
-        <p style="text-align: left;width: 100%;" class="font-weight-bold" >Delivery Time</p>
+        <p style="text-align: left;width: 100%;" class="font-weight-bold">Delivery Time</p>
         <mat-form-field style="width: 100% !important;">
           <mat-select [(ngModel)]="purchaseProducts.DeliveryTime">
             <mat-option *ngFor="let item of deliveryTime;" [value]="item.type"
