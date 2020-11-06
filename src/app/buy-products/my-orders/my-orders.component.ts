@@ -38,6 +38,7 @@ export class MyOrdersComponent implements OnInit {
   orderDataResponse: any = [];
   searchProducts: any;
   isDisplay: boolean;
+  totalOrder: number;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -62,48 +63,45 @@ export class MyOrdersComponent implements OnInit {
       this.userId = sessionStorage.getItem('customerId');
     }
 
-    // this.vendorName = sessionStorage.getItem('sellerName');
     this.vendorArray = [{ id: 0, name: this.vendorName }];
     this.languageCode = "en";
-    // this.userId = sessionStorage.getItem('customerId');
 
-    if ("isExisting" in sessionStorage) {
-      console.log('isExisting and customerId if cndn');
-      this.isDisplay = true;
-    } else {
-      console.log('isExisting and customerId else cndn');
+    this.totalOrder = Number(sessionStorage.getItem('totalOrder'));
+    console.log('total Orders ', this.totalOrder);
+
+
+    // if (this.totalOrder === 0) {
+    //   this.isDisplay = false;
+    // }
+    // else {
+    //   this.buyProductsService.getMyOrdersData(this.languageCode, this.userId).subscribe(response => {
+    //     console.log('my Orders data', response);
+    //     this.ordersData = response;
+    //     console.log('this.ordersData total order count', this.ordersData.TotalOrder);
+    //     this.dataSource = new MatTableDataSource(this.ordersData);
+    //     this.dataSource.paginator = this.paginator;
+    //     this.isDisplay = true;
+    //   });
+    // }
+    if ("totalOrder" in sessionStorage) {
+      this.buyProductsService.getMyOrdersData(this.languageCode, this.userId).subscribe(response => {
+        console.log('my Orders data', response);
+        this.ordersData = response;
+        console.log('this.ordersData total order count', this.ordersData.TotalOrder);
+        this.dataSource = new MatTableDataSource(this.ordersData);
+        this.dataSource.paginator = this.paginator;
+        this.isDisplay = true;
+      });
+    }
+    else {
       this.isDisplay = false;
     }
 
-    this.buyProductsService.getMyOrdersData(this.languageCode, this.userId).subscribe(response => {
-      console.log('my Orders data', response);
-      this.ordersData = response;
 
 
-      this.dataSource = new MatTableDataSource(this.ordersData);
-      this.dataSource.paginator = this.paginator;
-      // this.isDisplay = true;
-
-      let isOrderDetailsPresent = this.ordersData.hasOwnProperty('orderDetails');
-      console.log('isOrderDetailsPresent', isOrderDetailsPresent);
-      // if ("isExisting" in sessionStorage  || this.ordersData != null || this.ordersData != undefined) {
-      if (this.ordersData.orderDetails != null || this.ordersData.orderDetails != undefined || this.ordersData.orderDetails === [] || (this.ordersData.hasOwnProperty('orderDetails')) === false) {
-      // if (this.ordersData.orderDetails != null || this.ordersData.orderDetails != undefined || isOrderDetailsPresent === false) {
-        console.log('isExisting and customerId if cndn');
-        this.isDisplay = false;
-        return;
-      }
-      else {
-        console.log('has own property if ');
-        this.isDisplay = true;
-        return;
-      }
-
-    });
 
 
-    
- 
+
 
   }
   searchProductsFromList() {

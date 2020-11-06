@@ -92,6 +92,7 @@ export class CategoriesHomeComponent implements OnInit {
 
   quantityList: any = [];
   selectedQuantity: number;
+  totalOrder: string;
   // page = 1;
   // pageSize = 4;
   // collectionSize = COUNTRIES.length;
@@ -114,21 +115,24 @@ export class CategoriesHomeComponent implements OnInit {
 
     sessionStorage.setItem('vendorName', this.name);
     this.buyProductsService.getVendorDetails(this.name).subscribe(response => {
+
       this.vendorResponse = response;
+      console.log('getVendorDetails', this.vendorResponse);
       this.responseVendorCode = this.vendorResponse.vendorcode;
       this.responseSellerId = this.vendorResponse.id;
       this.responseVendorName = this.vendorResponse.name;
       this.isHomeDelivery = this.vendorResponse.homedelivery;
       this.homeDeliveryLimit = Number(this.vendorResponse.homedeliverylimit);
-
+      // this.totalOrder = "0";
 
       sessionStorage.setItem('sellerName', this.responseVendorName);
       sessionStorage.setItem('vendorId', this.responseVendorCode);
       sessionStorage.setItem('sellerId', this.responseSellerId);
       sessionStorage.setItem('isHomeDelivery', this.isHomeDelivery);
       sessionStorage.setItem('homeDeliveryLimit', this.homeDeliveryLimit.toString());
-      sessionStorage.setItem('onlineYN',this.vendorResponse.onlineYN);
-      sessionStorage.setItem('creditYN',this.vendorResponse.creditYN);
+      sessionStorage.setItem('onlineYN', this.vendorResponse.onlineYN);
+      sessionStorage.setItem('creditYN', this.vendorResponse.creditYN);
+      // sessionStorage.setItem('totalOrder', this.totalOrder);
 
       this.parentId = '0';
       this.vendorId = sessionStorage.getItem('vendorId');
@@ -178,7 +182,7 @@ export class CategoriesHomeComponent implements OnInit {
     }
 
     this.refreshCountries();
-    
+
   }
 
   ngOnInit(): void {
@@ -190,7 +194,7 @@ export class CategoriesHomeComponent implements OnInit {
       { id: 4, title: 5 }
     ];
 
-    
+
   }
 
   totalProductsCalculation(arr) {
