@@ -124,6 +124,9 @@ export class GoToCartComponent implements OnInit {
   isHomeDelivery: string;
   homeDeliveryLimit: number;
 
+  creditYN: string;
+  onlineYN: string;
+  selectedDeliveryType: string;
 
   constructor(
     public router: Router,
@@ -217,6 +220,12 @@ export class GoToCartComponent implements OnInit {
 
 
 
+    this.creditYN = sessionStorage.getItem('creditYN');
+    this.onlineYN = sessionStorage.getItem('onlineYN');
+
+    console.log('online YN', this.onlineYN);
+    console.log('creditYN YN', this.creditYN);
+
 
 
     this.vendorId = sessionStorage.getItem('vendorId');
@@ -233,11 +242,21 @@ export class GoToCartComponent implements OnInit {
       { id: 1, type: 'Home Delivery' }
     ];
 
-    this.paymentType = [
-      { id: 0, type: 'Cash' },
-      { id: 1, type: 'Credit' },
-      // { id: 2, type: 'Online' }
-    ];
+
+    if (this.creditYN === "Y") {
+      this.paymentType = [
+        { id: 0, type: 'Cash' },
+        { id: 1, type: 'Credit' },
+        // { id: 2, type: 'Online' }
+      ];
+
+    }
+    else {
+      this.paymentType = [
+        { id: 0, type: 'Cash' }
+      ];
+    }
+
 
     this.deliveryTime = [
       { id: 0, type: '9.00 AM - 1.00PM', minHour: 9, maxHour: 13 },
@@ -645,7 +664,10 @@ export class GoToCartComponent implements OnInit {
   }
 
   selectedDeliveryTypeFromList(response) {
+    console.log(response);
     this.isDeliveryType = true;
+    this.selectedDeliveryType = response.type;
+    console.log('selectedDeliveryType', this.selectedDeliveryType);
 
   }
 
@@ -743,7 +765,9 @@ export class GoToCartComponent implements OnInit {
       return;
     }
 
-    if (this.totalPayableAmount <= this.homeDeliveryLimit) {
+
+
+    if (this.totalPayableAmount <= this.homeDeliveryLimit && this.selectedDeliveryType === "Home Delivery") {
       console.log('Home Delivery Amt ***');
       this.toastr.error(`Home Delivery Is Available Above ${homeDeliveryValueLimit} Amount`);
       return;
@@ -779,7 +803,7 @@ export class GoToCartComponent implements OnInit {
     this.purchaseProducts.items = JSON.parse(sessionStorage.getItem('cart_items'));
     this.purchaseProducts.VendorName = sessionStorage.getItem('sellerName');
 
-
+    console.log('this.purchaseProducts', this.purchaseProducts);
     // this.buyProductsService.savePurchaseProduct(this.purchaseProducts).subscribe(data => {
 
     //   this.ProductsResponse = data;
@@ -805,7 +829,24 @@ export class GoToCartComponent implements OnInit {
   }
   createProductArray(selectedProductStorageArray) {
     let arr: any = [];
+
+    let totalFinalPrice = 0;
+
+
+
     for (let i = 0; i < selectedProductStorageArray.length; i++) {
+      console.log('selectedProductStorageArray', selectedProductStorageArray[i]);
+      // totalFinalPrice = (selectedProductStorageArray[i].MRP * selectedProductStorageArray[i].RequiredQuantity) - (selectedProductStorageArray[i].Discount * selectedProductStorageArray[i].RequiredQuantity);
+
+      // totalFinalPrice = ((selectedProductStorageArray[i].MRP - selectedProductStorageArray[i].Discount) * selectedProductStorageArray[i].RequiredQuantity);
+      totalFinalPrice = ((selectedProductStorageArray[i].MRP - selectedProductStorageArray[i].Discount) * selectedProductStorageArray[i].RequiredQuantity);
+
+      console.log('final price', totalFinalPrice);
+
+      // (12 * 2) - (2 * 2)                       
+      // ((12-2) * 2)
+
+
 
       var itemsObj = {
         id: "0",
@@ -814,7 +855,7 @@ export class GoToCartComponent implements OnInit {
         mrp: selectedProductStorageArray[i].MRP,
         quantity: selectedProductStorageArray[i].RequiredQuantity,
         discount: selectedProductStorageArray[i].Discount,
-        finalPrice: selectedProductStorageArray[i].FinalPrice
+        finalPrice: totalFinalPrice
       }
       arr.push(itemsObj);
     }

@@ -79,10 +79,12 @@ mat-header-cell:nth-child(5) {
     word-wrap: break-word;
     text-align: left;
     max-width: 60px !important;
+    padding: 4px;
 }
 .mat-column-brandname {
     word-wrap: break-word;
     max-width: 60px !important;
+    padding: 4px;
 }
 
 .mat-column-requiredQuantity {

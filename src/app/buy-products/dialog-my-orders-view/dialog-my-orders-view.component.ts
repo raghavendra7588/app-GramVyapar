@@ -15,11 +15,12 @@ export class DialogMyOrdersViewComponent implements OnInit {
   PurchaseProductId: number;
   // displayedColumns: string[] = ['name', 'brandName', 'quantity', 'mrp', 'discount', 'finalPrice', 'requiredQuantity'];
 
-  displayedColumns: string[] = ['PrdName', 'ProductName', 'finalPrice', 'QuantityOrdered'];
+  displayedColumns: string[] = ['PrdName', 'ProductName', 'MRP', 'QuantityOrdered', 'finalPrice',];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   myOrdersData: any = [];
   myOrdersResponse: any;
+  finalMyOrdersResponse: any = [];
   dataSource: any;
   totalMRP = 0;
   totalDiscount = 0;
@@ -46,6 +47,18 @@ export class DialogMyOrdersViewComponent implements OnInit {
   sellerName: any;
   vendorCode: any;
 
+
+  shipping_name: string;
+  shipping_flatNo: string;
+  shipping_society: string;
+  shipping_locality: string;
+  shipping_pincode: string;
+  shipping_city: string;
+  shipping_area: string;
+  shipping_state: string;
+
+
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<DialogMyOrdersViewComponent>,
@@ -54,7 +67,9 @@ export class DialogMyOrdersViewComponent implements OnInit {
 
     this.orderDataResponse = data;
     console.log('order response', this.orderDataResponse);
-    this.dataSource = new MatTableDataSource(this.orderDataResponse.orderDetails);
+    this.finalMyOrdersResponse = this.orderDataResponse.orderDetails;
+    this.dataSource = new MatTableDataSource(this.finalMyOrdersResponse);
+    this.dataSource.paginator = this.paginator;
     // this.buyProductsService.getAllOrdersDataByPurchaseProductId(this.PurchaseProductId).subscribe(data => {
     //   console.log('received data ******', data);
     //   this.myOrdersData = data;
@@ -89,6 +104,15 @@ export class DialogMyOrdersViewComponent implements OnInit {
 
     //   this.area = this.myOrdersData[0].area;
     //   this.city = this.myOrdersData[0].city;
+    this.shipping_name = this.orderDataResponse.name;
+    this.shipping_flatNo = this.orderDataResponse.flatNo;
+    this.shipping_society = this.orderDataResponse.societyName;
+    this.shipping_locality = this.orderDataResponse.locality;
+    this.shipping_city = this.orderDataResponse.city;
+    this.shipping_area = this.orderDataResponse.areaName;
+    this.shipping_state = this.orderDataResponse.state;
+
+
 
     this.payableCalculation(this.orderDataResponse.orderDetails);
     //   this.dataSource.paginator = this.paginator;

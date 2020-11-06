@@ -136,7 +136,7 @@
         <mat-form-field style="min-width:auto;max-width: 40px;">
           <mat-select placeholder="Quantity">
             <mat-option *ngFor="let item of quantityList;" [value]="item.title"
-              (click)="selectedQuantityFromList(item)">
+              (click)="selectedQuantityFromList(item,element)">
               {{item.title}}
             </mat-option>
           </mat-select>
@@ -157,5 +157,5 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+  <mat-paginator [pageSizeOptions]="[50, 100, 150]" showFirstLastButtons></mat-paginator>
 </div>

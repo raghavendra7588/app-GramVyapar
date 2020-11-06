@@ -32,15 +32,16 @@ table {
     text-align: center;
 }
    
+.mat-column-PrdName {
+    word-wrap: break-word;
+    text-align: left;
+    max-width: 60px !important;
+    padding: 4px;
+}
 
-    .mat-column-PrdName {
-        word-wrap: break-word;
-        text-align: left;
-        max-width: 60px !important;
-    }
-
-    .mat-column-ProductName {
-        word-wrap: break-word;
-        text-align: left;
-        max-width: 60px !important;
-    }
+.mat-column-ProductName {
+    word-wrap: break-word;
+    text-align: left;
+    max-width: 60px !important;
+    padding: 4px;
+}

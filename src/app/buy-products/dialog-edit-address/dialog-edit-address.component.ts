@@ -85,31 +85,31 @@ export class DialogEditAddressComponent implements OnInit {
 
   onSubmit() {
     if (this.address.name === null || this.address.name === undefined || this.address.name === '') {
-      this.address.name = 'NULL';
+      this.address.name = '';
     }
     if (this.address.mobilenumber === null || this.address.mobilenumber === undefined) {
-      this.address.mobilenumber = "NULL";
+      this.address.mobilenumber = "";
     }
     if (this.address.flatNo === null || this.address.flatNo === undefined || this.address.flatNo === '') {
-      this.address.flatNo = 'NULL';
+      this.address.flatNo = '';
     }
     if (this.address.societyName === null || this.address.societyName === undefined || this.address.societyName === '') {
-      this.address.societyName = 'NULL';
+      this.address.societyName = '';
     }
     if (this.address.locality === null || this.address.locality === undefined || this.address.locality === '') {
-      this.address.locality = 'NULL';
+      this.address.locality = '';
     }
     if (this.address.pincode === null || this.address.pincode === undefined) {
-      this.address.pincode = "NULL";
+      this.address.pincode = "";
     }
     if (this.address.city === null || this.address.city === undefined || this.address.city === '') {
-      this.address.city = 'NULL';
+      this.address.city = '';
     }
     if (this.address.areaName === null || this.address.areaName === undefined || this.address.areaName === '') {
-      this.address.areaName = 'NULL';
+      this.address.areaName = '';
     }
     if (this.address.state === null || this.address.state === undefined || this.address.state === '') {
-      this.address.state = 'NULL';
+      this.address.state = '';
     }
     this.address.id = this.addressData.id;
     this.address.userId = sessionStorage.getItem('customerId').toString();

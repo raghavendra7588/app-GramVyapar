@@ -48,11 +48,8 @@ export class MyOrdersComponent implements OnInit {
     public router: Router,
     public route: ActivatedRoute
   ) {
-    if ("isExisting" in sessionStorage) {
-      this.isDisplay = true;
-    } else {
-      this.isDisplay = false;
-    }
+
+
 
   }
 
@@ -70,14 +67,43 @@ export class MyOrdersComponent implements OnInit {
     this.languageCode = "en";
     // this.userId = sessionStorage.getItem('customerId');
 
-    console.log('user id', this.userId);
+    if ("isExisting" in sessionStorage) {
+      console.log('isExisting and customerId if cndn');
+      this.isDisplay = true;
+    } else {
+      console.log('isExisting and customerId else cndn');
+      this.isDisplay = false;
+    }
+
     this.buyProductsService.getMyOrdersData(this.languageCode, this.userId).subscribe(response => {
       console.log('my Orders data', response);
       this.ordersData = response;
+
+
       this.dataSource = new MatTableDataSource(this.ordersData);
       this.dataSource.paginator = this.paginator;
+      // this.isDisplay = true;
+
+      let isOrderDetailsPresent = this.ordersData.hasOwnProperty('orderDetails');
+      console.log('isOrderDetailsPresent', isOrderDetailsPresent);
+      // if ("isExisting" in sessionStorage  || this.ordersData != null || this.ordersData != undefined) {
+      if (this.ordersData.orderDetails != null || this.ordersData.orderDetails != undefined || this.ordersData.orderDetails === [] || (this.ordersData.hasOwnProperty('orderDetails')) === false) {
+      // if (this.ordersData.orderDetails != null || this.ordersData.orderDetails != undefined || isOrderDetailsPresent === false) {
+        console.log('isExisting and customerId if cndn');
+        this.isDisplay = false;
+        return;
+      }
+      else {
+        console.log('has own property if ');
+        this.isDisplay = true;
+        return;
+      }
+
     });
 
+
+    
+ 
 
   }
   searchProductsFromList() {
