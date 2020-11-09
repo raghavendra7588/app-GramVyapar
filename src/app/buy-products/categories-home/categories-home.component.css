@@ -72,10 +72,10 @@ mat-header-cell:nth-child(5) {
     min-width: 104px !important;
 } */
 
-.mat-column-finalPrice {
+/* .mat-column-finalPrice {
    text-align: center;
-}
-.mat-column-name {
+} */
+/* .mat-column-name {
     word-wrap: break-word;
     text-align: left;
     max-width: 60px !important;
@@ -85,9 +85,12 @@ mat-header-cell:nth-child(5) {
     word-wrap: break-word;
     max-width: 60px !important;
     padding: 4px;
-}
+} */
 
-.mat-column-requiredQuantity {
+
+
+
+/* .mat-column-requiredQuantity {
     text-align: right;
 }
 
@@ -96,10 +99,33 @@ mat-header-cell:nth-child(5) {
 }
 
 
-.cart-icon {
-    color: #008000;
-  }
 
   .happy{
 max-width: 50px !important;
+  } */
+
+
+
+  /* table {
+    border-collapse: collapse;
+  }
+  table,
+  tr,
+  th,
+  td {
+    border: 1px solid #000;
+  }
+
+  th {
+    padding: 1ex;
+    background: #ccc;
+  }
+  td {
+    padding: 1ex;
+  }
+  .divide td {
+    border-top: 3px solid;
+  } */
+  .cart-icon {
+    color: #008000;
   }

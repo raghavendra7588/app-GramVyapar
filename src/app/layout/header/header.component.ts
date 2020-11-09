@@ -14,15 +14,20 @@ export class HeaderComponent implements OnInit {
   vendorCode: string;
   productCount: number = 0;
   cart_items: any = [];
+  isFirstTime: boolean;
+  vendorContactNo: string;
+
   constructor(
     public router: Router,
     public emitterService: EmitterService
   ) {
-    // sessionStorage.setItem('isExisting', "false");
-    // this.isExisting = sessionStorage.getItem('isExisting');
-    // console.log('isExisting', this.isExisting);
-    // this.sellerName = sessionStorage.getItem('sellerName');
-    // this.vendorCode = sessionStorage.getItem('vendorId');
+
+    if ("isFirstTime" in sessionStorage) {
+      this.isFirstTime = false;
+    }
+    else {
+      this.isFirstTime = true;
+    }
 
     this.emitterService.isValidateResponse.subscribe(response => {
       if (response) {
@@ -32,9 +37,7 @@ export class HeaderComponent implements OnInit {
     });
     this.emitterService.isProductIsAddedOrRemoved.subscribe(response => {
       if (response) {
-        // this.cart_items = JSON.parse(sessionStorage.getItem('cart_items'));
-        // this.productCount = this.calculateProductCount(this.cart_items);
-        // console.log('product count', this.productCount);
+
         if ("cart_items" in sessionStorage) {
           this.cart_items = JSON.parse(sessionStorage.getItem('cart_items'));
           this.productCount = this.calculateProductCount(this.cart_items);
@@ -45,14 +48,7 @@ export class HeaderComponent implements OnInit {
       }
     });
 
-    // if (this.cart_items.length === 0 || this.cart_items === undefined || this.cart_items === null || this.cart_items === []) {
-    //   this.productCount = 0;
-    // }
-    // else{
-    //   this.cart_items = JSON.parse(sessionStorage.getItem('cart_items'));
-    //   this.productCount = this.calculateProductCount(this.cart_items);
-    //   console.log('product count', this.productCount);
-    // }
+
 
     if ("cart_items" in sessionStorage) {
       this.cart_items = JSON.parse(sessionStorage.getItem('cart_items'));
@@ -62,7 +58,14 @@ export class HeaderComponent implements OnInit {
       this.productCount = 0;
     }
 
-
+    this.emitterService.isVendorContactNumber.subscribe(value => {
+      if (value) {
+        this.vendorContactNo = sessionStorage.getItem('vendorContactNo');
+        console.log('this.vendorContactNo', this.vendorContactNo);
+      }
+    });
+    this.vendorContactNo = sessionStorage.getItem('vendorContactNo');
+    console.log('this.vendorContactNo', this.vendorContactNo);
   }
 
   ngOnInit(): void {
@@ -104,5 +107,11 @@ export class HeaderComponent implements OnInit {
       sum += Number(item.RequiredQuantity);
     });
     return sum;
+  }
+
+  continueShopping() {
+    this.isFirstTime = false;
+    sessionStorage.setItem('isFirstTime', this.isFirstTime.toString());
+    this.emitterService.isFirstTimeUser.emit(true);
   }
 }

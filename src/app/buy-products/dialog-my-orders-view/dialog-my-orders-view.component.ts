@@ -13,7 +13,6 @@ import { AnonymousSubject } from 'rxjs/internal/Subject';
 export class DialogMyOrdersViewComponent implements OnInit {
 
   PurchaseProductId: number;
-  // displayedColumns: string[] = ['name', 'brandName', 'quantity', 'mrp', 'discount', 'finalPrice', 'requiredQuantity'];
 
   displayedColumns: string[] = ['PrdName', 'ProductName', 'MRP', 'QuantityOrdered', 'finalPrice',];
 
@@ -68,6 +67,8 @@ export class DialogMyOrdersViewComponent implements OnInit {
   billing_state: string;
   billing_mobileNo: string;
 
+  vendorContactNo: string;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<DialogMyOrdersViewComponent>,
@@ -79,13 +80,7 @@ export class DialogMyOrdersViewComponent implements OnInit {
     this.finalMyOrdersResponse = this.orderDataResponse.orderDetails;
     this.dataSource = new MatTableDataSource(this.finalMyOrdersResponse);
     setTimeout(() => this.dataSource.paginator = this.paginator);
-    // this.dataSource.paginator = this.paginator;
 
-    // this.formattedAddress = this.orderDataResponse.address.replace(/;/g, " ,");
-    // this.customerName = this.orderDataResponse.customerName;
-    // this.mobilenumber = this.orderDataResponse.mobilenumber;
-    // this.city = this.orderDataResponse.city;
-    // this.state = this.orderDataResponse.state;
 
     this.orderNo = this.orderDataResponse.orderid;
 
@@ -117,9 +112,9 @@ export class DialogMyOrdersViewComponent implements OnInit {
 
 
     this.payableCalculation(this.orderDataResponse.orderDetails);
-    //   this.dataSource.paginator = this.paginator;
-
-    // });
+    // this.vendorContactNo = "7588641864";
+    this.vendorContactNo = sessionStorage.getItem('vendorContactNo');
+    console.log('this.vendorContactNo', this.vendorContactNo);
   }
 
 
@@ -137,7 +132,6 @@ export class DialogMyOrdersViewComponent implements OnInit {
       this.totalMRP += Number(arr[i].MRP) * Number(arr[i].QuantityOrdered);
       this.totalDiscount += Number(arr[i].Discount) * Number(arr[i].QuantityOrdered);
       this.totalItemsOrdered += Number(arr[i].QuantityOrdered);
-      // this.totalFinalPrice += arr[i].FinalPrice;
     }
     this.totalPayableAmount = this.totalMRP - this.totalDiscount;
   }

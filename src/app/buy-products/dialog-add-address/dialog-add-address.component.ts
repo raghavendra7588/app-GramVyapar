@@ -54,7 +54,6 @@ export class DialogAddAddressComponent implements OnInit {
       this.isMobileNo = true;
     }
 
-    console.log('got address data ***', this.addressData);
     this.assignAddressData();
 
   }
@@ -62,7 +61,6 @@ export class DialogAddAddressComponent implements OnInit {
   ngOnInit(): void {
     this.address.mobilenumber = this.addressData.mobilenumber;
     this.isMobileNo = true;
-    // this.address.sellerId = Number(sessionStorage.getItem('sellerId'));
   }
 
   onSubmit() {

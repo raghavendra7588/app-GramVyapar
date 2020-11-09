@@ -1,161 +1,113 @@
-<div class="container-fluid">
-  <div class="row justify-content-center">
-    <div class="col-md-3 mt-2">
-      <mat-form-field style="width: 100% !important;">
-        <mat-select placeholder="Category List" [(ngModel)]="selectedCategory">
-          <mat-option *ngFor="let item of categoryListData;" [value]="item.id" (click)="selectedCategoryFromList(item)">
-            {{item.name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <div class="col-md-3 mt-2">
-      <mat-form-field style="width: 100% !important;">
-        <mat-select placeholder="Sub Category List" [(ngModel)]="selectedSubCategory">
-          <mat-option value="all" (click)="onSubCategorySelectAll()">All</mat-option>
-          <mat-option *ngFor="let item of subCategoryListData;" [value]="item.id"
-            (click)="selectedSubCategoryFromList(item)">
-            {{item.name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <div class="col-md-3 mt-2">
-      <mat-form-field style="width: 100% !important;">
-        <mat-select placeholder="Brand List" [(ngModel)]="selectedBrands">
-          <mat-option value="all" (click)="onBrandSelectAll()">All</mat-option>
-          <mat-option *ngFor="let item of uniqueBrandNamesArray;" [value]="item.brandid"
-            (click)="selectedBrandFromList(item)">
-            {{item.brandname}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
 
-  </div>
-</div>
-<div class="container">
-  <div class="row justify-content-center">
-
-    <div class="col-md-6 col-sm-6 col-6">
-      <mat-form-field style="width: 100%;">
-
-        <input matInput placeholder="Search Products" [(ngModel)]="searchResult"
-          (keyup)="applyFilterOnKey($event.target.value)" autocomplete="off">
-      </mat-form-field>
-    </div>
-
-
-    <div class="col-md-4 col-sm-6 col-6">
-
-      <button mat-raised-button class=" mt-2 width-100" color="primary" (click)="applyFilter()">Search
-      </button>
-
-    </div>
-
-  </div>
-</div>
-
-<div *ngIf="isDataLoaded">
-
-
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Name</th>
-      <td mat-cell *matCellDef="let element">
-        <h5>
-          {{element.name}}
-        </h5>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="brandname">
-      <th mat-header-cell *matHeaderCellDef>Brand</th>
-      <td mat-cell *matCellDef="let element">
-        <h5>
-          {{element.brandname}}
-        </h5>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="selectVarient">
-      <th mat-header-cell *matHeaderCellDef>Varient</th>
-      <td mat-cell *matCellDef="let element;let j = index">
-        <mat-form-field style="min-width:auto;max-width: 40px;">
-          <mat-label>Select Varient</mat-label>
-          <mat-select id="productDetails" placeholder="Varient" panelClass="happy">
-            <mat-option *ngFor="let item of element.productDetails;let i = index;" [value]="item.Unit"
-              (click)="selectedVarientFromList(element,i)">
-              {{item.Unit}}
+<div *ngIf="!isFirstTime">
+  <ngx-spinner></ngx-spinner>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-4 mt-2">
+        <mat-form-field style="width: 100% !important;">
+          <mat-select placeholder="Category List" [(ngModel)]="selectedCategory">
+            <mat-option *ngFor="let item of categoryListData;" [value]="item.id"
+              (click)="selectedCategoryFromList(item)">
+              {{item.name}}
             </mat-option>
           </mat-select>
         </mat-form-field>
-
-      </td>
-    </ng-container>
-    <!--   
-    <ng-container matColumnDef="mrp">
-      <th mat-header-cell *matHeaderCellDef>MRP</th>
-      <td mat-cell *matCellDef="let element">
-        <span [id]="'mrp'+element.productid">
-          <h5>
-            {{element.productDetails[0].MRP}}
-          </h5>
-        </span>
-  
-      </td>
-    </ng-container>
-   -->
-    <!-- <ng-container matColumnDef="discount">
-      <th mat-header-cell *matHeaderCellDef>Discount</th>
-      <td mat-cell *matCellDef="let element">
-        <h5>
-  
-          <span [id]="'discount'+element.productid"> {{element.productDetails[0].Discount}}</span>
-        </h5>
-      </td>
-    </ng-container> -->
-
-    <ng-container matColumnDef="finalPrice">
-      <th mat-header-cell *matHeaderCellDef>Price</th>
-      <td mat-cell *matCellDef="let element">
-        <h5>
-          <span [id]="'finalPrice'+element.productid">{{element.productDetails[0].FinalPrice | number}}</span>
-        </h5>
-
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="requiredQuantity">
-      <th mat-header-cell *matHeaderCellDef><span style=" color: #008000;">Add Qty</span></th>
-      <td mat-cell *matCellDef="let element">
-        <!-- <mat-form-field floatLabel="never" style="min-width:auto;max-width: 25px;">
-          <input matInput placeholder="Quantity" [(ngModel)]="element.mappingid" autocomplete="off">
-        </mat-form-field> -->
-        <mat-form-field style="min-width:auto;max-width: 40px;">
-          <mat-select placeholder="Quantity">
-            <mat-option *ngFor="let item of quantityList;" [value]="item.title"
-              (click)="selectedQuantityFromList(item,element)">
-              {{item.title}}
+      </div>
+      <div class="col-md-4 col-sm-12 col-12 mt-2">
+        <mat-form-field style="width: 100% !important;">
+          <mat-select placeholder="Sub Category List" [(ngModel)]="selectedSubCategory">
+            <mat-option value="all" (click)="onSubCategorySelectAll()">All</mat-option>
+            <mat-option *ngFor="let item of subCategoryListData;" [value]="item.subcategoryid"
+              (click)="selectedSubCategoryFromList(item)">
+              {{item.name}}
             </mat-option>
           </mat-select>
         </mat-form-field>
+      </div>
 
-      </td>
-    </ng-container>
 
-    <ng-container matColumnDef="add">
-      <th mat-header-cell *matHeaderCellDef>Add</th>
-      <td mat-cell *matCellDef="let element">
-        <i class="fa fa-cart-plus fa-2x cart-icon" style="cursor: pointer;" aria-hidden="true"
-          (click)="onQuantityChange(element,element.mappingid,i)"></i>
-      </td>
-    </ng-container>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-4 col-sm-12 col-12 mt-2">
+        <mat-form-field style="width: 100% !important;">
+          <mat-select placeholder="Brand List" [(ngModel)]="selectedBrands">
+            <mat-option value="all" (click)="onBrandSelectAll()">All</mat-option>
+            <mat-option *ngFor="let item of uniqueBrandNamesArray;" [value]="item.brandid"
+              (click)="selectedBrandFromList(item)">
+              {{item.brandname}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4 col-sm-12 col-12 mt-2">
+        <mat-form-field style="width: 100%;">
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+          <input matInput placeholder="Search Products" [(ngModel)]="searchResult" autocomplete="off">
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
 
-  <mat-paginator [pageSizeOptions]="[50, 100, 150]" showFirstLastButtons></mat-paginator>
+
+
+  <mat-divider class="mt-2"></mat-divider>
+  <div *ngIf="isDataLoaded">
+
+    <div class="container-fluid my-2">
+      <div class="row">
+        <div class="col-md-6 col-sm-6 col-12 my-2" *ngFor="let element of brandsData | filter : searchResult">
+          <mat-card style="width: 95%;">
+            <div class="row">
+              <div class="col-md-12 col-12 col-sm-6 text-center" style="color: #FF8C00;">
+                <h3>{{element.name}}</h3>
+              </div>
+
+              <div class="col-md-12 col-12 col-sm-6 text-center">
+                {{element.brandname}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3 col-3 col-sm-3 text-center text-center ">
+                <mat-form-field style="min-width:80%;max-width: 50px;">
+                  <mat-label>Varient</mat-label>
+                  <mat-select id="productDetails" placeholder="Varient">
+                    <mat-option *ngFor="let item of element.productDetails;let i = index;" [value]="item.Unit"
+                      (click)="selectedVarientFromList(element,i)">
+                      {{item.Unit}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 col-4 col-sm-4 text-left" style="margin-top: 19px;">
+                <h5 style="color: #008000;">Price:
+                  <span [id]="'finalPrice'+element.productid" class="font-weight-bold" style="color: #008000;">
+                    {{element.productDetails[0].FinalPrice | number}}</span>
+                </h5>
+
+              </div>
+
+              <div class="col-md-3 col-3 col-sm-3 text-center text-center">
+                <mat-form-field style="min-width:80%;max-width: 50px;">
+                  <mat-select placeholder="Quantity">
+                    <mat-option *ngFor="let item of quantityList;" [value]="item.title"
+                      (click)="selectedQuantityFromList(item,element)">
+                      {{item.title}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-1 col-1 col-sm-1 text-right" style="margin-top: 19px;">
+                <i class="fa fa-cart-plus fa-2x cart-icon" style="cursor: pointer;" aria-hidden="true"
+                  (click)="onQuantityChange(element,element.mappingid,i)"></i>
+
+              </div>
+            </div>
+
+
+          </mat-card>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>

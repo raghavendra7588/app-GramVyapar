@@ -1,4 +1,4 @@
-<!-- <form [formGroup]="addressForm" (ngSubmit)="onSubmit()"> -->
+
 <form [formGroup]="addressForm">
     <div class="container">
         <div class="row">
@@ -78,10 +78,7 @@
 
     <div class="container-fluid">
         <div class="row">
-            <!-- <div class="col-md-4 mt-2 col-sm-12 col-12">
-                <button mat-raised-button color="primary" class="width-100" [disabled]="!addressForm.valid || !isPinCode">Continue With This
-                    Address</button>
-            </div> -->
+   
             <div class="col-md-4 mt-2 col-sm-8 col-8">
                 <button mat-raised-button color="primary" class="width-100"
                     [disabled]="!addressForm.valid || !isPinCode || !isName || !isMobileNo" (click)="onSubmit()">Add New

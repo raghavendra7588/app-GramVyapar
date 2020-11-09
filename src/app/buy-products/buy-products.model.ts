@@ -1,17 +1,4 @@
-// export class AddressDetails {
-//     id: number;
-//     sellerId: number;
-//     vendorId: string;
-//     name: string;
-//     mobileNumber: number;
-//     houseNo: string;
-//     society: string;
-//     landMark: string;
-//     pinCode: number;
-//     city: string;
-//     area: string;
-//     state: string;
-// }
+
 export class AddressDetails {
     id: string;
     name: string;

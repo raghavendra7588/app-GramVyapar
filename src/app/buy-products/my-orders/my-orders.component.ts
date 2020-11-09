@@ -17,10 +17,6 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./my-orders.component.css']
 })
 export class MyOrdersComponent implements OnInit {
-
-
-  // displayedColumns: string[] = ['customerName', 'orderid', 'primaryMobileNumber', 'deliveryUpto', 'deliveryType', 'paymentType', 'view'];
-
   displayedColumns: string[] = ['customerName', 'orderid', 'deliveryUpto', 'view'];
 
   dataSource: any;
@@ -67,30 +63,16 @@ export class MyOrdersComponent implements OnInit {
     this.languageCode = "en";
 
     this.totalOrder = Number(sessionStorage.getItem('totalOrder'));
-    console.log('total Orders ', this.totalOrder);
 
 
-    // if (this.totalOrder === 0) {
-    //   this.isDisplay = false;
-    // }
-    // else {
-    //   this.buyProductsService.getMyOrdersData(this.languageCode, this.userId).subscribe(response => {
-    //     console.log('my Orders data', response);
-    //     this.ordersData = response;
-    //     console.log('this.ordersData total order count', this.ordersData.TotalOrder);
-    //     this.dataSource = new MatTableDataSource(this.ordersData);
-    //     this.dataSource.paginator = this.paginator;
-    //     this.isDisplay = true;
-    //   });
-    // }
+
+
     if ("totalOrder" in sessionStorage) {
       this.buyProductsService.getMyOrdersData(this.languageCode, this.userId).subscribe(response => {
-        console.log('my Orders data', response);
         this.ordersData = response;
-        console.log('this.ordersData total order count', this.ordersData.TotalOrder);
         this.dataSource = new MatTableDataSource(this.ordersData);
         setTimeout(() => this.dataSource.paginator = this.paginator);
-        // this.dataSource.paginator = this.paginator;
+
         this.isDisplay = true;
       });
     }
@@ -123,7 +105,7 @@ export class MyOrdersComponent implements OnInit {
   }
 
   selectedVendorName() {
-    console.log(this.myOrders.vendorName);
+    //console.log(this.myOrders.vendorName);
   }
 
   searchRecords() {

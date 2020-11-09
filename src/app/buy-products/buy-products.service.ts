@@ -7,11 +7,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class BuyProductsService {
 
   // private BASE_URL = 'http://localhost:55547/';
-
+  masterDataArray: any = [];
+  masterDataResonseArray: any = [];
   private BASE_URL = 'http://203.112.144.38/uat_InventoryService/';
   private ADMIN_BASE_URL = 'http://203.112.144.38/uat_AdminApi/api/';
 
   private GET_PRODUCT_LIST = this.ADMIN_BASE_URL + 'Product/GetProductList';
+
+
   private GET_ALL_CATEGORY_DATA = this.ADMIN_BASE_URL + 'Category/getsellercategories';
   private GET_ALL_SUBCATEGORIES_DATA = this.ADMIN_BASE_URL + 'Category/getall';
   private GET_PRODUCT_INFORMATION = this.ADMIN_BASE_URL + 'Product/GetProductInfo';
@@ -31,11 +34,21 @@ export class BuyProductsService {
   private INSERT_ADDRESS_DATA = this.BASE_URL + 'api/APPAddress';
   private GET_ADDRESS_DATA_BY_ID = this.BASE_URL + 'api/APPAddress';
   private INSERT_PURCHASE_PRODUCT = this.BASE_URL + 'api/PurchaseProducts';
-  
+
 
 
   constructor(public http: HttpClient) { }
 
+
+  getAllData(vendorcode: string) {
+    const data = { "categoryid": "0", "subcategoryid": "0", "brandid": "0", "vendorCode": vendorcode.toString() }
+
+    let reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.post(this.GET_PRODUCT_LIST, data, { headers: reqHeader });
+  }
 
 
   getAllCategory(vendorcode: string) {

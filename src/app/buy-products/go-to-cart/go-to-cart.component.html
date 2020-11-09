@@ -60,24 +60,7 @@
         </td>
       </ng-container>
 
-      <!-- <ng-container matColumnDef="mrp">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>MRP</th>
-        <td mat-cell *matCellDef="let element">
-          <h5>
-            {{element.MRP}}
-          </h5>
-        </td>
-      </ng-container> -->
 
-      <!-- <ng-container matColumnDef="discount">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Discount</th>
-        <td mat-cell *matCellDef="let element">
-
-          <h5>
-            {{element.Discount}}
-          </h5>
-        </td>
-      </ng-container> -->
 
       <ng-container matColumnDef="finalPrice">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
@@ -104,7 +87,7 @@
         <td mat-cell *matCellDef="let element">
           <i class="fa fa-cart-plus fa-2x cart-icon" style="cursor: pointer;" aria-hidden="true"
             (click)="openUpdateModal(updatetemplate,element)"></i>
-          <!-- (click)="updateSingleQuantity(element)"  -->
+  
         </td>
       </ng-container>
       <ng-container matColumnDef="delete">
@@ -165,28 +148,6 @@
     </div>
   </div>
 
-  <!-- <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-4 col-sm-4 col-12">
-        <mat-form-field style="width: 100% !important;">
-          <mat-select placeholder="select address" [(ngModel)]="selectedAddressId" [disabled]="!isMobileNumberEntered">
-            <mat-option *ngFor="let item of addressData;" [value]="item.id" (click)="selectedAddressFromList(item)">
-              {{item.name}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div class="col-md-2 col-sm-4 col-12">
-        <button mat-raised-button color="primary" [disabled]="!isMobileNumberEntered" (click)="addNewAddress()" class="width-100 mt-2">Add New Address
-        </button>
-      </div>
-      <div class="col-md-2 col-sm-4 col-12">
-        <button mat-raised-button color="primary" [disabled]="!isMobileNumberEntered" (click)="editAddress()" class="width-100 mt-2">Edit Address
-        </button>
-      </div>
-    </div>
-  </div> -->
 
   <div class="container-fluid my-5">
     <div class="row justify-content-center">
@@ -264,55 +225,7 @@
 
     </div>
   </div>
-  <!-- <div class="container-fluid my-5">
-    <div class="row">
-      <div class="col-md-3 col-sm-3 col-3">
-        <p style="text-align: left;width: 100%;" class="font-weight-bold">Delivery Type</p>
-        <mat-form-field style="width: 100% !important;">
-          <mat-select [(ngModel)]="purchaseProducts.DeliveryType">
-            <mat-option *ngFor="let item of deliveryType;" [value]="item.type"
-              (click)="selectedDeliveryTypeFromList(item)">
-              {{item.type}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="col-md-3 col-sm-3 col-3">
-        <p style="text-align: left;width: 100%;" class="font-weight-bold">Payment</p>
-        <mat-form-field style="width: 100% !important;">
-          <mat-select [(ngModel)]="purchaseProducts.PaymentType">
-            <mat-option *ngFor="let item of paymentType;" [value]="item.type"
-              (click)="selectedPaymentTermFromList(item)">
-              {{item.type}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="col-md-3 col-sm-3 col-3">
-        <p style="text-align: left;width: 100%;" class="font-weight-bold">Delivery Date</p>
-        <mat-form-field style="width: 100% !important;">
 
-          <input matInput [matDatepicker]="picker1" autocomplete="off" [min]="minDate"
-            [(ngModel)]="purchaseProducts.DeliveryDate" (dateInput)="addEvent('input', $event)"
-            (dateChange)="addEvent('change', $event)">
-          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-          <mat-datepicker #picker1></mat-datepicker>
-        </mat-form-field>
-      </div>
-      <div class="col-md-3 col-sm-3 col-3">
-        <p style="text-align: left;width: 100%;" class="font-weight-bold" >Delivery Time</p>
-        <mat-form-field style="width: 100% !important;">
-          <mat-select [(ngModel)]="purchaseProducts.DeliveryTime">
-            <mat-option *ngFor="let item of deliveryTime;" [value]="item.type"
-              (click)="selectedDeliveryTimeFromList(item)">
-              {{item.type}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-    </div>
-  </div> -->
   <div class="container-fluid my-5">
     <div class="row">
       <div class="col-md-3 col-sm-3 col-6">
@@ -380,39 +293,22 @@
   </div>
 </div>
 
-<!-- </div> -->
+
 
 <h1 class="mt-5" style="text-align: center;color:blue;" *ngIf=" !isDisplay">Your Cart is Empty</h1>
 
 <button mat-raised-button color="primary" class="mt-2 mx-auto d-block" *ngIf=" !isDisplay"
   (click)="goToCategoriesPage()">Continue Shopping
 </button>
-<!-- <button class="btn btn-primary mx-auto d-block" *ngIf=" !isDisplay ">My Button</button> -->
-
-<!-- <div class="container mt-5">
-    <div class="row">
-      <div class="col-md-12 text-center">
-        <h2  *ngIf="isDisplay===false">Your Cart is Empty</h2>
-      </div>
-    </div>
-  </div> -->
-
-
-<!-- 
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-9 col-sm-9 col-7" style="height: 500px;background-color: red;">
-  
-      </div>
-      <div class="col-md-3 col-sm-3 col-5" style="height: 500px;background-color: blue;">
-  
-      </div>
-    </div>
-  </div> -->
 
 
 
-<!-- <pre class="card card-block card-header">{{message}}</pre> -->
+
+
+
+
+
+
 <ng-template #template>
   <div class="modal-body text-center">
     <p>Do you want to remove this product from Cart?</p>
@@ -428,14 +324,3 @@
     <button type="button" class="btn btn-danger" (click)="decline()">No</button>
   </div>
 </ng-template>
-
-<!-- <ng-template #templatee>
-  <div class="modal-body text-center">
-    <p>Are You Existing User?</p>
-    <button type="button" class="btn btn-primary mr-1" (click)="confirmUser()">Yes</button>
-    <button type="button" class="btn btn-danger" (click)="declineUser()">No</button>
-  </div>
-</ng-template> -->
-
-<!-- (click)="openConfirmModal(templatee)" -->
-<!-- class="mt-2 mx-auto d-block" -->
