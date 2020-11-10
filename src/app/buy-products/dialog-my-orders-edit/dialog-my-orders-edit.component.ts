@@ -109,7 +109,6 @@ export class DialogMyOrdersEditComponent implements OnInit {
     for (let i = 0; i < arr.length; i++) {
       arr[i].pincode = 0;
     }
-    console.log('i return ', arr);
     return arr;
   }
 
@@ -123,7 +122,7 @@ export class DialogMyOrdersEditComponent implements OnInit {
       this.totalMRP += Number(arr[i].MRP) * Number(arr[i].RequiredQuantity);
       this.totalDiscount += Number(arr[i].Discount) * Number(arr[i].RequiredQuantity);
       this.totalItemsOrdered += Number(arr[i].RequiredQuantity);
-      // this.totalFinalPrice += arr[i].FinalPrice;
+
     }
     this.totalPayableAmount = this.totalMRP - this.totalDiscount;
 
@@ -208,7 +207,7 @@ export class DialogMyOrdersEditComponent implements OnInit {
 
   checkStorageCategoryId(element) {
     let isCategoryValid: boolean = true;
-    // console.log('check category id', element);
+
     let cartItems = JSON.parse(sessionStorage.getItem('cart_items'));
 
     if (cartItems === null || cartItems === undefined || cartItems === []) {
@@ -230,7 +229,6 @@ export class DialogMyOrdersEditComponent implements OnInit {
   }
   checkItemFinalPrice(element) {
 
-    console.log('checking quantity', element);
     let isRecordValid: boolean = true;
 
     let requiredQuantity = Number(element.RequiredQuantity);
@@ -240,9 +238,7 @@ export class DialogMyOrdersEditComponent implements OnInit {
     if ((Number(newQuantity) < 1) || (Number(newQuantity) > Number(availableQuantity))) {
       isRecordValid = false;
     }
-    // if (requiredQuantity === newQuantity) {
-    //   isRecordValid = false;
-    // }
+
     else {
       if ((Number(newQuantity) >= 1) || (Number(newQuantity) < Number(availableQuantity))) {
         isRecordValid = true;
@@ -250,35 +246,28 @@ export class DialogMyOrdersEditComponent implements OnInit {
     }
 
 
-    // if ((Number(requiredQuantity) < 1) || (Number(requiredQuantity) > Number(availableQuantity))) {
-    //   isRecordValid = false;
-    // }
-    // else {
-    //   if ((Number(requiredQuantity) >= 1) || (Number(requiredQuantity) < Number(availableQuantity))) {
-    //     isRecordValid = true;
-    //   }
-    // }
+
     return isRecordValid;
   }
 
 
   postMultipleInsertion(elements) {
     elements.forEach(element => {
-      // console.log('add to edit model', element);
+
 
 
       this.editMyOrder = new EditMyOrder();
-      // this.edit = new OrderedItems();
+ 
 
 
       this.editMyOrder.Discount = Number(element.Discount);
       this.editMyOrder.FinalPrice = Number(element.FinalPrice);
       this.editMyOrder.MRP = Number(element.MRP);
       this.editMyOrder.Quantity = Number(element.Quantity);
-      // this.editMyOrder.MRP = Number(element.MRP);
+
       this.editMyOrder.RequiredQuantity = Number(element.RequiredQuantity);
       this.editMyOrder.Unit = element.Unit;
-      // this.editMyOrder.RequiredQuantity = Number(element.RequiredQuantity);
+
       this.editMyOrder.name = element.name;
       this.editMyOrder.PurchaseProductId = element.PurchaseProductId;
       this.editMyOrder.PurchaseProductsItemId = element.PurchaseProductsItemId;
@@ -287,25 +276,16 @@ export class DialogMyOrdersEditComponent implements OnInit {
       this.editMyOrder.RequiredQuantity = this.editMyOrder.NewQuantity;
       this.editMyOrder.id = Number(element.id);
       this.editMyOrder.productid = Number(element.ProductId);
-      // this.editMyOrder.categoryId = Number(element.CategoryId);
+
       this.editMyOrder.brandId = Number(element.BrandId);
       this.multipleEntries.push(this.editMyOrder);
 
     });
-    console.log('added items to edit', this.multipleEntries);
+
 
     let prevStorageArray: any = [];
     let finalStorageArray: any = [];
 
-    // this.buyProductsService.updateOrdersData(this.multipleEntries).subscribe(data => {
-    //   console.log('data inserted', data);
-    //   this.toastr.success('Records Updated Succesfully');
-    //   this.updateAllRecordsCount = 0;
-    //   this.selection.clear();
-    //   this.multipleEntriesArray = [];
-    //   this.multipleEntries = [];
-    //   this.dialogRef.close();
-    // });
 
 
     finalStorageArray = this.multipleEntries;
@@ -320,7 +300,6 @@ export class DialogMyOrdersEditComponent implements OnInit {
 
     sessionStorage.removeItem('cart_items');
     sessionStorage.setItem('cart_items', JSON.stringify(finalStorageArray));
-    console.log('finalStorageArray ', finalStorageArray);
 
     this.emitterService.isProductIsAddedOrRemoved.emit(true);
     this.dialogRef.close();
@@ -328,57 +307,15 @@ export class DialogMyOrdersEditComponent implements OnInit {
   }
 
   deleteProducts(response) {
-    // console.log('delete is cliked,', response.PurchaseProductId);
-    // console.log('delete is cliked,', response);
+
     this.deleteMyOrder.PurchaseProductId = response.PurchaseProductId;
     this.deleteMyOrder.PurchaseProductsItemId = response.PurchaseProductsItemId;
     this.buyProductsService.deleteMyOrdersData(this.deleteMyOrder).subscribe(data => {
-      console.log('data', data);
     });
   }
 
   createOrderItems(storageArray, currentItemsArray) {
-    console.log('storageArray', storageArray);
-    console.log('currentItemsArray', currentItemsArray);
-
-    // for (let i = 0; i < currentItemsArray.length; i++) {
-    //   for (let j = 0; j < storageArray.length; j++) {
-    //     if (Number(storageArray[j].id) == Number(currentItemsArray[i].id) && storageArray[j].name == currentItemsArray[i].name && storageArray[j].Unit == currentItemsArray[i].Unit) {
-    //       console.log('items exist storageArray', storageArray[j]);
-
-    //       // storageArray.pop(storageArray[j]);
-    //       storageArray.splice(j, 1);
-    //       storageArray.push(currentItemsArray[i]);
-    //       // storageArray[j].Discount = currentItemsArray[i].Discount;
-    //       // storageArray[j].FinalPrice = currentItemsArray[i].FinalPrice;
-    //       // storageArray[j].MRP = currentItemsArray[i].MRP;
-    //       // storageArray[j].Quantity = currentItemsArray[i].Quantity;
-    //       // storageArray[j].RequiredQuantity = currentItemsArray[i].RequiredQuantity;
-    //       // storageArray[j].Unit = currentItemsArray[i].RequiredQuantity;
-    //       // storageArray[j].brandid = currentItemsArray[i].brandId;
-    //       // // storageArray[j].categoryid = currentItemsArray[i].RequiredQuantity;
-
-
-    //       // storageArray[j].id = currentItemsArray[i].id;
-    //       // storageArray[j].name = currentItemsArray[i].name;
-    //       // storageArray[j].productid = currentItemsArray[i].productid;
-    //     }
-    //     else {
-    //       console.log('not exist');
-    //       storageArray.push(currentItemsArray[i]);
-    //     }
-
-    //     console.log('check item is removed', storageArray);
-    //     return storageArray;
-    //   }
-
-
-    //   var result = result1.filter(function (o1) {
-    //     return result2.some(function (o2) {
-    //         return o1.id === o2.id; // return the ones with equal id
-    //    });
-    // });
-
+  
     var finalarray = currentItemsArray.filter(function (currentItems) {
       return storageArray.some(function (stroageItems) {
         if ((Number(currentItems.id) === Number(stroageItems.id)) && (Number(currentItems.productid) == Number(stroageItems.productid))) {

@@ -18,6 +18,9 @@ export class EmitterService {
   public addressFields: EventEmitter<object>;
   public addedAddressData: EventEmitter<any>;
   public isValidateResponse: EventEmitter<boolean>;
+  public isFirstTimeUser: EventEmitter<boolean>;
+  public isVendorContactNumber: EventEmitter<boolean>;
+  public masterResponse: EventEmitter<any>;
 
   constructor() {
     this.isRecord = new EventEmitter();
@@ -33,5 +36,8 @@ export class EmitterService {
     this.addressFields = new EventEmitter();
     this.addedAddressData = new EventEmitter();
     this.isValidateResponse = new EventEmitter();
+    this.isFirstTimeUser = new EventEmitter();
+    this.isVendorContactNumber = new EventEmitter();
+    this.masterResponse = new EventEmitter();
   }
 }

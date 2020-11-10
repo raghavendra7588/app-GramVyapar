@@ -42,6 +42,8 @@ import { NumberDirective } from './number.directive';
 import { DialogEditAddressComponent } from './dialog-edit-address/dialog-edit-address.component';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 
 @NgModule({
@@ -77,12 +79,14 @@ import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
     MatCheckboxModule,
     MatPaginatorModule,
     NgbPaginationModule,
+    NgxSpinnerModule,
     ToastrModule.forRoot({
       timeOut: 1200,
-      preventDuplicates: true,
+      preventDuplicates: true
     }),
     ModalModule.forRoot(),
-    MatNativeDateModule
+    MatNativeDateModule,
+    Ng2SearchPipeModule
   ],
   exports: [CategoriesHomeComponent, GoToCartComponent, MyOrdersComponent, AddressDetailDataComponent],
   entryComponents: [DialogAddAddressComponent, DialogOrderNoComponent, DialogMyOrdersViewComponent, DialogMyOrdersEditComponent, DialogEditAddressComponent],

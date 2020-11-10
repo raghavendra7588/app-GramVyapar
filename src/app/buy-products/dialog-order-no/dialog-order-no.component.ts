@@ -17,9 +17,8 @@ export class DialogOrderNoComponent implements OnInit {
     public route: ActivatedRoute,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<DialogOrderNoComponent>) {
-    console.log('dtaa received ', data);
     this.placeOrderResponse = data;
-    // this.orderNo = data.OrderNo;
+
 
     let slicedOrderNo = this.placeOrderResponse.orderid.slice(this.placeOrderResponse.orderid.length - 6);
     this.orderNo = slicedOrderNo;
@@ -38,7 +37,6 @@ export class DialogOrderNoComponent implements OnInit {
     let shopName = sessionStorage.getItem('vendorName').toString();
    
     this.router.navigate(['/buyProducts/categories'], { queryParams: { name: shopName } });
-    // this.router.navigate(['buyProducts/categories']);
     this.dialogRef.close(true);
   }
 

@@ -15,6 +15,8 @@ import { EmitterService } from './shared/emitter.service';
 import { UserService } from './user/user.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { NgxSpinnerModule } from "ngx-spinner";
+
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     UserModule,
     BuyProductsModule,
     SharedModule,
-    NgbModule
+    NgbModule,
+    NgxSpinnerModule
   ],
   providers: [BuyProductsService, EmitterService, UserService],
   bootstrap: [AppComponent]

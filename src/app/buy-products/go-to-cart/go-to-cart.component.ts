@@ -3,12 +3,12 @@ import { AfterViewInit, Component, OnInit, ViewChild, TemplateRef } from '@angul
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-// import { Address } from 'src/app/purchase/purchase.model';
+
 
 import { AddressDetails, CartItems, OrderedItems, PlaceOrder, PurchaseProducts } from '../buy-products.model';
 import { BuyProductsService } from '../buy-products.service';
 import { ToastrService } from 'ngx-toastr';
-// import { DialogOrderNoComponent } from '../dialog-order-no/dialog-order-no.component';
+
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddAddressComponent } from '../dialog-add-address/dialog-add-address.component';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
@@ -99,7 +99,7 @@ export class GoToCartComponent implements OnInit {
   addressSelected: boolean = false;
   currentlySelectedAddress: any;
   selectedTimeSlot: any;
-  // modalRef: BsModalRef;
+
   message: string;
   deleteRecordResponse: any;
 
@@ -156,7 +156,7 @@ export class GoToCartComponent implements OnInit {
     this.emitterService.isAddressCreated.subscribe(value => {
       if (value) {
         this.getCartItems();
-        // this.getAddressData();
+
         this.clearValues();
         if (this.addressData.length === 0 || this.addressData === undefined || this.addressData === null) {
           this.isAddressSelected = false;
@@ -165,27 +165,7 @@ export class GoToCartComponent implements OnInit {
         }
       }
     });
-    // this.emitterService.addressFields.subscribe(response => {
-    //   if (response) {
-    //     this.address.name = response.name;
-    //     this.address.mobilenumber = response.mobileNumber;
-    //     this.address.flatNo = response.houseNo;
-    //     this.address.societyName = response.society;
-    //     this.address.locality = response.landMark;
-    //     this.address.pincode = response.pinCode;
-    //     this.address.areaName = response.area;
-    //     this.address.city = response.city;
-    //     this.address.state = response.state;
-    //     if (response.id) {
-    //       this.addressId = response.id.toString();
-    //       this.purchaseProducts.AddressId = Number(response.id);
-    //     }
 
-    //     this.isAddressSelected = true;
-    //     this.addressSelected = true;
-    //   }
-
-    // });
 
     this.emitterService.addedAddressData.subscribe(value => {
       if (value) {
@@ -221,15 +201,12 @@ export class GoToCartComponent implements OnInit {
       this.isDisplay = true;
     }
     this.payableCalculation(this.cartItems);
-    // this.getCartItems();
+
 
 
 
     this.creditYN = sessionStorage.getItem('creditYN');
     this.onlineYN = sessionStorage.getItem('onlineYN');
-
-    console.log('online YN', this.onlineYN);
-    console.log('creditYN YN', this.creditYN);
 
 
 
@@ -270,12 +247,7 @@ export class GoToCartComponent implements OnInit {
       { id: 3, type: 'Anytime Ok', minHour: 0, maxHour: 24 }
     ];
 
-    // this.buyProductsService.getAddressDataById(this.vendorId).subscribe(data => {
-    //   this.addressData = data;
 
-
-    // });
-    // this.getAddressData();
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -578,9 +550,6 @@ export class GoToCartComponent implements OnInit {
 
   }
   goToProductCategoriesPage() {
-    // {queryParams: {params: id}}
-    // this.router.navigate(['buyProducts/categories'], { queryParams: { name: this.vendorName } });
-
     this.router.navigate(['buyProducts/categories' + '/' + this.vendorName]);
   }
 
@@ -627,11 +596,6 @@ export class GoToCartComponent implements OnInit {
       sessionStorage.removeItem('cart_items');
       sessionStorage.setItem('cart_items', JSON.stringify(tempCartItemsArray));
       this.emitterService.isProductRemoved.emit(true);
-      // let filteredCartItems: any = [];
-      // filteredCartItems = this.cartItems.filter(item => {
-      //   return item.id != response.id && item.productid != response.productid
-      // });
-      // this.cartItems = filteredCartItems;
 
       this.payableCalculation(this.cartItems);
     }
@@ -669,10 +633,10 @@ export class GoToCartComponent implements OnInit {
   }
 
   selectedDeliveryTypeFromList(response) {
-    // console.log(response);
+
     this.isDeliveryType = true;
     this.selectedDeliveryType = response.type;
-    console.log('selectedDeliveryType', this.selectedDeliveryType);
+
 
   }
 
@@ -712,16 +676,7 @@ export class GoToCartComponent implements OnInit {
       }
 
     }
-    // this.address.name = response.name;
-    // this.address.mobilenumber = response.mobilenumber;
-    // this.address.flatNo = response.flatNo;
-    // this.address.societyName = response.societyName;
-    // this.address.locality = response.locality;
-    // this.address.pincode = response.pincode;
-    // this.address.areaName = response.areaName;
-    // this.address.city = response.city;
-    // this.address.state = response.state;
-    // this.addressId = response.id.toString();
+
     let userid = sessionStorage.getItem('customerId');
     let vendorCode = sessionStorage.getItem('vendorId');
     let selectedProductStorageArray = JSON.parse(sessionStorage.getItem('cart_items'));
@@ -762,18 +717,16 @@ export class GoToCartComponent implements OnInit {
     this.isHomeDelivery = sessionStorage.getItem('isHomeDelivery');
     this.homeDeliveryLimit = Number(sessionStorage.getItem('homeDeliveryLimit'));
     let homeDeliveryValueLimit = this.homeDeliveryLimit;
-    console.log('home delivery Limit', this.homeDeliveryLimit);
-    console.log('totalPayableAmount Limit', this.totalPayableAmount);
+
 
     if (this.isHomeDelivery === 'N') {
       this.toastr.error('Home Delivery Not Available For this Seller');
       return;
     }
 
-    console.log('selectedDeliveryType', this.selectedDeliveryType);
 
     if (this.totalPayableAmount <= this.homeDeliveryLimit && this.selectedDeliveryType === "Home Delivery") {
-      console.log('Home Delivery Amt ***');
+
       this.toastr.error(`Home Delivery Is Available Above ${homeDeliveryValueLimit} Amount`);
       return;
     }
@@ -808,30 +761,21 @@ export class GoToCartComponent implements OnInit {
     this.purchaseProducts.items = JSON.parse(sessionStorage.getItem('cart_items'));
     this.purchaseProducts.VendorName = sessionStorage.getItem('sellerName');
 
-    console.log('this.purchaseProducts', this.purchaseProducts);
-    // this.buyProductsService.savePurchaseProduct(this.purchaseProducts).subscribe(data => {
 
-    //   this.ProductsResponse = data;
-    //   this.toastr.success('Your Order Is Placed');
-    //   sessionStorage.removeItem('cart_items');
-    //   sessionStorage.removeItem('categoryId');
-    //   sessionStorage.removeItem('address_id');
-    //   this.openDialog();
-    //   this.emitterService.isProductIsAddedOrRemoved.emit(true);
-    //   this.purchaseProducts.DeliveryDate = this.prevDeliveryDate;
-    // });
+
     this.buyProductsService.placeOrderData(placOrderObj).subscribe(response => {
       this.placeOrderResponse = response;
       this.toastr.success('Your Order Is Placed');
 
       this.openDialog();
       sessionStorage.removeItem('cart_items');
+      sessionStorage.removeItem('category_array');
       this.purchaseProducts.DeliveryDate = this.prevDeliveryDate;
       this.emitterService.isProductIsAddedOrRemoved.emit(true);
       sessionStorage.setItem('isExisting', 'true');
       sessionStorage.removeItem('totalOrder');
       this.prevTotalOrder = Number(this.prevTotalOrder + 1);
-      console.log('prev total order', this.prevTotalOrder);
+
       sessionStorage.setItem('totalOrder', this.prevTotalOrder.toString());
     });
 
@@ -844,16 +788,12 @@ export class GoToCartComponent implements OnInit {
 
 
     for (let i = 0; i < selectedProductStorageArray.length; i++) {
-      console.log('selectedProductStorageArray', selectedProductStorageArray[i]);
-      // totalFinalPrice = (selectedProductStorageArray[i].MRP * selectedProductStorageArray[i].RequiredQuantity) - (selectedProductStorageArray[i].Discount * selectedProductStorageArray[i].RequiredQuantity);
-
-      // totalFinalPrice = ((selectedProductStorageArray[i].MRP - selectedProductStorageArray[i].Discount) * selectedProductStorageArray[i].RequiredQuantity);
+   
+   
       totalFinalPrice = ((selectedProductStorageArray[i].MRP - selectedProductStorageArray[i].Discount) * selectedProductStorageArray[i].RequiredQuantity);
 
-      console.log('final price', totalFinalPrice);
 
-      // (12 * 2) - (2 * 2)                       
-      // ((12-2) * 2)
+
 
 
 
@@ -919,8 +859,6 @@ export class GoToCartComponent implements OnInit {
   goToCategoriesPage() {
 
     let shopName = sessionStorage.getItem('vendorName').toString();
-    // this.router.navigate(['buyProducts/categories']);
-
     this.router.navigate(['/buyProducts/categories'], { queryParams: { name: shopName } });
   }
 
@@ -949,14 +887,14 @@ export class GoToCartComponent implements OnInit {
     this.buyProductsService.verifyUserDetails(this.mobileNo).subscribe(response => {
       sessionStorage.removeItem('totalOrder');
       this.verifyUserDetails = response;
-      console.log('verifyUserDetails', this.verifyUserDetails);
+
       this.customerId = this.verifyUserDetails.customerId;
       sessionStorage.setItem('customerId', this.customerId);
       this.isMobileNumberEntered = true;
       this.prevTotalOrder = Number(this.verifyUserDetails.TotalOrder);
-      console.log('prevTotalOrder', this.prevTotalOrder);
+    
       if (this.prevTotalOrder === 0) {
-        console.log();
+        //console.log();
       }
       else {
         sessionStorage.setItem('totalOrder', this.prevTotalOrder.toString());
@@ -975,10 +913,7 @@ export class GoToCartComponent implements OnInit {
           data: this.verifyUserDetails
         });
       }
-      // else if (this.addressData.length === 0 || this.addressData === undefined || this.addressData === null) {
-      //   this.isAddressSelected = false;
-      //   this.addressSelected = false;
-      // }
+
       else {
         this.toastr.info('Kindly Select Desire Address From The List');
         this.addressData = this.verifyUserDetails.addresses;
@@ -1037,10 +972,9 @@ export class GoToCartComponent implements OnInit {
 
 
   mobileNoCount() {
-    console.log("called");
+    
     this.mobileNoLength = Number(this.mobileNo.length);
-    console.log('mobileNoLength', this.mobileNoLength);
-
+  
     if (this.mobileNoLength === 10) {
       this.isMobileNoValid = true;
     }

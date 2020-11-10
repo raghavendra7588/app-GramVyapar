@@ -1,80 +1,79 @@
 <div class="container-fluid mt-3">
     <div class="row">
         <div class="col d-flex align-items-center justify-content-center">
-            <img src="http://203.112.144.38/uat_app-gramvyapar/assets/images/logo1.png" alt="image"
+            <img src="http://203.112.144.38/uat_app-gramvyapar/assets/images/logo1.png" alt="image" height="60px"
                 class="img-responsive">
         </div>
 
     </div>
     <div class="row">
         <div class="col d-flex align-items-center justify-content-center">
-            <p style="color: #008000 ;" class="font-weight-bold mt-2"> Vendor Name : {{sellerName}}</p>
+            <p style="color: #008000;" class="font-weight-bold mt-2"> Vendor Name : {{sellerName}}</p>
         </div>
 
     </div>
     <div class="row">
         <div class="col d-flex align-items-center justify-content-center">
-            <p style="color:#FF8C00 ;" class="font-weight-bold mt-1"> Vendor Code : {{vendorCode}}</p>
+            <p style="color:#FF8C00;" class="font-weight-bold mt-1 text-center"> Vendor Code : {{vendorCode}}<br>
+                Vendor Contact No : {{vendorContactNo}}
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col d-flex align-items-center justify-content-center text-center" *ngIf="isFirstTime">
+            <p class="font-weight-bold">
+                Welcome To Our Online Store <br> Please Press Continue and Enjoy Shopping.
+
+
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col d-flex align-items-center justify-content-center" *ngIf="isFirstTime">
+            <button mat-raised-button class="mt-2" color="primary" (click)="continueShopping()">Continue
+            </button>
         </div>
     </div>
 
 
 </div>
 
+<div *ngIf="!isFirstTime">
+    <div class="conatainer-fluid my-2" style="overflow-x: hidden;overflow-y: hidden; padding-bottom:10px;">
+        <div class="row">
+            <div class="col-md-12 col-12 col-sm-12 my-app">
+                <div class="row" style="max-height: 80px;min-height: 70px;">
+                    <div class="spacer"></div>
+                    <div class="col-md-1 col-sm-3 col-3 text-center mt-1">
 
-<div class="conatainer-fluid my-2" style="overflow-x: hidden;overflow-y: hidden; padding-bottom:10px;">
-    <div class="row">
-        <div class="col-md-12 col-12 col-sm-12 my-app">
-            <div class="row" style="max-height: 80px;min-height: 70px;">
-                <div class="spacer"></div>
-                <div class="col-md-1 col-sm-3 col-3 text-center mt-1">
-
-                    <mat-icon class="home-icon" (click)="goToCategories()">home</mat-icon><br />
-                    <p class="home-text font-weight-bold" (click)="goToCategories()">Home
-                    </p>
-
-
-                </div>
-
-                <!-- <div class="spacer"></div>
-
-                <div class="col-md-1 col-sm-3 col-3 text-center mt-1">
-
-                    <mat-icon class="address-icon" (click)="goToAddress()">person_add</mat-icon><br />
-                    <p class="address-text font-weight-bold" (click)="goToAddress()">Add Address
-                    </p>
+                        <mat-icon class="home-icon" (click)="goToCategories()">home</mat-icon><br />
+                        <p class="home-text font-weight-bold" (click)="goToCategories()">Home
+                        </p>
 
 
-                </div> -->
-                <div class="spacer"></div>
-                <div class="col-md-1 col-sm-3 col-3 text-center mt-1">
+                    </div>
 
-                    <mat-icon class="cart-icon" (click)="goToCart()">shopping_cart</mat-icon><br />
-                    <p class="cart-text font-weight-bold" (click)="goToCart()">Basket
-                        (<span>{{productCount === 0 ? 0 : productCount}}</span>)</p>
+                    <div class="spacer"></div>
+                    <div class="col-md-1 col-sm-3 col-3 text-center mt-1">
+
+                        <mat-icon class="cart-icon" (click)="goToCart()">shopping_cart</mat-icon><br />
+                        <p class="cart-text font-weight-bold" (click)="goToCart()">Basket
+                            (<span>{{productCount === 0 ? 0 : productCount}}</span>)</p>
+
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="col-md-1 col-sm-3 col-3 text-center mt-1">
+
+                        <mat-icon class="order-icon" (click)="goToMyOrders()">reorder</mat-icon>
+                        <br />
+                        <p class="order-text font-weight-bold" (click)="goToMyOrders()">My Orders</p>
 
 
-                </div>
-                <div class="spacer"></div>
-                <div class="col-md-1 col-sm-3 col-3 text-center mt-1">
-
-                    <mat-icon class="order-icon" (click)="goToMyOrders()">reorder</mat-icon>
-                    <br />
-                    <p class="order-text font-weight-bold" (click)="goToMyOrders()">My Orders</p>
+                    </div>
+                    <div class="spacer"></div>
 
 
                 </div>
-                <div class="spacer"></div>
-                <!-- <div class="col-md-1 col-sm-3 col-3 text-center mt-1">
-
-                    <mat-icon class="login-icon" (click)="goToLogin()">person_add</mat-icon>
-                    <br />
-                    <p class="login-text font-weight-bold" (click)="goToLogin()">Login</p>
-
-
-                </div>
-                <div class="spacer"></div> -->
-
             </div>
         </div>
     </div>
