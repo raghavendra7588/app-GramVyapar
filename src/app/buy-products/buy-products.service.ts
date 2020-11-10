@@ -6,15 +6,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class BuyProductsService {
 
-  // private BASE_URL = 'http://localhost:55547/';
   masterDataArray: any = [];
   masterDataResonseArray: any = [];
-  private BASE_URL = 'http://203.112.144.38/uat_InventoryService/';
-  private ADMIN_BASE_URL = 'http://203.112.144.38/uat_AdminApi/api/';
 
+  private ADMIN_BASE_URL = 'https://3intellects.co.in/Uat_AdminApi/api/';
+
+  
   private GET_PRODUCT_LIST = this.ADMIN_BASE_URL + 'Product/GetProductList';
-
-
   private GET_ALL_CATEGORY_DATA = this.ADMIN_BASE_URL + 'Category/getsellercategories';
   private GET_ALL_SUBCATEGORIES_DATA = this.ADMIN_BASE_URL + 'Category/getall';
   private GET_PRODUCT_INFORMATION = this.ADMIN_BASE_URL + 'Product/GetProductInfo';
@@ -27,13 +25,7 @@ export class BuyProductsService {
   private PLACE_ORDER_API = this.ADMIN_BASE_URL + 'Cart/ConfirmOrder';
   private GET_ORDER_LIST_DATA = this.ADMIN_BASE_URL + 'Order/GetCustomerOrderList';
 
-  private GET_ALL_MY_ORDERS_DATA = this.BASE_URL + 'api/MyOrders/getMyOrders';
-  private GET_ALL_MY_ORDERS_DATA_BY_PURCHASE_PRODUCT_ID = this.BASE_URL + 'api/MyOrders';
-  private UPDATE_MY_ORDERS_DATA = this.BASE_URL + 'api/MyOrders/editMyOrders';
-  private DELETE_MY_ORDERS_DATA = this.BASE_URL + 'api/MyOrders/deleteMyOrders';
-  private INSERT_ADDRESS_DATA = this.BASE_URL + 'api/APPAddress';
-  private GET_ADDRESS_DATA_BY_ID = this.BASE_URL + 'api/APPAddress';
-  private INSERT_PURCHASE_PRODUCT = this.BASE_URL + 'api/PurchaseProducts';
+
 
 
 
@@ -102,33 +94,7 @@ export class BuyProductsService {
     return this.http.post(this.GET_ADDRESS_BASED_ON_PINCODE, data, { headers: reqHeader });
   }
 
-  insertAddressData(addressData) {
-    return this.http.post(this.INSERT_ADDRESS_DATA, addressData);
-  }
 
-  getAddressDataById(vendorId) {
-    return this.http.get(this.GET_ADDRESS_DATA_BY_ID + '/' + vendorId);
-  }
-
-  savePurchaseProduct(purchaseProductData) {
-    return this.http.post(this.INSERT_PURCHASE_PRODUCT, purchaseProductData);
-  }
-
-  getALLOrdersData(MyOrdersData) {
-    return this.http.post(this.GET_ALL_MY_ORDERS_DATA, MyOrdersData);
-  }
-
-  getAllOrdersDataByPurchaseProductId(PurchaseProductId: number) {
-    return this.http.get(this.GET_ALL_MY_ORDERS_DATA_BY_PURCHASE_PRODUCT_ID + '/' + PurchaseProductId);
-  }
-
-  updateOrdersData(MyOrdersData) {
-    return this.http.post(this.UPDATE_MY_ORDERS_DATA, MyOrdersData);
-  }
-
-  deleteMyOrdersData(MyOrdersData) {
-    return this.http.post(this.DELETE_MY_ORDERS_DATA, MyOrdersData);
-  }
 
   getALLSubCaetgoryData(vendorCode: string, categoryid: string, subcategoryid: string, brandid: string) {
     const data = { 'vendorCode': vendorCode, 'categoryid': categoryid, 'subcategoryid': subcategoryid, 'brandid': brandid }

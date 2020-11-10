@@ -1,21 +1,31 @@
-import { AfterViewInit, Component, OnInit, ViewChild, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BuyProductsService } from '../buy-products.service';
 import { MatPaginator } from '@angular/material/paginator';
+// import { EmitterService } from 'src/shared/emitter.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { EmitterService } from 'src/app/shared/emitter.service';
-import { NgxSpinnerService } from "ngx-spinner";
+
 
 @Component({
   selector: 'app-categories-home',
   templateUrl: './categories-home.component.html',
   styleUrls: ['./categories-home.component.css']
 })
-export class CategoriesHomeComponent implements OnInit, OnDestroy {
+export class CategoriesHomeComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'brandname'];
+  // displayedColumns: string[] = ['name', 'brandname', 'selectVarient', 'mrp',
+  //   'discount', 'finalPrice', 'requiredQuantity', 'add'];
+
+
+  // displayedColumns: string[] = ['name', 'brandname', 'selectVarient', 'mrp',
+  //   'discount', 'requiredQuantity', 'add'];
+
+
+  displayedColumns: string[] = ['name', 'brandname', 'selectVarient', 'finalPrice',
+    'requiredQuantity', 'add'];
 
   dataSource: any;
   searchResult: any;
@@ -83,12 +93,14 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
   quantityList: any = [];
   selectedQuantity: number;
   totalOrder: string;
+
   isFirstTime: boolean;
   vendorContactNo: string;
 
-  masterData: any = [];
-  masterDataResponse: any = [];
-
+  // page = 1;
+  // pageSize = 4;
+  // collectionSize = COUNTRIES.length;
+  // countries: Country[];
 
   constructor(
     public formBuilder: FormBuilder,
@@ -98,20 +110,15 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
     public toastr: ToastrService,
     private cdr: ChangeDetectorRef,
     private fb: FormBuilder,
-    private activatedRoute: ActivatedRoute,
-    private spinner: NgxSpinnerService
+    private activatedRoute: ActivatedRoute
   ) {
 
     this.activatedRoute.queryParams.subscribe(params => {
       this.name = params['name']
     });
-
-    sessionStorage.setItem('vendorName', this.name);
-
-
     if ("isFirstTime" in sessionStorage) {
       this.isFirstTime = false;
-      this.spinner.show();
+      // this.spinner.show();
     }
     else {
       this.isFirstTime = true;
@@ -122,26 +129,26 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
 
         if ("isFirstTime" in sessionStorage) {
           this.isFirstTime = false;
-          this.spinner.show();
+          // this.spinner.show();
         }
         else {
           this.isFirstTime = true;
         }
       }
     });
-    // this.spinner.show();
 
+    sessionStorage.setItem('vendorName', this.name);
     this.buyProductsService.getVendorDetails(this.name).subscribe(response => {
 
       this.vendorResponse = response;
+      // console.log('getVendorDetails', this.vendorResponse);
       this.responseVendorCode = this.vendorResponse.vendorcode;
       this.responseSellerId = this.vendorResponse.id;
       this.responseVendorName = this.vendorResponse.name;
       this.isHomeDelivery = this.vendorResponse.homedelivery;
       this.homeDeliveryLimit = Number(this.vendorResponse.homedeliverylimit);
       this.vendorContactNo = this.vendorResponse.mobilenumber;
-
-
+      // this.totalOrder = "0";
 
       sessionStorage.setItem('sellerName', this.responseVendorName);
       sessionStorage.setItem('vendorId', this.responseVendorCode);
@@ -152,69 +159,29 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
       sessionStorage.setItem('creditYN', this.vendorResponse.creditYN);
       sessionStorage.setItem('vendorContactNo', this.vendorContactNo);
       this.emitterService.isVendorContactNumber.emit(true);
+      // sessionStorage.setItem('totalOrder', this.totalOrder);
 
       this.parentId = '0';
       this.vendorId = sessionStorage.getItem('vendorId');
       this.emitterService.isValidateResponse.emit(true);
+      this.buyProductsService.getAllCategory(this.vendorId).subscribe(data => {
 
-      //required
-      // this.buyProductsService.getAllCategory(this.vendorId).subscribe(data => {
-
-      //   this.categoryListData = data;
-      //   console.log('inside get api api call &&&', this.categoryListData);
-
-      //   //required
-      //   //  this.checkCartItems(this.categoryListData);
-      // });
-
-      // this.emitterService.masterResponse.subscribe(response => {
-      //   if (response) {
-      //     console.log('master data emitter', response);
-      //   }
-      // });
-
-      if ("isFirstTime" in sessionStorage) {
-        
-        this.categoryListData = JSON.parse(sessionStorage.getItem('category_array'));
-        this.masterData = this.buyProductsService.masterDataArray;
-        
-        
-        this.responseVendorCode = sessionStorage.getItem("vendorId");
-        let masterDataLengthCount = sessionStorage.getItem("master_data");
-        
-        if (this.isFirstTime === false) {
-          
-
-          if (this.masterData === null || this.masterData === undefined || this.masterData === [] || Number(masterDataLengthCount) < 1 || !this.masterData.length) {
-           
-            this.masterData = this.getAllProductsData(this.responseVendorCode);
-            console.log('due to page refresh master called', this.masterData);
-          }
-          else {
-            console.log('2nd time masterData', this.buyProductsService.masterDataResonseArray);
-            this.masterData = this.buyProductsService.masterDataResonseArray;
-            this.categoryListData = this.createUniqueCategoriesName(this.masterData);
-            console.log('2nd time cat list data unique array', this.categoryListData);
-            this.checkCartItems(this.categoryListData);
-            this.spinner.hide();
-
-          }
-        }
-
-
-      }
-      else {
-        console.log('no data for category array');
-        this.masterData = this.getAllProductsData(this.responseVendorCode);
-      }
-
-
-
+        this.categoryListData = data;
+        // this.isDataLoaded = true;
+        this.checkCartItems(this.categoryListData);
+      });
     });
-    // console.log('i will excecute');
     this.parentId = '0';
     this.vendorId = sessionStorage.getItem('vendorId');
 
+
+
+    // this.buyProductsService.getAllCategory(this.parentId, this.vendorId).subscribe(data => {
+
+    //   this.categoryListData = data;
+
+    //   this.checkCartItems(this.categoryListData);
+    // });
 
     this.patientCategory = this.fb.group({
       patientCategory: [null, Validators.required]
@@ -223,8 +190,6 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
     this.showInitialProductDetails = true;
     this.finalProductDetails = false;
     this.cartItems = JSON.parse(sessionStorage.getItem('cart_items'));
-
-
 
     if (this.cartItems === null || this.cartItems === undefined || this.cartItems === []) {
 
@@ -275,6 +240,7 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
 
   }
   ngAfterViewInit() {
+    // this.dataSource.paginator = this.paginator
   }
 
   checkCartItems(arr) {
@@ -286,25 +252,27 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
       let particularCategories: any = [];
 
       this.categoryListData = [];
-      console.log('uniqueCategoriesArray', this.uniqueCategoriesArray);
       arr.filter(item => {
 
         if (this.uniqueCategoriesArray.includes(Number(item.id))) {
           particularCategories = item;
           this.categoryListData.push(particularCategories);
-
         }
-        console.log('category array', this.categoryListData);
+
       });
     }
 
   }
 
 
+  // getCategoryListData() {
+  //   this.buyProductsService.getAllCategory(this.parentId, this.vendorId).subscribe(data => {
+  //     this.categoryListData = data;
+  //   });
+  // }
 
   getSubCategoryListData() {
     this.parentId = '3';
-    //required
     this.buyProductsService.getAllSubCategory(this.parentId, this.vendorId).subscribe(data => {
       this.subCategoryListData = data;
 
@@ -345,41 +313,32 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
 
 
   selectedCategoryFromList(response) {
-    console.log('category selected', response);
     this.parentId = response.id;
     this.categoryId = response.id;
 
-    this.createUniqueSubCategoriesName(this.categoryId);
-    //required
-    // this.buyProductsService.getAllSubCategory(this.parentId, this.vendorId).subscribe(data => {
-    //   this.subCategoryListData = data;
-    //   this.parentId = '0';
 
-    // });
+    this.buyProductsService.getAllSubCategory(this.parentId, this.vendorId).subscribe(data => {
+      this.subCategoryListData = data;
+      this.parentId = '0';
+      // this.getAllSubCategoryData();
+    });
   }
 
   selectedSubCategoryFromList(response) {
-    console.log('sub category response', response);
-    this.subCategoryId = response.subcategoryid;
-    this.SubCategoryId = response.subcategoryid;
+    this.subCategoryId = response.id;
+    this.SubCategoryId = response.id;
     this.isDataLoaded = true;
-    // this.getAllBrandsData();
-
-    this.createUniqueBrands(this.categoryId, this.SubCategoryId);
+    this.getAllBrandsData();
   }
 
   selectedBrandFromList(response) {
-    console.log('response brands click', response);
-    console.log('catch brand array', this.catchBrandArray);
+
     let filteredBrandArray = this.catchBrandArray.filter(function (item) {
       return item.brandname.trim() === response.brandname.trim() && item.brandid === response.brandid;
     });
-    console.log('filteredBrandArray', filteredBrandArray);
     this.productsArray = filteredBrandArray;
-    this.brandsData = this.productsArray;
-    //required
-    // this.dataSource = new MatTableDataSource(this.productsArray);
-    // this.dataSource.paginator = this.paginator;
+    this.dataSource = new MatTableDataSource(this.productsArray);
+    this.dataSource.paginator = this.paginator;
   }
 
   selectedVarientFromList(response, i) {
@@ -392,7 +351,17 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
     this.showInitialProductDetails = false;
     this.finalProductDetails = true;
 
-
+    // for (let i = 0; i < this.brandsData.length; i++) {
+    //   for (let j = 0; j < response.productDetails.length; j++) {
+    //     if (Number(response.productid) === Number(this.brandsData[i].productid) &&
+    //       (response.name) === (this.brandsData[i].name) &&
+    //       Number(response.brandid) === Number(this.brandsData[i].brandid)
+    //     ) {
+    //       console.log( this.brandsData[i].productDetails[j].Unit);
+    //       response.productDetails[j].Unit = this.brandsData[i].productDetails[j].Unit;
+    //     }
+    //   }
+    // }
     this.selectedProductId = response.productid;
     this.availableQuantity = response.productDetails[i].outOfStockFlag;
 
@@ -402,8 +371,6 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
 
 
   onQuantityChange(response, quantity, i) {
-    console.log('quantity', quantity);
-    console.log('response', response);
     if (this.selectedIndex === undefined || this.selectedIndex === null) {
       i = 0;
       this.selectedIndex = 0;
@@ -424,9 +391,12 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
       }
 
     } else {
+      console.log("");
     }
 
     if (Number(quantity) > 0) {
+
+      // this.catchResponse = this.pushProduct(this.purchaseProductArray, response, i);
       this.catchResponse = this.pushProduct(this.purchaseProductArray, response, this.selectedIndex);
       this.purchaseProductArray = this.catchResponse;
       this.selectedQuantity = 0;
@@ -436,10 +406,32 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
       this.emitterService.isProductIsAddedOrRemoved.emit(true);
     }
     else {
-      this.toastr.error('Check Quantity');
+      this.toastr.error('check Quantity');
     }
 
   }
+
+  // pushProduct(arr, response, j) {
+
+  //   let sellerID = sessionStorage.getItem('sellerId');
+  //   let vendorCode = sessionStorage.getItem('vendorId');
+
+  //   if (j === undefined) {
+  //     j = 0;
+  //   }
+
+
+  //   // let productItemsObj = {
+  //   //   deliverySlot: "", paymentType: "", status: "", isactive: "Y",
+  //   //   cartDetails: [{
+  //   //     ImageVersion: "0", cartid: "0", discount: response.productDetails[j].Discount.toString(),
+  //   //     finalPrice: response.productDetails[j].FinalPrice.toString(), id: response.productDetails[j].id.toString(),
+  //   //     mrp: response.productDetails[j].MRP.toString(),
+  //   //     productVarientid: 1662, quantity: response.mappingid
+  //   //   }],
+  //   //   LanguageCode: "en", cartid: "0", deliveryUpto: "", deliveredDate: "", deliveryType: "", userid: sellerID.toString(),
+  //   //   vendorCode: vendorCode.toString()
+  //   // }
 
 
   //   arr.push({
@@ -449,6 +441,15 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
   //     FinalPrice: response.productDetails[j].FinalPrice, MRP: response.productDetails[j].MRP, Quantity: response.productDetails[j].Quantity,
   //     RequiredQuantity: response.mappingid, categoryid: response.categoryid
   //   });
+  //   // this.buyProductsService.addToCartItems(productItemsObj).subscribe(res => {
+  //   //   // this.cartid = res.cartid;
+  //   //   this.toastr.success('Product is Added Into Cart');
+  //   // });
+
+
+  //   return arr;
+  // }
+
 
   pushProduct(arr, response, j) {
 
@@ -461,7 +462,7 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
 
     const index = arr.findIndex((o) => o.productid === response.productid && o.id === response.productDetails[j].id);
 
-    if (index === -1) {
+    if (index === -1) {                 //not exist
       console.log('not exist');
 
       // arr.push({
@@ -484,7 +485,13 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
         Quantity: response.productDetails[j].Quantity,
         RequiredQuantity: response.mappingid,
         categoryid: response.categoryid
-
+        // id: "0",
+        // cartid: "0",
+        // productVarientid: response.productDetails[j].id,
+        // mrp: response.productDetails[j].MRP,
+        // quantity: response.productDetails[j].Quantity,
+        // discount:response.productDetails[j].Discount,
+        // finalPrice: response.productDetails[j].FinalPrice
       });
 
     } else {
@@ -492,6 +499,7 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
       console.log('exist');
       for (let i = 0; i < arr.length; i++) {
         if (arr[i].productid === response.productid && arr[i].id === response.productDetails[j].id) {
+          // arr[i].RequiredQuantity = arr[i].RequiredQuantity + response.mappingid;
           arr[i].RequiredQuantity = response.mappingid;
           arr[i].brandImageUrl = response.brandImageUrl;
           arr[i].imgurl = response.imgurl;
@@ -506,7 +514,7 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
         }
       }
     }
-
+    // console.table('unique storage array', arr);
     return arr;
   }
 
@@ -553,12 +561,11 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
     this.brandId = "0";
 
     this.selectedIndex = 0;
-    this.customBrandsSelectAll();
-    // this.buyProductsService.getALLBrandData(this.vendorId, this.categoryId, this.SubCategoryId, this.brandId).subscribe(response => {
-    //   this.allBrandsData = response;
-    //   this.dataSource = new MatTableDataSource(this.allBrandsData);
-    //   this.dataSource.paginator = this.paginator;
-    // });
+    this.buyProductsService.getALLBrandData(this.vendorId, this.categoryId, this.SubCategoryId, this.brandId).subscribe(response => {
+      this.allBrandsData = response;
+      this.dataSource = new MatTableDataSource(this.allBrandsData);
+      this.dataSource.paginator = this.paginator;
+    });
   }
 
   onSubCategorySelectAll() {
@@ -566,28 +573,34 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
     this.SubCategoryId = "0";
     this.selectedIndex = 0;
     this.uniqueBrandNamesArray = [];
-    this.customSubCategorySelectAll();
-    // this.buyProductsService.getALLSubCaetgoryData(this.vendorId, this.categoryId, this.SubCategoryId, this.brandId).subscribe(response => {
+   // console.log('select all cliked');
+    this.buyProductsService.getALLSubCaetgoryData(this.vendorId, this.categoryId, this.SubCategoryId, this.brandId).subscribe(response => {
 
-    //   this.allSubCategoryData = response;
-    //   this.brandsData = this.allSubCategoryData;
-
-    //   this.dataSource = new MatTableDataSource(this.allSubCategoryData);
-    //   this.dataSource.paginator = this.paginator;
-    // });
-
-
-
+      this.allSubCategoryData = response;
+      this.brandsData = this.allSubCategoryData;
+      setTimeout(() =>  this.brandsData = response);
+      // this.brandsData = response;
+      //console.log('all sub cat data', this.brandsData);
+      this.dataSource = new MatTableDataSource(this.allSubCategoryData);
+      this.dataSource.paginator = this.paginator;
+    });
+    // console.log('received allSubCategoryData', this.allSubCategoryData);
+    // this.dataSource = new MatTableDataSource(this.allSubCategoryData);
+    // this.dataSource.paginator = this.paginator;
   }
   getAllSubCategoryData() {
     this.brandId = "0";
     this.SubCategoryId = "0";
     this.selectedIndex = 0;
     this.uniqueBrandNamesArray = [];
-
+    // console.log('this.categoryId', this.categoryId);
+    // console.log('this.vendorId', this.vendorId);
+    // console.log('this.SubCategoryId', this.SubCategoryId);
+    // console.log('this.brandId', this.brandId);
 
     this.buyProductsService.getALLSubCaetgoryData(this.vendorId, this.categoryId, this.SubCategoryId, this.brandId).subscribe(response => {
       this.allSubCategoryData = response;
+      // console.log('allSubCategoryData', this.allSubCategoryData);
     });
   }
 
@@ -609,147 +622,6 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
 
     this.selectedQuantity = Number(product.title);
     response.mappingid = this.selectedQuantity.toString();
-  }
-
-  getAllProductsData(vendorCode: string) {
-    this.buyProductsService.getAllData(vendorCode).subscribe(response => {
-      console.log('** get all data response **', response);
-      this.masterData = response;
-      this.masterDataResponse = response;
-      let masterDataLength = this.masterData.length;
-      sessionStorage.setItem("master_data", masterDataLength.toString());
-      this.buyProductsService.masterDataArray = this.masterData;
-      this.buyProductsService.masterDataResonseArray = this.masterData;
-      console.log('master data', this.buyProductsService.masterDataArray);
-      this.categoryListData = this.createUniqueCategoriesName(this.masterData);
-      if ("category_array" in sessionStorage) {
-        this.checkCartItems(this.categoryListData);
-      }
-
-
-      console.log('categoryListData new fetched from master Api getAllProductsData()', this.categoryListData);
-      this.spinner.hide();
-    });
-    return this.masterData;
-  }
-
-  createUniqueCategoriesName(array: any) {
-    let sortedCategoryArray: Array<any> = [];
-    for (let i = 0; i < array.length; i++) {
-      if ((sortedCategoryArray.findIndex(p => p.name.trim() == array[i].categoryname.trim())) == -1) {
-        var item = {
-          name: array[i].categoryname.trim(), id: array[i].categoryid, subcategoryid: array[i].subcategoryid,
-          subcategoryname: array[i].subcategoryname.trim()
-        }
-        sortedCategoryArray.push(item);
-      }
-    }
-    this.categoryListData = sortedCategoryArray;
-    sessionStorage.setItem('category_array', JSON.stringify(this.categoryListData));
-    this.checkCartItems(this.categoryListData);
-    // console.log('outside get api custom call &&&', this.categoryListData);
-    return sortedCategoryArray;
-  }
-
-  createUniqueSubCategoriesName(id: any) {
-    console.log('received id sub cat', id);
-    let sortedSubCategoryArray: Array<any> = [];
-    let finalSubCategoryArray: Array<any> = [];
-    if ("category_array" in sessionStorage) {
-      console.log('got category array');
-      this.categoryListData = JSON.parse(sessionStorage.getItem('category_array'));
-      this.masterData = this.buyProductsService.masterDataArray;
-      console.log('master data from service', this.masterData);
-      this.checkCartItems(this.categoryListData);
-    }
-    for (let i = 0; i < this.masterData.length; i++) {
-
-      if ((sortedSubCategoryArray.findIndex(p => p.name.trim() == this.masterData[i].subcategoryname.trim())) == -1) {
-
-        var item = {
-          categoryname: this.masterData[i].categoryname.trim(), id: this.masterData[i].categoryid, subcategoryid: this.masterData[i].subcategoryid,
-          name: this.masterData[i].subcategoryname.trim(), brandid: this.masterData[i].brandid, productid: this.masterData[i].productid,
-          brandname: this.masterData[i].brandname.trim()
-        }
-        sortedSubCategoryArray.push(item);
-      }
-    }
-    console.log('SubCategoryArray', sortedSubCategoryArray);
-    console.log('2nd time sub cat');
-    for (let i = 0; i < sortedSubCategoryArray.length; i++) {
-      if (Number(sortedSubCategoryArray[i].id) === Number(id)) {
-        sortedSubCategoryArray[i].mappingid = "0";
-        finalSubCategoryArray.push(sortedSubCategoryArray[i]);
-      }
-    }
-    this.subCategoryListData = finalSubCategoryArray;
-    console.log('outside get api  call sub category &&&', this.subCategoryListData);
-    return sortedSubCategoryArray;
-  }
-
-  createUniqueBrands(categoryId, subCategoryId) {
-    let brandsArray: Array<any> = [];
-    let uniqueBrandNames: any = [];
-    for (let i = 0; i < this.masterData.length; i++) {
-      // if (Number(categoryId) === Number(this.masterData[i].categoryid) || Number(subCategoryId) === Number(this.masterData[i].subcategoryid)) {
-      if (Number(subCategoryId) === Number(this.masterData[i].subcategoryid)) {
-        brandsArray.push(this.masterData[i]);
-      }
-    }
-    this.brandsData = brandsArray;
-    this.catchBrandArray = brandsArray;
-    console.log('specific brands data', this.brandsData);
-    // let customResponse = this.createCustomBrandsDataResponse(this.brandsData);
-    // this.brandsData = customResponse;
-
-    // console.log('mapping id made 0', this.brandsData);
-
-    this.dataSource = new MatTableDataSource(this.brandsData);
-    this.dataSource.paginator = this.paginator;
-
-    uniqueBrandNames = this.createUniqueBrandName(this.brandsData);
-    this.uniqueBrandNamesArray = this.sortUniqueBrandName(uniqueBrandNames);
-    console.log('uniqye brand names', this.uniqueBrandNamesArray);
-  }
-
-
-  customSubCategorySelectAll() {
-    let subCategorySelectAll: Array<any> = [];
-    for (let i = 0; i < this.masterData.length; i++) {
-      if (Number(this.categoryId) === Number(this.masterData[i].categoryid)) {
-        subCategorySelectAll.push(this.masterData[i]);
-      }
-
-    }
-    this.brandsData = subCategorySelectAll;
-    this.uniqueBrandNamesArray = [];
-  }
-
-  customBrandsSelectAll() {
-    let brandSelectAll: Array<any> = [];
-    for (let i = 0; i < this.masterData.length; i++) {
-      if (Number(this.SubCategoryId) === Number(this.masterData[i].subcategoryid) && (Number(this.categoryId) === Number(this.masterData[i].categoryid))) {
-        brandSelectAll.push(this.masterData[i]);
-      }
-
-    }
-    this.brandsData = brandSelectAll;
-    console.log('selected brands select all ', this.brandsData);
-    this.uniqueBrandNamesArray = [];
-  }
-
-  customMasterDataResponse(arr) {
-    for (let i = 0; i < arr.length; i++) {
-      arr[i].mappingid = "0";
-    }
-    this.masterDataResponse = arr;
-    this.buyProductsService.masterDataResonseArray = this.masterDataResponse;
-    console.log('this.buyProductsService.masterDataResonseArray', this.buyProductsService.masterDataResonseArray);
-  }
-
-  ngOnDestroy() {
-    console.log('on destroy called');
-    this.masterData = this.masterDataResponse;
-    console.log('assignment done');
+    //console.log('Quantity', response);
   }
 }

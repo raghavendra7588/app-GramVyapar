@@ -67,38 +67,38 @@ export class DialogMyOrdersEditComponent implements OnInit {
   ) {
     let mappedMyOrdersData: any = [];
     this.PurchaseProductId = data;
-    this.buyProductsService.getAllOrdersDataByPurchaseProductId(this.PurchaseProductId).subscribe(data => {
-      console.log('received data', data);
+    // this.buyProductsService.getAllOrdersDataByPurchaseProductId(this.PurchaseProductId).subscribe(data => {
+    //   console.log('received data', data);
 
-      this.myOrdersData = data;
-      mappedMyOrdersData = this.createCustomMyOrder(this.myOrdersData);
-      this.dataSource = new MatTableDataSource(this.myOrdersData);
-      this.dataSource.paginator = this.paginator;
-
-
-
-      this.orderNo = this.myOrdersData[0].OrderNo;
-      this.customerName = this.myOrdersData[0].customerName;
-
-      this.vendorName = this.myOrdersData[0].VendorName;
-      this.mobileNumber = this.myOrdersData[0].mobileNumber;
-
-      this.paymentType = this.myOrdersData[0].PaymentType;
-      this.orderDate = this.myOrdersData[0].OrderDate;
-
-      this.deliveryTime = this.myOrdersData[0].DeliveryTime;
-      this.deliveryType = this.myOrdersData[0].DeliveryType;
-
-      this.houseNo = this.myOrdersData[0].houseNO;
-      this.landMark = this.myOrdersData[0].landmark;
-
-      this.area = this.myOrdersData[0].area;
-      this.city = this.myOrdersData[0].city;
-
-      this.payableCalculation(this.myOrdersData);
+    //   this.myOrdersData = data;
+    //   mappedMyOrdersData = this.createCustomMyOrder(this.myOrdersData);
+    //   this.dataSource = new MatTableDataSource(this.myOrdersData);
+    //   this.dataSource.paginator = this.paginator;
 
 
-    });
+
+    //   this.orderNo = this.myOrdersData[0].OrderNo;
+    //   this.customerName = this.myOrdersData[0].customerName;
+
+    //   this.vendorName = this.myOrdersData[0].VendorName;
+    //   this.mobileNumber = this.myOrdersData[0].mobileNumber;
+
+    //   this.paymentType = this.myOrdersData[0].PaymentType;
+    //   this.orderDate = this.myOrdersData[0].OrderDate;
+
+    //   this.deliveryTime = this.myOrdersData[0].DeliveryTime;
+    //   this.deliveryType = this.myOrdersData[0].DeliveryType;
+
+    //   this.houseNo = this.myOrdersData[0].houseNO;
+    //   this.landMark = this.myOrdersData[0].landmark;
+
+    //   this.area = this.myOrdersData[0].area;
+    //   this.city = this.myOrdersData[0].city;
+
+    //   this.payableCalculation(this.myOrdersData);
+
+
+    // });
 
   }
 
@@ -310,8 +310,8 @@ export class DialogMyOrdersEditComponent implements OnInit {
 
     this.deleteMyOrder.PurchaseProductId = response.PurchaseProductId;
     this.deleteMyOrder.PurchaseProductsItemId = response.PurchaseProductsItemId;
-    this.buyProductsService.deleteMyOrdersData(this.deleteMyOrder).subscribe(data => {
-    });
+    // this.buyProductsService.deleteMyOrdersData(this.deleteMyOrder).subscribe(data => {
+    // });
   }
 
   createOrderItems(storageArray, currentItemsArray) {

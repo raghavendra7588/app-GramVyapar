@@ -154,12 +154,12 @@ export class MyOrdersComponent implements OnInit {
 
 
 
-    this.buyProductsService.getALLOrdersData(this.myOrders).subscribe(response => {
-      this.myOrdersData = response;
-      this.dataSource = new MatTableDataSource(this.myOrdersData);
-      this.dataSource.paginator = this.paginator;
+    // this.buyProductsService.getALLOrdersData(this.myOrders).subscribe(response => {
+    //   this.myOrdersData = response;
+    //   this.dataSource = new MatTableDataSource(this.myOrdersData);
+    //   this.dataSource.paginator = this.paginator;
 
-    });
+    // });
 
     this.myOrders.orderNo = prevOrderNo;
   }

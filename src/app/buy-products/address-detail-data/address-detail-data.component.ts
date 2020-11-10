@@ -49,10 +49,10 @@ openDialog() {
 }
 
 getAddressData() {
-  this.buyProductsService.getAddressDataById(this.vendorId).subscribe(data => {
-    this.addressData = data;
-    this.dataSource = new MatTableDataSource(this.addressData);
-  });
+  // this.buyProductsService.getAddressDataById(this.vendorId).subscribe(data => {
+  //   this.addressData = data;
+  //   this.dataSource = new MatTableDataSource(this.addressData);
+  // });
 }
 
 editAddress(response) {

@@ -19,8 +19,8 @@
             </p>
         </div>
     </div>
-    <div class="row">
-        <div class="col d-flex align-items-center justify-content-center text-center" *ngIf="isFirstTime">
+    <div class="row" *ngIf="isFirstTime">
+        <div class="col d-flex align-items-center justify-content-center text-center">
             <p class="font-weight-bold">
                 Welcome To Our Online Store <br> Please Press Continue and Enjoy Shopping.
 
@@ -28,8 +28,8 @@
 
         </div>
     </div>
-    <div class="row">
-        <div class="col d-flex align-items-center justify-content-center" *ngIf="isFirstTime">
+    <div class="row" *ngIf="isFirstTime">
+        <div class="col d-flex align-items-center justify-content-center">
             <button mat-raised-button class="mt-2" color="primary" (click)="continueShopping()">Continue
             </button>
         </div>
