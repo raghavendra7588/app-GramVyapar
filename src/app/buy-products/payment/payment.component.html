@@ -1,7 +1,7 @@
 <div class="col-md-12 col-12 col-sm-12">
     <h2>PayU Payment Form</h2>
     <form ngNoForm action="https://test.payu.in/_payment" name="payuform" method="POST" target="payment_popup"
-        onsubmit="window.open('about:blank','payment_popup','width=900,height=500');">
+        onsubmit="window.open('about:blank','payment_popup','width=900,height=500');" autocomplete="off">
         <div class="form-group">
             <label for="productInfo">Product Name:</label>
             <input type="text" class="form-control" id="productInfo" name="productinfo"
