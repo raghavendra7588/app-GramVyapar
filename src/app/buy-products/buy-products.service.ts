@@ -8,6 +8,12 @@ import { Observable } from 'rxjs';
 })
 export class BuyProductsService {
 
+  // <add key="MERCHANT_KEY" value="5tJYJdBY" />
+  // <add key="SALT" value="8bDVEHoZ2b" />
+  // <add key="PAYU_BASE_URL" value="https://test.payu.in" />
+  // <add key="action" value="" />
+  // <add key="hashSequence" value="key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10" />
+
   masterDataArray: any = [];
   masterDataResonseArray: any = [];
 
