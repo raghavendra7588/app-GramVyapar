@@ -10,6 +10,8 @@ import { EmitterService } from 'src/app/shared/emitter.service';
 import { ProductName } from '../buy-products.model';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { NgxSpinnerService } from "ngx-spinner";
+
 
 @Component({
   selector: 'app-categories-home',
@@ -121,7 +123,8 @@ export class CategoriesHomeComponent implements OnInit {
     public toastr: ToastrService,
     private cdr: ChangeDetectorRef,
     private fb: FormBuilder,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private spinner: NgxSpinnerService
   ) {
 
     this.activatedRoute.queryParams.subscribe(params => {
@@ -177,7 +180,7 @@ export class CategoriesHomeComponent implements OnInit {
 
         this.masterProductName = response;
         this.masterProductName = this.createCustomProductName(this.masterProductName);
-      
+
       });
 
 
@@ -253,14 +256,18 @@ export class CategoriesHomeComponent implements OnInit {
   }
   selectEvent(item) {
     let productName = item.name
-  
+
     this.userId = "0";
     this.selectedSubCategory = "";
+    this.selectedBrands = "";
     this.brandsData = [];
+    this.uniqueBrandNamesArray = [];
+    this.spinner.show();
     this.buyProductsService.getProductSearch(this.userId, productName, this.responseVendorCode).subscribe(response => {
-      
+
       this.productSearchData = response;
-      this.brandsData =  this.productSearchData;
+      this.brandsData = this.productSearchData;
+      this.spinner.hide();
     });
   }
 
@@ -366,7 +373,7 @@ export class CategoriesHomeComponent implements OnInit {
 
       uniqueBrandNames = this.createUniqueBrandName(this.brandsData);
       this.uniqueBrandNamesArray = this.sortUniqueBrandName(uniqueBrandNames);
-
+      this.spinner.hide();
     });
   }
 
@@ -374,11 +381,12 @@ export class CategoriesHomeComponent implements OnInit {
   selectedCategoryFromList(response) {
     this.parentId = response.id;
     this.categoryId = response.id;
-
+    this.spinner.show();
 
     this.buyProductsService.getAllSubCategory(this.parentId, this.vendorId).subscribe(data => {
       this.subCategoryListData = data;
       this.parentId = '0';
+      this.spinner.hide();
       // this.getAllSubCategoryData();
     });
   }
@@ -387,16 +395,20 @@ export class CategoriesHomeComponent implements OnInit {
     this.subCategoryId = response.id;
     this.SubCategoryId = response.id;
     this.isDataLoaded = true;
+    this.selectedBrands = '';
+    this.spinner.show();
     this.getAllBrandsData();
   }
 
   selectedBrandFromList(response) {
     this.brandsData = [];
+    this.spinner.show();
     let filteredBrandArray = this.catchBrandArray.filter(function (item) {
       return item.brandname.trim() === response.brandname.trim() && item.brandid === response.brandid;
     });
     this.productsArray = filteredBrandArray;
     this.brandsData = this.productsArray;
+    this.spinner.hide();
     this.dataSource = new MatTableDataSource(this.productsArray);
     this.dataSource.paginator = this.paginator;
   }
@@ -623,11 +635,13 @@ export class CategoriesHomeComponent implements OnInit {
     this.brandId = "0";
     this.brandsData = [];
     this.selectedIndex = 0;
+    this.spinner.show();
     this.buyProductsService.getALLBrandData(this.vendorId, this.categoryId, this.SubCategoryId, this.brandId).subscribe(response => {
       this.allBrandsData = response;
       this.brandsData = this.allBrandsData;
       this.dataSource = new MatTableDataSource(this.allBrandsData);
       this.dataSource.paginator = this.paginator;
+      this.spinner.hide();
     });
   }
 
