@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ProductName } from './buy-products.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,7 @@ export class BuyProductsService {
 
   private ADMIN_BASE_URL = 'https://3intellects.co.in/Uat_AdminApi/api/';
 
-  
+
   private GET_PRODUCT_LIST = this.ADMIN_BASE_URL + 'Product/GetProductList';
   private GET_ALL_CATEGORY_DATA = this.ADMIN_BASE_URL + 'Category/getsellercategories';
   private GET_ALL_SUBCATEGORIES_DATA = this.ADMIN_BASE_URL + 'Category/getall';
@@ -24,8 +26,8 @@ export class BuyProductsService {
   private ADD_USER_ADDRESS = this.ADMIN_BASE_URL + 'User/AddAddress';
   private PLACE_ORDER_API = this.ADMIN_BASE_URL + 'Cart/ConfirmOrder';
   private GET_ORDER_LIST_DATA = this.ADMIN_BASE_URL + 'Order/GetCustomerOrderList';
-
-
+  private GET_ALL_DATA_BY_PRODUCT_NAME = this.ADMIN_BASE_URL + 'Product/GetAllProductList';
+  private GET_PRODUCT_SEARCH = this.ADMIN_BASE_URL + 'Product/GetProductSearch';
 
 
 
@@ -151,5 +153,28 @@ export class BuyProductsService {
     });
     return this.http.post(this.GET_ORDER_LIST_DATA, data, { headers: reqHeader });
   }
+
+  getAllMasterDataByProductName(sellerId: string): Observable<Array<ProductName>> {
+    const data = {
+      "SellerId": sellerId
+    }
+    let reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.post<Array<ProductName>>(this.GET_ALL_DATA_BY_PRODUCT_NAME, data, { headers: reqHeader });
+  }
+
+  getProductSearch(userId: string, productName: string, vendorCode: string) {
+    const data = {
+      userid: userId,
+      hotkeyword: productName,
+      vendorCode: vendorCode
+    }
+    let reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.post(this.GET_PRODUCT_SEARCH, data, { headers: reqHeader });
+  }
+
 
 }

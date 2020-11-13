@@ -7,7 +7,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { EmitterService } from 'src/app/shared/emitter.service';
-
+import { ProductName } from '../buy-products.model';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-categories-home',
@@ -97,6 +99,15 @@ export class CategoriesHomeComponent implements OnInit {
   isFirstTime: boolean;
   vendorContactNo: string;
 
+  productName: ProductName = new ProductName();
+  masterProductName: Array<ProductName>;
+
+  myControl = new FormControl();
+  filteredOptions: Observable<ProductName[]>;
+  keyword = 'name';
+  userId: string;
+
+  productSearchData: any = [];
   // page = 1;
   // pageSize = 4;
   // collectionSize = COUNTRIES.length;
@@ -161,6 +172,15 @@ export class CategoriesHomeComponent implements OnInit {
       this.emitterService.isVendorContactNumber.emit(true);
       // sessionStorage.setItem('totalOrder', this.totalOrder);
 
+      // this.getMasterProductNameData(this.responseVendorCode);
+      this.buyProductsService.getAllMasterDataByProductName(this.responseVendorCode).subscribe(response => {
+
+        this.masterProductName = response;
+        this.masterProductName = this.createCustomProductName(this.masterProductName);
+      
+      });
+
+
       this.parentId = '0';
       this.vendorId = sessionStorage.getItem('vendorId');
       this.emitterService.isValidateResponse.emit(true);
@@ -222,6 +242,45 @@ export class CategoriesHomeComponent implements OnInit {
     ];
 
 
+  }
+  createCustomProductName(arr) {
+    let customResponse: any = [];
+    for (let i = 0; i < arr.length; i++) {
+      var products = { id: i, name: arr[i].Name };
+      customResponse.push(products);
+    }
+    return customResponse
+  }
+  selectEvent(item) {
+    let productName = item.name
+  
+    this.userId = "0";
+    this.selectedSubCategory = "";
+    this.brandsData = [];
+    this.buyProductsService.getProductSearch(this.userId, productName, this.responseVendorCode).subscribe(response => {
+      
+      this.productSearchData = response;
+      this.brandsData =  this.productSearchData;
+    });
+  }
+
+  onChangeSearch(search: string) {
+    // fetch remote data from here
+    // And reassign the 'data' which is binded to 'data' property.
+  }
+
+  onFocused(e) {
+    // do something
+  }
+
+  displayFn(product) {
+    return product && product.Name ? product.Name : '';
+  }
+
+  private _filter(Name: string): any {
+    const filterValue = Name.toLowerCase();
+
+    return this.masterProductName.filter(option => option.Name.toLowerCase().indexOf(filterValue) === 0);
   }
 
   totalProductsCalculation(arr) {
@@ -290,7 +349,7 @@ export class CategoriesHomeComponent implements OnInit {
   getAllBrandsData() {
     this.brandId = "0";
     let uniqueBrandNames: any = [];
-
+    this.brandsData = [];
 
     this.buyProductsService.getAllProduct(this.categoryId, this.subCategoryId, this.brandId, this.vendorId).subscribe(response => {
 
@@ -332,11 +391,12 @@ export class CategoriesHomeComponent implements OnInit {
   }
 
   selectedBrandFromList(response) {
-
+    this.brandsData = [];
     let filteredBrandArray = this.catchBrandArray.filter(function (item) {
       return item.brandname.trim() === response.brandname.trim() && item.brandid === response.brandid;
     });
     this.productsArray = filteredBrandArray;
+    this.brandsData = this.productsArray;
     this.dataSource = new MatTableDataSource(this.productsArray);
     this.dataSource.paginator = this.paginator;
   }
@@ -367,7 +427,9 @@ export class CategoriesHomeComponent implements OnInit {
 
   }
 
-
+  selectedProductNameFromList(response) {
+    console.log('you selected', response);
+  }
 
 
   onQuantityChange(response, quantity, i) {
@@ -406,7 +468,7 @@ export class CategoriesHomeComponent implements OnInit {
       this.emitterService.isProductIsAddedOrRemoved.emit(true);
     }
     else {
-      this.toastr.error('check Quantity');
+      this.toastr.error('Check Quantity');
     }
 
   }
@@ -559,10 +621,11 @@ export class CategoriesHomeComponent implements OnInit {
 
   onBrandSelectAll() {
     this.brandId = "0";
-
+    this.brandsData = [];
     this.selectedIndex = 0;
     this.buyProductsService.getALLBrandData(this.vendorId, this.categoryId, this.SubCategoryId, this.brandId).subscribe(response => {
       this.allBrandsData = response;
+      this.brandsData = this.allBrandsData;
       this.dataSource = new MatTableDataSource(this.allBrandsData);
       this.dataSource.paginator = this.paginator;
     });
@@ -573,12 +636,12 @@ export class CategoriesHomeComponent implements OnInit {
     this.SubCategoryId = "0";
     this.selectedIndex = 0;
     this.uniqueBrandNamesArray = [];
-   // console.log('select all cliked');
+    // console.log('select all cliked');
     this.buyProductsService.getALLSubCaetgoryData(this.vendorId, this.categoryId, this.SubCategoryId, this.brandId).subscribe(response => {
 
       this.allSubCategoryData = response;
       this.brandsData = this.allSubCategoryData;
-      setTimeout(() =>  this.brandsData = response);
+      setTimeout(() => this.brandsData = response);
       // this.brandsData = response;
       //console.log('all sub cat data', this.brandsData);
       this.dataSource = new MatTableDataSource(this.allSubCategoryData);

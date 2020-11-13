@@ -1,11 +1,7 @@
-
-
-
-
 <div *ngIf="!isFirstTime">
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-md-4 mt-2">
+      <div class="col-md-3 mt-2">
         <mat-form-field style="width: 100% !important;">
           <mat-select placeholder="Category List" [(ngModel)]="selectedCategory">
             <mat-option *ngFor="let item of categoryListData;" [value]="item.id"
@@ -15,7 +11,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="col-md-4 col-sm-12 col-12 mt-2">
+      <div class="col-md-3 col-sm-12 col-12 mt-2">
         <mat-form-field style="width: 100% !important;">
           <mat-select placeholder="Sub Category List" [(ngModel)]="selectedSubCategory">
             <mat-option value="all" (click)="onSubCategorySelectAll()">All</mat-option>
@@ -26,11 +22,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-
-
-    </div>
-    <div class="row justify-content-center">
-      <div class="col-md-4 col-sm-12 col-12 mt-2">
+      <div class="col-md-3 col-sm-12 col-12 mt-2">
         <mat-form-field style="width: 100% !important;">
           <mat-select placeholder="Brand List" [(ngModel)]="selectedBrands">
             <mat-option value="all" (click)="onBrandSelectAll()">All</mat-option>
@@ -41,21 +33,34 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="col-md-4 col-sm-12 col-12 mt-2">
-        <mat-form-field style="width: 100%;">
 
-          <input matInput placeholder="Search Products" [(ngModel)]="searchResult" autocomplete="off">
-        </mat-form-field>
-      </div>
+
     </div>
   </div>
 
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="ng-autocomplete">
+        <ng-autocomplete [data]="masterProductName" [searchKeyword]="keyword" placeHolder="Search Product"
+          (selected)='selectEvent($event)' (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocused($event)'
+          [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
+        </ng-autocomplete>
 
+        <ng-template #itemTemplate let-item>
+          <a [innerHTML]="item.name"></a>
+        </ng-template>
 
-  <mat-divider class="mt-2"></mat-divider>
+        <ng-template #notFoundTemplate let-notFound>
+          <div [innerHTML]="notFound"></div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <!-- 
+  <mat-divider class="mt-2"></mat-divider> -->
   <div *ngIf="isDataLoaded">
 
-    <div class="container-fluid my-2">
+    <div class="container-fluid my-4" style="position: absolute;">
       <div class="row">
         <div class="col-md-6 col-sm-6 col-12 my-2" *ngFor="let element of brandsData | filter : searchResult">
           <mat-card style="width: 95%;">

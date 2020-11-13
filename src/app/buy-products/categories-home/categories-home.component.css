@@ -129,3 +129,18 @@ max-width: 50px !important;
   .cart-icon {
     color: #008000;
   }
+
+  .ng-autocomplete {
+    width:100%;
+    max-width: 600px;
+    height: 150px;
+    display: initial;
+    margin: 0 auto;
+    z-index: 5;
+    /* position: absolute; */
+  
+  }
+
+  /* .custom-component{
+    overflow-y: hidden;
+  } */
