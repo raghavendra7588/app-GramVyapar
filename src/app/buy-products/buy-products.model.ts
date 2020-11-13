@@ -107,7 +107,7 @@ export class PlaceOrder {
     cartid: string;
     locality: string;
     deliveryType: string;
-    deliveryUpto:  string;
+    deliveryUpto: string;
     userid: string;
     mobilenumber: string;
     vendorCode: string;
@@ -129,4 +129,16 @@ export class CartItems {
     quantity: string;
     discount: string;
     finalPrice: string;
+}
+
+export class ProductName {
+    Name: string;
+}
+
+export class PaymentInformation {
+    productinfo: string;
+    firstname: string;
+    email: string;
+    phone: string;
+    amount: string;
 }

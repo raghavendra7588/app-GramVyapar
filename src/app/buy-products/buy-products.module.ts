@@ -44,7 +44,9 @@ import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { NgxSpinnerModule } from "ngx-spinner";
-
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
+import { PaymentComponent } from './payment/payment.component';
 
 @NgModule({
   declarations: [CategoriesHomeComponent, GoToCartComponent, MyOrdersComponent, AddressDetailDataComponent,
@@ -53,7 +55,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
     DialogMyOrdersViewComponent,
     DialogMyOrdersEditComponent,
     NumberDirective,
-    DialogEditAddressComponent],
+    DialogEditAddressComponent,
+    PaymentComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -79,7 +82,9 @@ import { NgxSpinnerModule } from "ngx-spinner";
     MatCheckboxModule,
     MatPaginatorModule,
     NgbPaginationModule,
+    MatAutocompleteModule,
     NgxSpinnerModule,
+    AutocompleteLibModule,
     ToastrModule.forRoot({
       timeOut: 1200,
       preventDuplicates: true
@@ -89,7 +94,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
     Ng2SearchPipeModule
   ],
   exports: [CategoriesHomeComponent, GoToCartComponent, MyOrdersComponent, AddressDetailDataComponent],
-  entryComponents: [DialogAddAddressComponent, DialogOrderNoComponent, DialogMyOrdersViewComponent, DialogMyOrdersEditComponent, DialogEditAddressComponent],
+  entryComponents: [DialogAddAddressComponent, DialogOrderNoComponent, DialogMyOrdersViewComponent, DialogMyOrdersEditComponent,
+    DialogEditAddressComponent, PaymentComponent],
   providers: [BuyProductsService]
 })
 export class BuyProductsModule { }

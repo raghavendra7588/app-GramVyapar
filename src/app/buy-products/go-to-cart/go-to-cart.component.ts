@@ -16,6 +16,7 @@ import { EmitterService } from 'src/app/shared/emitter.service';
 import { DialogOrderNoComponent } from '../dialog-order-no/dialog-order-no.component';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DialogEditAddressComponent } from '../dialog-edit-address/dialog-edit-address.component';
+import { PaymentComponent } from '../payment/payment.component';
 
 @Component({
   selector: 'app-go-to-cart',
@@ -238,6 +239,13 @@ export class GoToCartComponent implements OnInit {
         { id: 0, type: 'Cash' }
       ];
     }
+
+    // if (this.onlineYN === "Y") {
+    //   this.paymentType.push({ id: 2, type: 'Online' });
+    // }
+
+
+
 
 
     this.deliveryTime = [
@@ -642,6 +650,12 @@ export class GoToCartComponent implements OnInit {
 
   selectedPaymentTermFromList(response) {
     this.ispaymentType = true;
+    // if (this.purchaseProducts.PaymentType === 'Online') {
+    //   this.dialog.open(PaymentComponent, {
+    //     width: '600px',
+    //     height: '630px'
+    //   });
+    // }
   }
 
   selectedDeliveryTimeFromList(response) {
@@ -788,8 +802,8 @@ export class GoToCartComponent implements OnInit {
 
 
     for (let i = 0; i < selectedProductStorageArray.length; i++) {
-   
-   
+
+
       totalFinalPrice = ((selectedProductStorageArray[i].MRP - selectedProductStorageArray[i].Discount) * selectedProductStorageArray[i].RequiredQuantity);
 
 
@@ -892,7 +906,7 @@ export class GoToCartComponent implements OnInit {
       sessionStorage.setItem('customerId', this.customerId);
       this.isMobileNumberEntered = true;
       this.prevTotalOrder = Number(this.verifyUserDetails.TotalOrder);
-    
+
       if (this.prevTotalOrder === 0) {
         //console.log();
       }
@@ -972,9 +986,9 @@ export class GoToCartComponent implements OnInit {
 
 
   mobileNoCount() {
-    
+
     this.mobileNoLength = Number(this.mobileNo.length);
-  
+
     if (this.mobileNoLength === 10) {
       this.isMobileNoValid = true;
     }
