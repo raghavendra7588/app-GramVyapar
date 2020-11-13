@@ -132,6 +132,7 @@ export class GoToCartComponent implements OnInit {
   prevTotalOrder: number;
   isMobileNoValid: boolean = false;
   mobileNoLength: number;
+  isOnlineSelected: string;
 
 
   constructor(
@@ -240,9 +241,9 @@ export class GoToCartComponent implements OnInit {
       ];
     }
 
-    // if (this.onlineYN === "Y") {
-    //   this.paymentType.push({ id: 2, type: 'Online' });
-    // }
+    if (this.onlineYN === "Y") {
+      this.paymentType.push({ id: 2, type: 'Online' });
+    }
 
 
 
@@ -650,12 +651,19 @@ export class GoToCartComponent implements OnInit {
 
   selectedPaymentTermFromList(response) {
     this.ispaymentType = true;
-    // if (this.purchaseProducts.PaymentType === 'Online') {
-    //   this.dialog.open(PaymentComponent, {
-    //     width: '600px',
-    //     height: '630px'
-    //   });
-    // }
+    if (this.purchaseProducts.PaymentType === 'Online') {
+      // this.dialog.open(PaymentComponent, {
+      //   width: '600px',
+      //   height: '630px'
+      // });
+      sessionStorage.setItem("isOnlineSelected", "true");
+    }
+    else {
+      if ("isOnlineSelected" in sessionStorage) {
+        sessionStorage.removeItem("isOnlineSelected");
+        // this.spinner.show();
+      }
+    }
   }
 
   selectedDeliveryTimeFromList(response) {
@@ -774,24 +782,33 @@ export class GoToCartComponent implements OnInit {
     }
     this.purchaseProducts.items = JSON.parse(sessionStorage.getItem('cart_items'));
     this.purchaseProducts.VendorName = sessionStorage.getItem('sellerName');
+    this.isOnlineSelected = sessionStorage.getItem("isOnlineSelected");
+    if (this.isOnlineSelected === "true") {
 
 
+      this.dialog.open(PaymentComponent, {
+        width: '600px',
+        height: '630px',
+        disableClose: true
+      });
+    }
+    else {
+      this.buyProductsService.placeOrderData(placOrderObj).subscribe(response => {
+        this.placeOrderResponse = response;
+        this.toastr.success('Your Order Is Placed');
+        this.openDialog();
+        sessionStorage.removeItem('cart_items');
+        sessionStorage.removeItem('category_array');
+        this.purchaseProducts.DeliveryDate = this.prevDeliveryDate;
+        this.emitterService.isProductIsAddedOrRemoved.emit(true);
+        sessionStorage.setItem('isExisting', 'true');
+        sessionStorage.removeItem('totalOrder');
+        sessionStorage.removeItem("isOnlineSelected");
+        this.prevTotalOrder = Number(this.prevTotalOrder + 1);
+        sessionStorage.setItem('totalOrder', this.prevTotalOrder.toString());
+      });
+    }
 
-    this.buyProductsService.placeOrderData(placOrderObj).subscribe(response => {
-      this.placeOrderResponse = response;
-      this.toastr.success('Your Order Is Placed');
-
-      this.openDialog();
-      sessionStorage.removeItem('cart_items');
-      sessionStorage.removeItem('category_array');
-      this.purchaseProducts.DeliveryDate = this.prevDeliveryDate;
-      this.emitterService.isProductIsAddedOrRemoved.emit(true);
-      sessionStorage.setItem('isExisting', 'true');
-      sessionStorage.removeItem('totalOrder');
-      this.prevTotalOrder = Number(this.prevTotalOrder + 1);
-
-      sessionStorage.setItem('totalOrder', this.prevTotalOrder.toString());
-    });
 
   }
   createProductArray(selectedProductStorageArray) {
