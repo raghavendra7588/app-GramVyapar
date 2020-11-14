@@ -87,7 +87,8 @@ import { PaymentComponent } from './payment/payment.component';
     AutocompleteLibModule,
     ToastrModule.forRoot({
       timeOut: 1200,
-      preventDuplicates: true
+      preventDuplicates: true,
+      // positionClass: 'toast-bottom-right'
     }),
     ModalModule.forRoot(),
     MatNativeDateModule,
