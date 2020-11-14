@@ -241,9 +241,9 @@ export class GoToCartComponent implements OnInit {
       ];
     }
 
-    if (this.onlineYN === "Y") {
-      this.paymentType.push({ id: 2, type: 'Online' });
-    }
+    // if (this.onlineYN === "Y") {
+    //   this.paymentType.push({ id: 2, type: 'Online' });
+    // }
 
 
 
@@ -742,14 +742,14 @@ export class GoToCartComponent implements OnInit {
 
 
     if (this.isHomeDelivery === 'N') {
-      this.toastr.error('Home Delivery Not Available For this Seller');
+      this.toastr.error('Home Delivery Not Available For this Seller','Important', { positionClass: 'toast-bottom-right' });
       return;
     }
 
 
     if (this.totalPayableAmount <= this.homeDeliveryLimit && this.selectedDeliveryType === "Home Delivery") {
 
-      this.toastr.error(`Home Delivery Is Available Above ${homeDeliveryValueLimit} Amount`);
+      this.toastr.error(`Home Delivery Is Available Above ${homeDeliveryValueLimit} Amount`,'Important', { positionClass: 'toast-bottom-right' });
       return;
     }
 
@@ -786,11 +786,13 @@ export class GoToCartComponent implements OnInit {
     if (this.isOnlineSelected === "true") {
 
 
-      this.dialog.open(PaymentComponent, {
-        width: '600px',
-        height: '630px',
-        disableClose: true
-      });
+      // this.dialog.open(PaymentComponent, {
+      //   width: '600px',
+      //   height: '630px',
+      //   data: placOrderObj,
+      //   disableClose: true
+      // });
+      this.purchaseProducts.DeliveryDate = new Date(this.prevDeliveryDate);
     }
     else {
       this.buyProductsService.placeOrderData(placOrderObj).subscribe(response => {
@@ -799,7 +801,8 @@ export class GoToCartComponent implements OnInit {
         this.openDialog();
         sessionStorage.removeItem('cart_items');
         sessionStorage.removeItem('category_array');
-        this.purchaseProducts.DeliveryDate = this.prevDeliveryDate;
+        this.purchaseProducts.DeliveryDate = new Date(this.prevDeliveryDate);
+        console.log('prev date', this.prevDeliveryDate);
         this.emitterService.isProductIsAddedOrRemoved.emit(true);
         sessionStorage.setItem('isExisting', 'true');
         sessionStorage.removeItem('totalOrder');
@@ -946,7 +949,7 @@ export class GoToCartComponent implements OnInit {
       }
 
       else {
-        this.toastr.info('Kindly Select Desire Address From The List');
+        this.toastr.info('Kindly Select Desire Address From The List', 'Important', { positionClass: 'toast-bottom-right' });
         this.addressData = this.verifyUserDetails.addresses;
       }
 

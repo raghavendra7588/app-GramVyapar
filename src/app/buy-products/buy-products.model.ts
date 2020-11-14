@@ -36,7 +36,7 @@ export class PurchaseProducts {
     SellerId?: number;
     OrderNo?: string;
     OrderDate?: string;
-    DeliveryDate?: string;
+    DeliveryDate?: any;
     AddressId?: number;
     DeliveryType?: string;
     PaymentType?: string;
