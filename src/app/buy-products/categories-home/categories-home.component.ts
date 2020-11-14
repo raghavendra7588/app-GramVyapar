@@ -103,6 +103,7 @@ export class CategoriesHomeComponent implements OnInit {
 
   productName: ProductName = new ProductName();
   masterProductName: Array<ProductName>;
+  allProductNameData: Array<any>;
 
   myControl = new FormControl();
   filteredOptions: Observable<ProductName[]>;
@@ -180,7 +181,7 @@ export class CategoriesHomeComponent implements OnInit {
 
         this.masterProductName = response;
         this.masterProductName = this.createCustomProductName(this.masterProductName);
-
+        this.allProductNameData = this.masterProductName;
       });
 
 
@@ -249,24 +250,26 @@ export class CategoriesHomeComponent implements OnInit {
   createCustomProductName(arr) {
     let customResponse: any = [];
     for (let i = 0; i < arr.length; i++) {
-      var products = { id: i, name: arr[i].Name };
+      var products = { id: i, name: arr[i].Name, CategoryId: arr[i].CategoryId, SubCategoryId: arr[i].SubCategoryId, BrandId: arr[i].BrandId };
       customResponse.push(products);
     }
     return customResponse
   }
   selectEvent(item) {
-    let productName = item.name
+    let productName = item.name;
 
     this.userId = "0";
-    this.selectedSubCategory = "";
+    // this.selectedSubCategory = "";
     this.selectedBrands = "";
     this.brandsData = [];
     this.uniqueBrandNamesArray = [];
     this.spinner.show();
     this.buyProductsService.getProductSearch(this.userId, productName, this.responseVendorCode).subscribe(response => {
-
+      
       this.productSearchData = response;
-      this.brandsData = this.productSearchData;
+      let customResponse = this.createCustomBrandsDataResponse(this.productSearchData);
+      this.brandsData = customResponse;
+      
       this.spinner.hide();
     });
   }
@@ -382,7 +385,11 @@ export class CategoriesHomeComponent implements OnInit {
     this.parentId = response.id;
     this.categoryId = response.id;
     this.spinner.show();
-
+    this.selectedSubCategory = "";
+    this.selectedBrands = "";
+    this.brandsData = [];
+    this.masterProductName = this.allProductNameData;
+    this.filterProductSearch(this.categoryId);
     this.buyProductsService.getAllSubCategory(this.parentId, this.vendorId).subscribe(data => {
       this.subCategoryListData = data;
       this.parentId = '0';
@@ -397,6 +404,7 @@ export class CategoriesHomeComponent implements OnInit {
     this.isDataLoaded = true;
     this.selectedBrands = '';
     this.spinner.show();
+    this.filterProductSearchBySubCategoryId(this.SubCategoryId);
     this.getAllBrandsData();
   }
 
@@ -700,5 +708,28 @@ export class CategoriesHomeComponent implements OnInit {
     this.selectedQuantity = Number(product.title);
     response.mappingid = this.selectedQuantity.toString();
     //console.log('Quantity', response);
+  }
+
+  filterProductSearch(categoryId: string) {
+    let filteredProductSearch: any = [];
+
+    filteredProductSearch = this.allProductNameData.filter(item => {
+      return Number(item.CategoryId) === Number(categoryId)
+    });
+   
+    this.masterProductName = filteredProductSearch;
+    
+  }
+
+  filterProductSearchBySubCategoryId(subCategoryId: string) {
+    
+    let filteredProductSearch: any = [];
+
+    filteredProductSearch = this.allProductNameData.filter(item => {
+      return Number(item.SubCategoryId) === Number(subCategoryId)
+    });
+  
+    this.masterProductName = filteredProductSearch;
+ 
   }
 }
