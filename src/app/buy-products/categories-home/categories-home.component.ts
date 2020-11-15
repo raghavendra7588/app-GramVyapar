@@ -404,7 +404,7 @@ export class CategoriesHomeComponent implements OnInit {
     this.isDataLoaded = true;
     this.selectedBrands = '';
     this.spinner.show();
-    this.filterProductSearchBySubCategoryId(this.SubCategoryId);
+    //this.filterProductSearchBySubCategoryId(this.SubCategoryId);
     this.getAllBrandsData();
   }
 
