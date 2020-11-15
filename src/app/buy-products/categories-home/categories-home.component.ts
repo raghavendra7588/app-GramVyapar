@@ -259,7 +259,7 @@ export class CategoriesHomeComponent implements OnInit {
     let productName = item.name;
 
     this.userId = "0";
-    // this.selectedSubCategory = "";
+    this.selectedSubCategory = "";
     this.selectedBrands = "";
     this.brandsData = [];
     this.uniqueBrandNamesArray = [];
