@@ -142,3 +142,56 @@ export class PaymentInformation {
     phone: string;
     amount: string;
 }
+
+export class GenerateHashKey {
+    amount: string;
+    firstname: string;
+    email: string;
+    phone: string;
+    productinfo: string;
+    surl: string;
+    furl: string;
+    mode: string;
+    udf1: string;
+    txnid: string;
+}
+
+export class PaymentForm {
+    productName: string;
+    name: string;
+    email: string;
+    amount: string;
+    phone: string;
+    surl: string;
+    furl: string;
+    key: string;
+    hash: string;
+    txnid: string;
+    serviceProvider: string;
+}
+
+
+
+export class PaymentModel {
+    firstname: string;
+    lastname: string;
+    email: string;
+    phone: number;
+    amount: number;
+    productinfo: string;
+    txnid: number;
+    surl: string;
+    furl: string;
+    hash: any;
+    service_provider: string;
+
+    constructor() {
+        this.furl = 'http://localhost:8080/api/payment/failure';
+        this.surl = 'http://localhost:8080/api/payment/success';
+        this.txnid = this.getRandomInt();
+    }
+
+    getRandomInt() {
+        return Math.floor(100000 + Math.random() * 900000);
+    }
+}
