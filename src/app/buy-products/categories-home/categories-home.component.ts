@@ -102,7 +102,8 @@ export class CategoriesHomeComponent implements OnInit {
   vendorContactNo: string;
 
   productName: ProductName = new ProductName();
-  masterProductName: Array<ProductName>;
+  // masterProductName: Array<ProductName>;
+  masterProductName: Array<any>;
   allProductNameData: Array<any>;
 
   myControl = new FormControl();
@@ -153,6 +154,7 @@ export class CategoriesHomeComponent implements OnInit {
     });
 
     sessionStorage.setItem('vendorName', this.name);
+    this.spinner.show();
     this.buyProductsService.getVendorDetails(this.name).subscribe(response => {
 
       this.vendorResponse = response;
@@ -181,7 +183,9 @@ export class CategoriesHomeComponent implements OnInit {
 
         this.masterProductName = response;
         this.masterProductName = this.createCustomProductName(this.masterProductName);
+        console.log("masterProductName", this.masterProductName);
         this.allProductNameData = this.masterProductName;
+        this.spinner.hide();
       });
 
 
@@ -259,17 +263,17 @@ export class CategoriesHomeComponent implements OnInit {
     let productName = item.name;
 
     this.userId = "0";
-    this.selectedSubCategory = "";
+     this.selectedSubCategory = "";
     this.selectedBrands = "";
     this.brandsData = [];
     this.uniqueBrandNamesArray = [];
     this.spinner.show();
     this.buyProductsService.getProductSearch(this.userId, productName, this.responseVendorCode).subscribe(response => {
-      
+
       this.productSearchData = response;
       let customResponse = this.createCustomBrandsDataResponse(this.productSearchData);
       this.brandsData = customResponse;
-      
+
       this.spinner.hide();
     });
   }
@@ -404,7 +408,7 @@ export class CategoriesHomeComponent implements OnInit {
     this.isDataLoaded = true;
     this.selectedBrands = '';
     this.spinner.show();
-    //this.filterProductSearchBySubCategoryId(this.SubCategoryId);
+    // this.filterProductSearchBySubCategoryId(this.SubCategoryId);
     this.getAllBrandsData();
   }
 
@@ -712,24 +716,24 @@ export class CategoriesHomeComponent implements OnInit {
 
   filterProductSearch(categoryId: string) {
     let filteredProductSearch: any = [];
-
-    filteredProductSearch = this.allProductNameData.filter(item => {
+    console.log('got masterProductName', this.masterProductName);
+    filteredProductSearch = this.masterProductName.filter(item => {
       return Number(item.CategoryId) === Number(categoryId)
     });
-   
+
     this.masterProductName = filteredProductSearch;
-    
+
   }
 
   filterProductSearchBySubCategoryId(subCategoryId: string) {
-    
+
     let filteredProductSearch: any = [];
 
     filteredProductSearch = this.allProductNameData.filter(item => {
       return Number(item.SubCategoryId) === Number(subCategoryId)
     });
-  
+
     this.masterProductName = filteredProductSearch;
- 
+
   }
 }

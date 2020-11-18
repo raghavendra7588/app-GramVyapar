@@ -1,39 +1,45 @@
 <div class="col-md-12 col-12 col-sm-12">
-    <!-- <h2>Total Payable Amount: {{totalPayableAmount}}</h2> -->
-    <form ngNoForm action="https://test.payu.in/_payment" name="payuform" method="POST" target="payment_popup"
+    <h5 style="color: #008000;">Total Payable Amount: {{totalPayableAmount}}</h5>
+    <!-- <form ngNoForm action="https://test.payu.in/_payment" name="payuform" method="POST" target="payment_popup"
         onsubmit="window.open('about:blank','payment_popup','width=900,height=500');" autocomplete="off">
+        -->
+    <form [formGroup]="paymentForm" autocomplete="off">
         <div class="form-group">
             <label for="productInfo">Product Name:</label>
-            <input type="text" class="form-control" id="productInfo" name="productinfo"
-                [(ngModel)]="payuform.productinfo">
+            <input type="text" class="form-control"  name="productname" formControlName="productname"
+                [(ngModel)]="payuform.productName" maxlength="100">
         </div>
         <div class="form-group">
             <label for="firstname">Name:</label>
-            <input type="text" class="form-control" id="firstname" name="firstname" [(ngModel)]="payuform.firstname">
+            <input type="text" class="form-control" name="firstname" [(ngModel)]="payuform.name" formControlName="name"
+                maxlength="20">
         </div>
         <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" class="form-control" id="email" name="email" [(ngModel)]="payuform.email">
+            <input type="email" class="form-control"  name="email" [(ngModel)]="payuform.email" formControlName="email"
+                maxlength="50">
         </div>
         <div class="form-group">
             <label for="email">Phone:</label>
-            <input type="number" class="form-control" id="phone" name="phone" [(ngModel)]="payuform.phone">
+            <input type="text" class="form-control"  name="phone" [(ngModel)]="payuform.phone" maxlength="10" formControlName="phone"
+                appNumber>
         </div>
         <div class="form-group">
             <label for="amount">Amount:</label>
-            <input type="number" class="form-control" id="amount" name="amount" [(ngModel)]="payuform.amount">
+            <input type="text" class="form-control"  name="amount" [(ngModel)]="payuform.amount" formControlName="amount"
+                maxlength="30" appNumber>
         </div>
-        <textarea name="surl" id="surl" ng-model="surl" rows="2" cols="2" hidden [(ngModel)]="payuform.surl"></textarea>
-        <textarea name="furl" id="furl" ng-model="furl" rows="2" cols="2" hidden [(ngModel)]="payuform.furl"></textarea>
-        <textarea name="key" id="key" ng-model="key" rows="2" cols="2" hidden [(ngModel)]="payuform.key"></textarea>
-        <textarea name="hash" id="hash" ng-model="hash" rows="2" cols="2" hidden [(ngModel)]="payuform.hash"></textarea>
+        <textarea name="surl" id="surl" ng-model="surl" rows="2" cols="2" hidden [(ngModel)]="payuform.surl" formControlName="Surl"></textarea>
+        <textarea name="furl" id="furl" ng-model="furl" rows="2" cols="2" hidden [(ngModel)]="payuform.furl" formControlName="Furl"></textarea>
+        <textarea name="key" id="key" ng-model="key" rows="2" cols="2" hidden [(ngModel)]="payuform.key" formControlName="Key"></textarea>
+        <textarea name="hash" id="hash" ng-model="hash" rows="2" cols="2" hidden [(ngModel)]="payuform.hash" formControlName="Hash"></textarea>
         <textarea name="txnid" id="txnid" ng-model="txnid" rows="2" cols="2" hidden
-            [(ngModel)]="payuform.txnid"></textarea>
-        <textarea name="service_provider" id="service_provider" rows="2" cols="2" hidden></textarea>
+            [(ngModel)]="payuform.txnid" formControlName="Txnid"></textarea>
+        <textarea name="service_provider" id="service_provider" rows="2" cols="2" hidden [(ngModel)]="payuform.serviceProvider" formControlName="Serviceprovider"></textarea>
         <div class="row">
             <div class="col-md-6 col-6 col-sm-6">
                 <button *ngIf="disablePaymentButton" type="button" class="btn btn-primary width-100"
-                    (click)="confirmPayment()">Confirm</button>
+                    (click)="confirmPayment()" [disabled]="payuform.invalid">Confirm</button>
                 <button *ngIf="!disablePaymentButton" type="submit" class="btn btn-danger width-100">Submit</button>
             </div>
             <div class="col-md-6 col-6 col-sm-6">

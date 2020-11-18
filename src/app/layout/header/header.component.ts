@@ -41,7 +41,7 @@ export class HeaderComponent implements OnInit {
         if ("cart_items" in sessionStorage) {
           this.cart_items = JSON.parse(sessionStorage.getItem('cart_items'));
           this.productCount = this.calculateProductCount(this.cart_items);
-          console.log('product count', this.productCount);
+         
         } else {
           this.productCount = 0;
         }
@@ -53,7 +53,7 @@ export class HeaderComponent implements OnInit {
     if ("cart_items" in sessionStorage) {
       this.cart_items = JSON.parse(sessionStorage.getItem('cart_items'));
       this.productCount = this.calculateProductCount(this.cart_items);
-      console.log('product count', this.productCount);
+      
     } else {
       this.productCount = 0;
     }
@@ -61,11 +61,11 @@ export class HeaderComponent implements OnInit {
     this.emitterService.isVendorContactNumber.subscribe(value => {
       if (value) {
         this.vendorContactNo = sessionStorage.getItem('vendorContactNo');
-        console.log('this.vendorContactNo', this.vendorContactNo);
+      
       }
     });
     this.vendorContactNo = sessionStorage.getItem('vendorContactNo');
-    console.log('this.vendorContactNo', this.vendorContactNo);
+   
   }
 
   ngOnInit(): void {
@@ -75,7 +75,7 @@ export class HeaderComponent implements OnInit {
 
   goToCategories() {
     let shopName = sessionStorage.getItem('vendorName').toString();
-    console.log('vendor name', shopName);
+   
     this.router.navigate(['/buyProducts/categories'], { queryParams: { name: shopName } });
   }
 

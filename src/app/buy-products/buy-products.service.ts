@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ProductName } from './buy-products.model';
+import { PaymentModel, ProductName } from './buy-products.model';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class BuyProductsService {
-  
-// <add key="MERCHANT_KEY" value="5tJYJdBY" />
+
+  // <add key="MERCHANT_KEY" value="5tJYJdBY" />
   // <add key="SALT" value="8bDVEHoZ2b" />
   // <add key="PAYU_BASE_URL" value="https://test.payu.in" />
   // <add key="action" value="" />
@@ -33,10 +35,18 @@ export class BuyProductsService {
   private GET_ORDER_LIST_DATA = this.ADMIN_BASE_URL + 'Order/GetCustomerOrderList';
   private GET_ALL_DATA_BY_PRODUCT_NAME = this.ADMIN_BASE_URL + 'Product/GetAllProductList';
   private GET_PRODUCT_SEARCH = this.ADMIN_BASE_URL + 'Product/GetProductSearch';
+  private GET_HASH_KEY = this.ADMIN_BASE_URL + 'Transaction/GetHashKey';
+  private PAYMENT_GATEWAY = 'https://sandboxsecure.payu.in/_payment';
+  // https://sandboxsecure.payu.in/_payment
+  // private PAYMENT_GATEWAY = ' https://secure.snd.payu.com/';
 
-
+  // private PAYMENT_GATEWAY = '/payment/pay';
+  // '/payment/pay'
+  public API_BASE_URL = environment.apiBaseUrl;
 
   constructor(public http: HttpClient) { }
+
+
 
 
   getAllData(vendorcode: string) {
@@ -181,5 +191,51 @@ export class BuyProductsService {
     return this.http.post(this.GET_PRODUCT_SEARCH, data, { headers: reqHeader });
   }
 
+  getHashKey(hashKeyRequest) {
+    return this.http.post(this.GET_HASH_KEY, hashKeyRequest);
+  }
 
+  httpHeader = {
+    headers: new HttpHeaders({
+      'NoAuth': 'True',
+      'Access-Control-Allow-Origin': '**',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
+      'Access-Control-Allow-Headers': 'X-Requested-With,content-type',
+      'Access-Control-Allow-Credentials': 'true'
+    })
+  };
+
+
+  paymentGateWay(gateWayRequest) {
+    return this.http.post(this.PAYMENT_GATEWAY, gateWayRequest);
+  }
+
+  get(url): Observable<any> {
+    return this.http.get(this.API_BASE_URL + url);
+  }
+
+  post(url, body: any): Observable<any> {
+    return this.http.post(this.API_BASE_URL + url, body, this.httpHeader);
+  }
+
+  put(url, body: any): Observable<any> {
+    return this.http.put(this.API_BASE_URL + url, body, this.httpHeader);
+  }
+
+  delete(url): Observable<any> {
+    return this.http.delete(this.API_BASE_URL + url, this.httpHeader);
+  }
+  createPayment(paymentRequest: PaymentModel) {
+    // const PAYMENT_URL = '/payment/pay';
+    // let PAYMENT_URL = 'https://test.payu.in/_payment';
+    let reqHeader = new HttpHeaders({
+      'NoAuth': 'True',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
+      'Access-Control-Allow-Headers': 'X-Requested-With,content-type',
+      'Access-Control-Allow-Credentials': 'true'
+    });
+    // return this.http.post('https://test.payu.in/_payment', paymentRequest,  { headers: reqHeader });
+    return this.http.post('https://test.payu.in/_payment', paymentRequest);
+  }
 }
