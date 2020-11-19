@@ -112,6 +112,7 @@ export class CategoriesHomeComponent implements OnInit {
   userId: string;
 
   productSearchData: any = [];
+  autoCompleteResponse: any = [];
   // page = 1;
   // pageSize = 4;
   // collectionSize = COUNTRIES.length;
@@ -261,9 +262,9 @@ export class CategoriesHomeComponent implements OnInit {
   }
   selectEvent(item) {
     let productName = item.name;
-
+    console.log('product name', productName);
     this.userId = "0";
-     this.selectedSubCategory = "";
+    this.selectedSubCategory = "";
     this.selectedBrands = "";
     this.brandsData = [];
     this.uniqueBrandNamesArray = [];
@@ -272,15 +273,24 @@ export class CategoriesHomeComponent implements OnInit {
 
       this.productSearchData = response;
       let customResponse = this.createCustomBrandsDataResponse(this.productSearchData);
+      this.autoCompleteResponse = customResponse;
       this.brandsData = customResponse;
-
+      console.log("got the result", this.brandsData);
+      this.assignData()
       this.spinner.hide();
+      this.isDataLoaded = true;
     });
+  }
+  assignData() {
+    this.brandsData = this.autoCompleteResponse;
+    console.log("assignment called", this.brandsData);
   }
 
   onChangeSearch(search: string) {
     // fetch remote data from here
     // And reassign the 'data' which is binded to 'data' property.
+    console.log('search', search);
+    // this.brandsData = this.autoCompleteResponse;
   }
 
   onFocused(e) {
