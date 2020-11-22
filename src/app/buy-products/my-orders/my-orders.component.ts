@@ -181,7 +181,8 @@ export class MyOrdersComponent implements OnInit {
     this.dialog.open(DialogMyOrdersViewComponent, {
       height: '600px',
       width: '1200px',
-      data: this.orderDataResponse
+      data: this.orderDataResponse,
+      disableClose: true
     });
   }
   goToCategoriesPage() {
