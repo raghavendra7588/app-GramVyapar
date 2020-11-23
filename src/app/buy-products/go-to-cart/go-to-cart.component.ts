@@ -241,9 +241,9 @@ export class GoToCartComponent implements OnInit {
       ];
     }
 
-    // if (this.onlineYN === "Y") {
-    //   this.paymentType.push({ id: 2, type: 'Online' });
-    // }
+    if (this.onlineYN === "Y") {
+      this.paymentType.push({ id: 2, type: 'Online' });
+    }
 
     this.deliveryTime = [
       { id: 0, type: '9.00 AM - 1.00PM', minHour: 9, maxHour: 13 },
@@ -781,12 +781,12 @@ export class GoToCartComponent implements OnInit {
     this.isOnlineSelected = sessionStorage.getItem("isOnlineSelected");
     if (this.isOnlineSelected === "true") {
 
-      // this.dialog.open(PaymentComponent, {
-      //   width: '600px',
-      //   height: '630px',
-      //   data: placOrderObj,
-      //   disableClose: true
-      // });
+      this.dialog.open(PaymentComponent, {
+        width: '600px',
+        height: '630px',
+        data: placOrderObj,
+        disableClose: true
+      });
       this.purchaseProducts.DeliveryDate = new Date(this.prevDeliveryDate);
     }
     else {

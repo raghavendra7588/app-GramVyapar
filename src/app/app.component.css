@@ -1,0 +1,12 @@
+.margin-top{
+    margin-top: 270px !important;
+}
+
+.header-wrap {
+    position: fixed;
+    height: 200px;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    background-color: white;
+}
