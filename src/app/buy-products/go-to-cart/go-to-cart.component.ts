@@ -230,8 +230,7 @@ export class GoToCartComponent implements OnInit {
     if (this.creditYN === "Y") {
       this.paymentType = [
         { id: 0, type: 'Cash' },
-        { id: 1, type: 'Credit' },
-        // { id: 2, type: 'Online' }
+        { id: 1, type: 'Credit' }
       ];
 
     }
@@ -241,9 +240,9 @@ export class GoToCartComponent implements OnInit {
       ];
     }
 
-    if (this.onlineYN === "Y") {
-      this.paymentType.push({ id: 2, type: 'Online' });
-    }
+    // if (this.onlineYN === "Y") {
+    //   this.paymentType.push({ id: 2, type: 'Online' });
+    // }
 
     this.deliveryTime = [
       { id: 0, type: '9.00 AM - 1.00PM', minHour: 9, maxHour: 13 },
@@ -797,7 +796,6 @@ export class GoToCartComponent implements OnInit {
         sessionStorage.removeItem('cart_items');
         sessionStorage.removeItem('category_array');
         this.purchaseProducts.DeliveryDate = new Date(this.prevDeliveryDate);
-        console.log('prev date', this.prevDeliveryDate);
         this.emitterService.isProductIsAddedOrRemoved.emit(true);
         sessionStorage.setItem('isExisting', 'true');
         sessionStorage.removeItem('totalOrder');

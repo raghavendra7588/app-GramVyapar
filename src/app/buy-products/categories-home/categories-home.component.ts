@@ -159,7 +159,6 @@ export class CategoriesHomeComponent implements OnInit {
     this.buyProductsService.getVendorDetails(this.name).subscribe(response => {
 
       this.vendorResponse = response;
-      // console.log('getVendorDetails', this.vendorResponse);
       this.responseVendorCode = this.vendorResponse.vendorcode;
       this.responseSellerId = this.vendorResponse.id;
       this.responseVendorName = this.vendorResponse.name;
@@ -184,7 +183,6 @@ export class CategoriesHomeComponent implements OnInit {
 
         this.masterProductName = response;
         this.masterProductName = this.createCustomProductName(this.masterProductName);
-        console.log("masterProductName", this.masterProductName);
         this.allProductNameData = this.masterProductName;
         this.spinner.hide();
       });
@@ -262,7 +260,6 @@ export class CategoriesHomeComponent implements OnInit {
   }
   selectEvent(item) {
     let productName = item.name;
-    console.log('product name', productName);
     this.userId = "0";
     this.selectedSubCategory = "";
     this.selectedBrands = "";
@@ -275,7 +272,6 @@ export class CategoriesHomeComponent implements OnInit {
       let customResponse = this.createCustomBrandsDataResponse(this.productSearchData);
       this.autoCompleteResponse = customResponse;
       this.brandsData = customResponse;
-      console.log("got the result", this.brandsData);
       this.assignData()
       this.spinner.hide();
       this.isDataLoaded = true;
@@ -283,13 +279,11 @@ export class CategoriesHomeComponent implements OnInit {
   }
   assignData() {
     this.brandsData = this.autoCompleteResponse;
-    console.log("assignment called", this.brandsData);
   }
 
   onChangeSearch(search: string) {
     // fetch remote data from here
     // And reassign the 'data' which is binded to 'data' property.
-    console.log('search', search);
     // this.brandsData = this.autoCompleteResponse;
   }
 
@@ -451,7 +445,7 @@ export class CategoriesHomeComponent implements OnInit {
     //       (response.name) === (this.brandsData[i].name) &&
     //       Number(response.brandid) === Number(this.brandsData[i].brandid)
     //     ) {
-    //       console.log( this.brandsData[i].productDetails[j].Unit);
+    //    
     //       response.productDetails[j].Unit = this.brandsData[i].productDetails[j].Unit;
     //     }
     //   }
@@ -462,7 +456,7 @@ export class CategoriesHomeComponent implements OnInit {
   }
 
   selectedProductNameFromList(response) {
-    console.log('you selected', response);
+    // console.log('you selected', response);
   }
 
 
@@ -487,7 +481,7 @@ export class CategoriesHomeComponent implements OnInit {
       }
 
     } else {
-      console.log("");
+      //console.log("");
     }
 
     if (Number(quantity) > 0) {
@@ -559,7 +553,7 @@ export class CategoriesHomeComponent implements OnInit {
     const index = arr.findIndex((o) => o.productid === response.productid && o.id === response.productDetails[j].id);
 
     if (index === -1) {                 //not exist
-      console.log('not exist');
+     
 
       // arr.push({
       //   brandImageUrl: response.brandImageUrl, imgurl: response.imgurl, name: response.name,
@@ -592,7 +586,7 @@ export class CategoriesHomeComponent implements OnInit {
 
     } else {
 
-      console.log('exist');
+     
       for (let i = 0; i < arr.length; i++) {
         if (arr[i].productid === response.productid && arr[i].id === response.productDetails[j].id) {
           // arr[i].RequiredQuantity = arr[i].RequiredQuantity + response.mappingid;
@@ -672,18 +666,18 @@ export class CategoriesHomeComponent implements OnInit {
     this.SubCategoryId = "0";
     this.selectedIndex = 0;
     this.uniqueBrandNamesArray = [];
-    // console.log('select all cliked');
+   
     this.buyProductsService.getALLSubCaetgoryData(this.vendorId, this.categoryId, this.SubCategoryId, this.brandId).subscribe(response => {
 
       this.allSubCategoryData = response;
       this.brandsData = this.allSubCategoryData;
       setTimeout(() => this.brandsData = response);
       // this.brandsData = response;
-      //console.log('all sub cat data', this.brandsData);
+
       this.dataSource = new MatTableDataSource(this.allSubCategoryData);
       this.dataSource.paginator = this.paginator;
     });
-    // console.log('received allSubCategoryData', this.allSubCategoryData);
+    
     // this.dataSource = new MatTableDataSource(this.allSubCategoryData);
     // this.dataSource.paginator = this.paginator;
   }
@@ -692,14 +686,10 @@ export class CategoriesHomeComponent implements OnInit {
     this.SubCategoryId = "0";
     this.selectedIndex = 0;
     this.uniqueBrandNamesArray = [];
-    // console.log('this.categoryId', this.categoryId);
-    // console.log('this.vendorId', this.vendorId);
-    // console.log('this.SubCategoryId', this.SubCategoryId);
-    // console.log('this.brandId', this.brandId);
+
 
     this.buyProductsService.getALLSubCaetgoryData(this.vendorId, this.categoryId, this.SubCategoryId, this.brandId).subscribe(response => {
       this.allSubCategoryData = response;
-      // console.log('allSubCategoryData', this.allSubCategoryData);
     });
   }
 
@@ -721,12 +711,10 @@ export class CategoriesHomeComponent implements OnInit {
 
     this.selectedQuantity = Number(product.title);
     response.mappingid = this.selectedQuantity.toString();
-    //console.log('Quantity', response);
   }
 
   filterProductSearch(categoryId: string) {
     let filteredProductSearch: any = [];
-    console.log('got masterProductName', this.masterProductName);
     filteredProductSearch = this.masterProductName.filter(item => {
       return Number(item.CategoryId) === Number(categoryId)
     });

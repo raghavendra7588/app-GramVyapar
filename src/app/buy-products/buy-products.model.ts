@@ -187,7 +187,7 @@ export class PaymentModel {
 
     constructor() {
         this.furl = 'http://localhost:8080/api/payment/failure';
-        this.surl = 'http://localhost:8080/api/payment/success';
+        this.surl = 'https://www.payumoney.com/mobileapp/payumoney/success.php';
         this.txnid = this.getRandomInt();
     }
 

@@ -68,7 +68,6 @@ export class DialogMyOrdersEditComponent implements OnInit {
     let mappedMyOrdersData: any = [];
     this.PurchaseProductId = data;
     // this.buyProductsService.getAllOrdersDataByPurchaseProductId(this.PurchaseProductId).subscribe(data => {
-    //   console.log('received data', data);
 
     //   this.myOrdersData = data;
     //   mappedMyOrdersData = this.createCustomMyOrder(this.myOrdersData);
