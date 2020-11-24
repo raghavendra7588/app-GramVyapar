@@ -23,17 +23,17 @@
             <label for="amount">Amount:</label>
             <input type="number" class="form-control" id="amount" name="amount" [(ngModel)]="payuform.amount">
         </div>
-        <textarea name="surl" id="surl" ng-model="surl" rows="2" cols="2" hidden [(ngModel)]="payuform.surl"></textarea>
-        <textarea name="furl" id="furl" ng-model="furl" rows="2" cols="2" hidden [(ngModel)]="payuform.furl"></textarea>
-        <textarea name="key" id="key" ng-model="key" rows="2" cols="2" hidden [(ngModel)]="payuform.key"></textarea>
+        <textarea name="surl" id="surl" ng-model="surl" rows="2" cols="2" hidden [(ngModel)]="payuform.Surl"></textarea>
+        <textarea name="furl" id="furl" ng-model="furl" rows="2" cols="2" hidden [(ngModel)]="payuform.Furl"></textarea>
+        <textarea name="key" id="key" ng-model="key" rows="2" cols="2" hidden [(ngModel)]="payuform.Key"></textarea>
         <textarea name="hash" id="hash" ng-model="hash" rows="2" cols="2" hidden [(ngModel)]="payuform.hash"></textarea>
         <textarea name="txnid" id="txnid" ng-model="txnid" rows="2" cols="2" hidden
-            [(ngModel)]="payuform.txnid"></textarea>
-        <textarea name="service_provider" id="service_provider" rows="2" cols="2" hidden></textarea>
+            [(ngModel)]="payuform.Txnid"></textarea>
+        <textarea name="service_provider" id="service_provider" rows="2" cols="2" hidden [(ngModel)]="payuform.service_provider"></textarea>
 
-        <!-- <button *ngIf="disablePaymentButton" type="button" class="btn btn-default"
-            (click)="confirmPayment()">Confirm</button> -->
-        <button type="button" class="btn btn-default" (click)="confirmPayment()">Confirm</button>
+        <button *ngIf="disablePaymentButton" type="button" class="btn btn-success"
+            (click)="confirmPayment()">Confirm</button>
+        <button type="button" *ngIf="!disablePaymentButton" class="btn btn-success" type="submit">Submit</button>
         <button type="button" class="ml-2 btn btn-danger"  mat-dialog-close>Close</button>
         <!-- <button *ngIf="!disablePaymentButton" type="submit" class="btn btn-danger">Submit</button> -->
     </form>

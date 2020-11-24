@@ -170,14 +170,28 @@ export class PaymentForm {
     serviceProvider: string;
 }
 
+export class PaymentFormUpdated {
+    productinfo: string;
+    firstname: string;
+    email: string;
+    amount: string;
+    phone: string;
+    Surl: string;
+    Furl: string;
+    Key: string;
+    hash: string;
+    Txnid: string;
+    service_provider: string;
+    udf1: string;
+}
 
 
 export class PaymentModel {
     firstname: string;
     lastname: string;
     email: string;
-    phone: number;
-    amount: number;
+    phone: string;
+    amount: string;
     productinfo: string;
     txnid: number;
     surl: string;
@@ -186,7 +200,7 @@ export class PaymentModel {
     service_provider: string;
 
     constructor() {
-        this.furl = 'http://localhost:8080/api/payment/failure';
+        this.furl = 'https://www.payumoney.com/mobileapp/payumoney/failure.php';
         this.surl = 'https://www.payumoney.com/mobileapp/payumoney/success.php';
         this.txnid = this.getRandomInt();
     }
