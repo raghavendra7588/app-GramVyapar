@@ -35,7 +35,6 @@ export class DialogOrderNoComponent implements OnInit {
   }
   notPrint() {
     let shopName = sessionStorage.getItem('vendorName').toString();
-   
     this.router.navigate(['/buyProducts/categories'], { queryParams: { name: shopName } });
     this.dialogRef.close(true);
   }

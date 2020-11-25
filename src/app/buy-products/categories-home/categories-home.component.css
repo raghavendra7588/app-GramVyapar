@@ -133,7 +133,7 @@ max-width: 50px !important;
   .ng-autocomplete {
     width:100%;
     max-width: 600px;
-    height: 150px;
+    height: 120px;
     display: initial;
     margin: 0 auto;
     z-index: 5;
@@ -147,5 +147,5 @@ max-width: 50px !important;
 
   
 .select-backGroundColor{
-  color:#008000;
+  color: #FF8C00;
 }
