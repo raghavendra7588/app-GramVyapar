@@ -1,7 +1,15 @@
 <!-- <div class="sticky-top"> -->
-    <div class="header-wrap">
+<div class="header-wrap">
     <app-header></app-header>
 </div>
 <div class="margin-top">
-    <router-outlet></router-outlet>
+    <router-outlet (activate)="scrollTop($event)"></router-outlet>
 </div>
+<ngx-scrolltop
+  [backgroundColor]="'#212121'"
+  [symbolColor]="'#fafafa'"
+  [size]="40"
+  [mode]="'classic'"
+  position="right"
+  theme="gray">
+</ngx-scrolltop>

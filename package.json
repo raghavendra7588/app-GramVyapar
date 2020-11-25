@@ -29,6 +29,7 @@
     "font-awesome": "^4.7.0",
     "ng2-search-filter": "^0.5.1",
     "ngx-bootstrap": "^6.1.0",
+    "ngx-scrolltop": "^2.0.3",
     "ngx-spinner": "^10.0.1",
     "ngx-toastr": "^13.1.0",
     "rxjs": "~6.5.5",

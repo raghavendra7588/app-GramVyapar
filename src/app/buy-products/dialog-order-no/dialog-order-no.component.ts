@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { EmitterService } from 'src/app/shared/emitter.service';
 
 
 @Component({
@@ -16,7 +17,8 @@ export class DialogOrderNoComponent implements OnInit {
     public router: Router,
     public route: ActivatedRoute,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<DialogOrderNoComponent>) {
+    public dialogRef: MatDialogRef<DialogOrderNoComponent>,
+    public emitterService: EmitterService) {
     this.placeOrderResponse = data;
 
 
@@ -30,6 +32,7 @@ export class DialogOrderNoComponent implements OnInit {
 
   agreeToPrint() {
     let shopName = sessionStorage.getItem('vendorName').toString();
+    this.emitterService.isOrderedPlaced.emit(true);
     this.router.navigate(['/buyProducts/categories'], { queryParams: { name: shopName } });
     this.dialogRef.close(true);
   }
