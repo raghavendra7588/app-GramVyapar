@@ -21,6 +21,7 @@ export class EmitterService {
   public isFirstTimeUser: EventEmitter<boolean>;
   public isVendorContactNumber: EventEmitter<boolean>;
   public masterResponse: EventEmitter<any>;
+  public isOrderedPlaced: EventEmitter<boolean>;
 
   constructor() {
     this.isRecord = new EventEmitter();
@@ -39,5 +40,6 @@ export class EmitterService {
     this.isFirstTimeUser = new EventEmitter();
     this.isVendorContactNumber = new EventEmitter();
     this.masterResponse = new EventEmitter();
+    this.isOrderedPlaced = new EventEmitter();
   }
 }

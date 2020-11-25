@@ -41,6 +41,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { NumberDirective } from './number.directive';
 import { DialogEditAddressComponent } from './dialog-edit-address/dialog-edit-address.component';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxScrollTopModule } from 'ngx-scrolltop';
 
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { NgxSpinnerModule } from "ngx-spinner";
@@ -92,7 +93,8 @@ import { PaymentComponent } from './payment/payment.component';
     }),
     ModalModule.forRoot(),
     MatNativeDateModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    NgxScrollTopModule
   ],
   exports: [CategoriesHomeComponent, GoToCartComponent, MyOrdersComponent, AddressDetailDataComponent],
   entryComponents: [DialogAddAddressComponent, DialogOrderNoComponent, DialogMyOrdersViewComponent, DialogMyOrdersEditComponent,

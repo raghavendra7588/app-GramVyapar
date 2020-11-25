@@ -16,7 +16,7 @@ import { UserService } from './user/user.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { NgxSpinnerModule } from "ngx-spinner";
-
+import { NgxScrollTopModule } from 'ngx-scrolltop';
 
 @NgModule({
   declarations: [
@@ -31,7 +31,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
     BuyProductsModule,
     SharedModule,
     NgbModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    NgxScrollTopModule
   ],
   providers: [BuyProductsService, EmitterService, UserService],
   bootstrap: [AppComponent]
