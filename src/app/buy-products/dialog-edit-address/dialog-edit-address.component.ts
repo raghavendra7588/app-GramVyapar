@@ -42,9 +42,8 @@ export class DialogEditAddressComponent implements OnInit {
       area: [''],
       state: ['']
     });
-    console.log('received in edit address', data);
+   
     this.addressData = data;
-    console.log('got address data ***', this.addressData);
     this.assignAddressData();
 
   }

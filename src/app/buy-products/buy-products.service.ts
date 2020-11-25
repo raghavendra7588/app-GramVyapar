@@ -225,9 +225,8 @@ export class BuyProductsService {
   delete(url): Observable<any> {
     return this.http.delete(this.API_BASE_URL + url, this.httpHeader);
   }
-  createPayment(paymentRequest: PaymentModel) {
-    // const PAYMENT_URL = '/payment/pay';
-    // let PAYMENT_URL = 'https://test.payu.in/_payment';
+  createPayment(paymentRequest) {
+  
     let reqHeader = new HttpHeaders({
       'NoAuth': 'True',
       'Access-Control-Allow-Origin': '*',
@@ -236,6 +235,6 @@ export class BuyProductsService {
       'Access-Control-Allow-Credentials': 'true'
     });
     // return this.http.post('https://test.payu.in/_payment', paymentRequest,  { headers: reqHeader });
-    return this.http.post('https://test.payu.in/_payment', paymentRequest);
+    return this.http.post('https://test.payu.in/_payment', paymentRequest,  { headers: reqHeader });
   }
 }

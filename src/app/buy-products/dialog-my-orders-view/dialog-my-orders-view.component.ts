@@ -76,7 +76,6 @@ export class DialogMyOrdersViewComponent implements OnInit {
   ) {
 
     this.orderDataResponse = data;
-    console.log('order response', this.orderDataResponse);
     this.finalMyOrdersResponse = this.orderDataResponse.orderDetails;
     this.dataSource = new MatTableDataSource(this.finalMyOrdersResponse);
     setTimeout(() => this.dataSource.paginator = this.paginator);
@@ -114,7 +113,6 @@ export class DialogMyOrdersViewComponent implements OnInit {
     this.payableCalculation(this.orderDataResponse.orderDetails);
     // this.vendorContactNo = "7588641864";
     this.vendorContactNo = sessionStorage.getItem('vendorContactNo');
-    console.log('this.vendorContactNo', this.vendorContactNo);
   }
 
 
