@@ -272,6 +272,7 @@ export class CategoriesHomeComponent implements OnInit {
       let customResponse = this.createCustomBrandsDataResponse(this.productSearchData);
       this.autoCompleteResponse = customResponse;
       this.brandsData = customResponse;
+      console.log('res', customResponse);
       this.assignData()
       this.spinner.hide();
       this.isDataLoaded = true;
@@ -553,7 +554,7 @@ export class CategoriesHomeComponent implements OnInit {
     const index = arr.findIndex((o) => o.productid === response.productid && o.id === response.productDetails[j].id);
 
     if (index === -1) {                 //not exist
-     
+
 
       // arr.push({
       //   brandImageUrl: response.brandImageUrl, imgurl: response.imgurl, name: response.name,
@@ -586,7 +587,7 @@ export class CategoriesHomeComponent implements OnInit {
 
     } else {
 
-     
+
       for (let i = 0; i < arr.length; i++) {
         if (arr[i].productid === response.productid && arr[i].id === response.productDetails[j].id) {
           // arr[i].RequiredQuantity = arr[i].RequiredQuantity + response.mappingid;
@@ -666,7 +667,7 @@ export class CategoriesHomeComponent implements OnInit {
     this.SubCategoryId = "0";
     this.selectedIndex = 0;
     this.uniqueBrandNamesArray = [];
-   
+
     this.buyProductsService.getALLSubCaetgoryData(this.vendorId, this.categoryId, this.SubCategoryId, this.brandId).subscribe(response => {
 
       this.allSubCategoryData = response;
@@ -677,7 +678,7 @@ export class CategoriesHomeComponent implements OnInit {
       this.dataSource = new MatTableDataSource(this.allSubCategoryData);
       this.dataSource.paginator = this.paginator;
     });
-    
+
     // this.dataSource = new MatTableDataSource(this.allSubCategoryData);
     // this.dataSource.paginator = this.paginator;
   }
