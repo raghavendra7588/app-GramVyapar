@@ -24,7 +24,7 @@ export class AppComponent {
       if (value) {
 
         this.router.events.subscribe((evt) => {
-          console.log('entered');
+       
           if (!(evt instanceof NavigationEnd)) {
             return;
           }
@@ -52,13 +52,13 @@ export class AppComponent {
 
 
   onEdit() {
-    console.log('clicked');
+    
     this.window.document.getElementById('top').scrollIntoView();
     this.window.document.getElementById('topp').scrollIntoView();
   }
 
   scrollTop(event) {
-    console.log('route changed', event);
+   
     window.scroll(0, 0);
    window.scrollTo({
     top: 0
@@ -66,6 +66,6 @@ export class AppComponent {
 
   }
   onFloatClick(){
-    
+    this.router.navigate(['/buyProducts/goToCart']);
   }
 }
