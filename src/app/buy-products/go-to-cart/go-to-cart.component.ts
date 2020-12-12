@@ -17,6 +17,10 @@ import { DialogOrderNoComponent } from '../dialog-order-no/dialog-order-no.compo
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DialogEditAddressComponent } from '../dialog-edit-address/dialog-edit-address.component';
 import { PaymentComponent } from '../payment/payment.component';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { AppDateAdapter } from './format-datepicker';
+
+
 
 @Component({
   selector: 'app-go-to-cart',
@@ -260,6 +264,7 @@ export class GoToCartComponent implements OnInit {
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
     this.events.push(`${type}: ${event.value}`);
     this.isDeliveryDate = true;
+
   }
 
   openModal(template: TemplateRef<any>, response) {
@@ -737,14 +742,14 @@ export class GoToCartComponent implements OnInit {
 
 
     if (this.isHomeDelivery === 'N') {
-      this.toastr.error('Home Delivery Not Available For this Seller','Important', { positionClass: 'toast-bottom-right' });
+      this.toastr.error('Home Delivery Not Available For this Seller', 'Important', { positionClass: 'toast-bottom-right' });
       return;
     }
 
 
     if (this.totalPayableAmount <= this.homeDeliveryLimit && this.selectedDeliveryType === "Home Delivery") {
 
-      this.toastr.error(`Home Delivery Is Available Above ${homeDeliveryValueLimit} Amount`,'Important', { positionClass: 'toast-bottom-right' });
+      this.toastr.error(`Home Delivery Is Available Above ${homeDeliveryValueLimit} Amount`, 'Important', { positionClass: 'toast-bottom-right' });
       return;
     }
 
@@ -861,7 +866,8 @@ export class GoToCartComponent implements OnInit {
     const year = date.getFullYear();
     const month = `${date.getMonth() + 1}`.padStart(2, "0");
     const day = `${date.getDate()}`.padStart(2, "0");
-    const stringDate = [year, month, day].join("/");
+    // const stringDate = [year, month, day].join("/");
+    const stringDate = [day, month, year].join("-");
     let fullDate = stringDate;
     return fullDate
   }

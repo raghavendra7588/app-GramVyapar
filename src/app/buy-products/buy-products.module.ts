@@ -37,7 +37,7 @@ import { DialogOrderNoComponent } from './dialog-order-no/dialog-order-no.compon
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { DialogMyOrdersViewComponent } from './dialog-my-orders-view/dialog-my-orders-view.component';
 import { DialogMyOrdersEditComponent } from './dialog-my-orders-edit/dialog-my-orders-edit.component';
-import { MatNativeDateModule } from '@angular/material/core';
+import { DateAdapter, MatNativeDateModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { NumberDirective } from './number.directive';
 import { DialogEditAddressComponent } from './dialog-edit-address/dialog-edit-address.component';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
@@ -48,6 +48,19 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { PaymentComponent } from './payment/payment.component';
+import { MatMomentDateModule, MomentDateAdapter } from "@angular/material-moment-adapter";
+
+export const DateFormat = {
+  parse: {
+    dateInput: 'input',
+  },
+  display: {
+    dateInput: 'DD-MM-YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'MM/DD/YYYY',
+    monthYearA11yLabel: 'MMMM YYYY',
+  }
+};
 
 @NgModule({
   declarations: [CategoriesHomeComponent, GoToCartComponent, MyOrdersComponent, AddressDetailDataComponent,
@@ -99,6 +112,9 @@ import { PaymentComponent } from './payment/payment.component';
   exports: [CategoriesHomeComponent, GoToCartComponent, MyOrdersComponent, AddressDetailDataComponent],
   entryComponents: [DialogAddAddressComponent, DialogOrderNoComponent, DialogMyOrdersViewComponent, DialogMyOrdersEditComponent,
     DialogEditAddressComponent, PaymentComponent],
-  providers: [BuyProductsService]
+  providers: [BuyProductsService,
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: DateFormat }],
+
 })
 export class BuyProductsModule { }

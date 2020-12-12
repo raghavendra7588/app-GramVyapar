@@ -18,6 +18,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxScrollTopModule } from 'ngx-scrolltop';
 
+import { MatIconModule } from '@angular/material/icon';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -32,7 +34,8 @@ import { NgxScrollTopModule } from 'ngx-scrolltop';
     SharedModule,
     NgbModule,
     NgxSpinnerModule,
-    NgxScrollTopModule
+    NgxScrollTopModule,
+    MatIconModule,
   ],
   providers: [BuyProductsService, EmitterService, UserService],
   bootstrap: [AppComponent]
