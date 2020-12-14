@@ -30,7 +30,7 @@ export class CategoriesHomeComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'brandname', 'selectVarient', 'finalPrice',
     'requiredQuantity', 'add'];
-
+    ProductForm: FormGroup;
   dataSource: any;
   searchResult: any;
   patientCategory: FormGroup;
@@ -117,7 +117,7 @@ export class CategoriesHomeComponent implements OnInit {
   // pageSize = 4;
   // collectionSize = COUNTRIES.length;
   // countries: Country[];
-
+  txtVarient: any = [];
   constructor(
     public formBuilder: FormBuilder,
     public buyProductsService: BuyProductsService,
@@ -129,7 +129,9 @@ export class CategoriesHomeComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {
-
+    this.productForm = this.fb.group({
+      varient: this.fb.array(['', Validators.required ])
+   });
     this.activatedRoute.queryParams.subscribe(params => {
       this.name = params['name']
     });
@@ -461,10 +463,12 @@ export class CategoriesHomeComponent implements OnInit {
   }
 
 
-  onQuantityChange(response, quantity, i) {
-    if (this.selectedIndex === undefined || this.selectedIndex === null) {
+  onQuantityChange(response, quantity, i,productForm) {
+
+    if (productForm === undefined || productForm === null) {
       i = 0;
-      this.selectedIndex = 0;
+      this.toastr.error('Please select varient');
+      return;
     }
 
     if (this.availableQuantity === 'True') {
@@ -494,6 +498,7 @@ export class CategoriesHomeComponent implements OnInit {
       sessionStorage.setItem('cart_items', JSON.stringify(this.purchaseProductArray));
       this.toastr.success('Product is Added Into Cart');
       this.totalProductsCalculation(this.purchaseProductArray);
+      // this.selectedIndex = undefined;
       this.emitterService.isProductIsAddedOrRemoved.emit(true);
     }
     else {

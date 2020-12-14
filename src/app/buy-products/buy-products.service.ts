@@ -18,7 +18,7 @@ export class BuyProductsService {
   masterDataArray: any = [];
   masterDataResonseArray: any = [];
 
-  private ADMIN_BASE_URL = 'https://3intellects.co.in/Uat_AdminApi/api/';
+  private ADMIN_BASE_URL = 'https://3intellects.co.in/AdminApi/api/';
 
 
   private GET_PRODUCT_LIST = this.ADMIN_BASE_URL + 'Product/GetProductList';

@@ -244,9 +244,9 @@ export class GoToCartComponent implements OnInit {
       ];
     }
 
-    if (this.onlineYN === "Y") {
-      this.paymentType.push({ id: 2, type: 'Online' });
-    }
+    // if (this.onlineYN === "Y") {
+    //   this.paymentType.push({ id: 2, type: 'Online' });
+    // }
 
     this.deliveryTime = [
       { id: 0, type: '9.00 AM - 1.00PM', minHour: 9, maxHour: 13 },
