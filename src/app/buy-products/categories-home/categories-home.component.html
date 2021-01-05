@@ -62,7 +62,9 @@
 
     <div class="container-fluid my-4" style="position: absolute;">
       <div class="row">
-        <div class="col-md-6 col-sm-6 col-12 my-2" *ngFor="let element of brandsData | filter : searchResult">
+        
+        <div class="col-md-6 col-sm-6 col-12 my-2" *ngFor="let element of brandsData | filter : searchResult;let j = index;">
+         
           <mat-card style="margin: auto;">
             <div class="row">
               <div class="col-md-12 col-12 col-sm-6 text-center" style="color: #FF8C00;">
@@ -78,9 +80,9 @@
                 <mat-form-field style="min-width:80%;max-width: 50px;">
                   <mat-placeholder class="select-backGroundColor">Varient
                   </mat-placeholder>
-                  <mat-select id="productDetails">
+                  <mat-select id="productDetails" [(ngModel)]="txtVarient[j]" >
                     <mat-option *ngFor="let item of element.productDetails;let i = index;" [value]="item.Unit"
-                      (click)="selectedVarientFromList(element,i)">
+                      (click)="selectedVarientFromList(element,i)"  >
                       {{item.Unit}}
                     </mat-option>
                   </mat-select>
@@ -108,14 +110,16 @@
               </div>
               <div class="col-md-1 col-1 col-sm-1 text-right" style="margin-top: 19px;">
                 <i class="fa fa-cart-plus fa-2x cart-icon" style="cursor: pointer;" aria-hidden="true"
-                  (click)="onQuantityChange(element,element.mappingid,i)"></i>
+                  (click)="onQuantityChange(element,element.mappingid,j,txtVarient[j])"></i>
 
               </div>
             </div>
 
 
           </mat-card>
+         
         </div>
+     
       </div>
     </div>
 

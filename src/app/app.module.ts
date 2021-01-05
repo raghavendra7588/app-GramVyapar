@@ -19,7 +19,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxScrollTopModule } from 'ngx-scrolltop';
 
 import { MatIconModule } from '@angular/material/icon';
-
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent
@@ -36,6 +36,7 @@ import { MatIconModule } from '@angular/material/icon';
     NgxSpinnerModule,
     NgxScrollTopModule,
     MatIconModule,
+    ReactiveFormsModule,
   ],
   providers: [BuyProductsService, EmitterService, UserService],
   bootstrap: [AppComponent]
