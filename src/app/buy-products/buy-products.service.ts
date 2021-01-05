@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { PaymentModel, ProductName } from './buy-products.model';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -15,11 +15,11 @@ export class BuyProductsService {
   // <add key="PAYU_BASE_URL" value="https://test.payu.in" />
   // <add key="action" value="" />
   // <add key="hashSequence" value="key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10" />
+ 
   masterDataArray: any = [];
   masterDataResonseArray: any = [];
-
+  pUrl: string;
   private ADMIN_BASE_URL = 'https://3intellects.co.in/Uat_AdminApi/api/';
-
 
   private GET_PRODUCT_LIST = this.ADMIN_BASE_URL + 'Product/GetProductList';
   private GET_ALL_CATEGORY_DATA = this.ADMIN_BASE_URL + 'Category/getsellercategories';
@@ -44,10 +44,9 @@ export class BuyProductsService {
   // '/payment/pay'
   public API_BASE_URL = environment.apiBaseUrl;
 
+  private PAYMENT_GATEWAY_URL = 'https://3intellects.co.in/uat_AdminApi/payU.aspx';
+
   constructor(public http: HttpClient) { }
-
-
-
 
   getAllData(vendorcode: string) {
     const data = { "categoryid": "0", "subcategoryid": "0", "brandid": "0", "vendorCode": vendorcode.toString() }
@@ -226,7 +225,7 @@ export class BuyProductsService {
     return this.http.delete(this.API_BASE_URL + url, this.httpHeader);
   }
   createPayment(paymentRequest) {
-  
+
     let reqHeader = new HttpHeaders({
       'NoAuth': 'True',
       'Access-Control-Allow-Origin': '*',
@@ -235,6 +234,18 @@ export class BuyProductsService {
       'Access-Control-Allow-Credentials': 'true'
     });
     // return this.http.post('https://test.payu.in/_payment', paymentRequest,  { headers: reqHeader });
-    return this.http.post('https://test.payu.in/_payment', paymentRequest,  { headers: reqHeader });
+    return this.http.post('https://test.payu.in/_payment', paymentRequest, { headers: reqHeader });
   }
+
+  postPaymenGatewayUrl(Amount, TransactionID, Name, EmailID, mobileno) {
+    let params = new HttpParams()
+      .append('Amount', Amount.toString())
+      .append('TransactionID', TransactionID.toString())
+      .append('Name', Name.toString())
+      .append('EmailID', EmailID.toString())
+      .append('mobileno', mobileno.toString());
+
+    return this.http.post(this.PAYMENT_GATEWAY, { params });
+  }
+
 }

@@ -186,6 +186,15 @@ export class PaymentFormUpdated {
 }
 
 
+export class PaymentGateWay {
+    productinfo: string;
+    Name: string;
+    EmailID: string;
+    Amount: string;
+    mobilno: string;
+    TransationID: string;
+}
+
 export class PaymentModel {
     firstname: string;
     lastname: string;

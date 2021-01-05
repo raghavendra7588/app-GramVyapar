@@ -49,6 +49,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { PaymentComponent } from './payment/payment.component';
 import { MatMomentDateModule, MomentDateAdapter } from "@angular/material-moment-adapter";
+import { PaymentSuccessComponent } from './payment-success/payment-success.component';
+import { PaymentFailureComponent } from './payment-failure/payment-failure.component';
 
 export const DateFormat = {
   parse: {
@@ -70,7 +72,9 @@ export const DateFormat = {
     DialogMyOrdersEditComponent,
     NumberDirective,
     DialogEditAddressComponent,
-    PaymentComponent],
+    PaymentComponent,
+    PaymentSuccessComponent,
+    PaymentFailureComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -109,7 +113,7 @@ export const DateFormat = {
     Ng2SearchPipeModule,
     NgxScrollTopModule
   ],
-  exports: [CategoriesHomeComponent, GoToCartComponent, MyOrdersComponent, AddressDetailDataComponent],
+  exports: [CategoriesHomeComponent, GoToCartComponent, MyOrdersComponent, AddressDetailDataComponent, PaymentSuccessComponent,PaymentFailureComponent],
   entryComponents: [DialogAddAddressComponent, DialogOrderNoComponent, DialogMyOrdersViewComponent, DialogMyOrdersEditComponent,
     DialogEditAddressComponent, PaymentComponent],
   providers: [BuyProductsService,

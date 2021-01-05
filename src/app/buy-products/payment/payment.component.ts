@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BuyProductsService } from '../buy-products.service';
-import { GenerateHashKey, PaymentForm, PaymentFormUpdated, PaymentModel } from '../buy-products.model';
-import { FormGroup } from '@angular/forms';
+import { GenerateHashKey, PaymentForm, PaymentFormUpdated, PaymentGateWay, PaymentModel } from '../buy-products.model';
+import { Router } from '@angular/router';
+import { MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { v4 as uuidv4 } from 'uuid';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-payment',
@@ -11,10 +16,9 @@ import { FormGroup } from '@angular/forms';
 })
 export class PaymentComponent implements OnInit {
 
-  // public payuform: any = {};
   disablePaymentButton: boolean = true;
-  // hashKeyResponse: any;
-
+  paymentGateWayForm: FormGroup;
+  name = 'test';
   response: any;
   responseArr: any = [];
   totalMRP: any = 0;
@@ -22,16 +26,21 @@ export class PaymentComponent implements OnInit {
   totalPayableAmount: number = 0;
   totalItemsOrdered: number = 0;
   generateHashKey: GenerateHashKey = new GenerateHashKey();
-  // payuform: PaymentForm = new PaymentForm();
-  payuform: PaymentFormUpdated = new PaymentFormUpdated();
+  // payuform: PaymentFormUpdated = new PaymentFormUpdated();
+  payuform: PaymentGateWay = new PaymentGateWay();
+
   paymentForm: FormGroup;
   hashKeyResponse: any = [];
   vendorCode: string;
 
   paymentModel: PaymentModel = new PaymentModel();
-
+  maxLengthPhone = 10;
   responseHashKey: string;
   responseTxnId: string;
+  txnid: number;
+  hashKeyRes: any = [];
+
+  payuUrl: string = 'https://3intellects.co.in/uat_AdminApi/payU.aspx';
 
   hashKeyRequest = {
     amount: "",
@@ -47,46 +56,35 @@ export class PaymentComponent implements OnInit {
   };
   constructor(
     private http: HttpClient,
-    public buyProductService: BuyProductsService
+    public buyProductService: BuyProductsService,
+    public router: Router,
+    private dialogRef: MatDialogRef<PaymentComponent>,
+    public formBuilder: FormBuilder,
+    public toastr: ToastrService
   ) {
+    this.paymentGateWayForm = this.formBuilder.group({
+      productName: [''],
+      name: [''],
+      email: [''],
+      phone: [''],
+      amount: ['']
+    });
 
+    let TransactionID = uuidv4();
+    this.txnid = TransactionID.substring(0, 8);
+    this.payuform.Amount = sessionStorage.getItem('totalPayableAmount');
+    console.log('amt', this.payuform.Amount);
   }
 
 
 
   confirmPayment() {
-    // const paymentPayload = {
-    //   email: this.payuform.email,
-    //   name: this.payuform.firstname,
-    //   phone: this.payuform.phone,
-    //   productInfo: this.payuform.productinfo,
-    //   amount: this.payuform.amount
-    // }
-    // return this.http.post<any>('http://localhost:8080/payment/payment-details', paymentPayload).subscribe(
-    //   data => {
-    //   console.log(data);
-    //   this.payuform.txnid = data.txnId;
-    //   this.payuform.surl = data.sUrl;
-    //   this.payuform.furl = data.fUrl;
-    //   this.payuform.key = data.key;
-    //   this.payuform.hash = data.hash;
-    //   this.payuform.txnid = data.txnId;
-    //     this.disablePaymentButton = false;
-    // }, error1 => {
-    //     console.log(error1);
-    //   })
-    // this.payuform.firstname = "Kirti"
-    // this.payuform.txnid = this.hashKeyRequest.txnid;
-    // this.payuform.surl = this.hashKeyRequest.surl;
-    // this.payuform.furl = this.hashKeyRequest.furl;
-    // this.payuform.key = "";
-    // this.payuform.hash = "";
-    // this.disablePaymentButton = false;
+
     this.hashKeyRequest = {
-      amount: this.payuform.amount,
-      firstname: this.payuform.firstname,
-      email: this.payuform.email,
-      phone: this.payuform.phone,
+      amount: this.payuform.Amount,
+      firstname: this.payuform.Name,
+      email: this.payuform.EmailID,
+      phone: this.payuform.mobilno,
       productinfo: this.payuform.productinfo,
       surl: "https://www.payumoney.com/mobileapp/payumoney/success.php",
       furl: "https://www.payumoney.com/mobileapp/payumoney/failure.php",
@@ -96,78 +94,91 @@ export class PaymentComponent implements OnInit {
     }
 
     this.buyProductService.getHashKey(this.hashKeyRequest).subscribe(response => {
+      this.toastr.success('Press Submit To Continue');
+      this.hashKeyRes = response;
+      // this.txnid = this.hashKeyRes.id;
+      this.payuform.Amount = this.payuform.Amount + ".00";
+      this.payuform.mobilno = this.payuform.mobilno;
+      // this.payuform.Name
+      // this.payuform.hash = this.hashKeyRes.hashKey;
+      this.payuform.TransationID = this.txnid.toString();
+      // this.payuform.Surl = "https://www.payumoney.com/mobileapp/payumoney/success.php";
+      // this.payuform.Furl = "https://www.payumoney.com/mobileapp/payumoney/failure.php";
+      // this.payuform.service_provider = 'payu_paisa';
+      // this.payuform.Key = "5tJYJdBY";
+      // this.payuform.udf1 = 'GV000001';
 
-      this.hashKeyResponse = response;
-      // this.hashKeyResponse = this.hashKeyResponse.hashKey;
-      this.responseHashKey = this.hashKeyResponse.hashKey;
-      this.responseTxnId = this.hashKeyResponse.id;
-
-      // this.paymentModel.firstname = this.paymentForm.value.firstname;
-      // this.paymentModel.lastname = this.paymentForm.value.lastname;
-      // this.paymentModel.email = this.paymentForm.value.email;
-      // this.paymentModel.phone = this.paymentForm.value.phone;
-      // this.paymentModel.amount = this.paymentForm.value.amount;
-      // this.paymentModel.productinfo = this.paymentForm.value.productinfo;
 
 
-      // this.paymentModel.firstname = this.payuform.name;
 
-      // this.paymentModel.email = this.payuform.email;
-      // this.paymentModel.phone = this.payuform.phone.toString();
-      // this.paymentModel.amount = this.payuform.amount;
-      // this.paymentModel.productinfo = this.payuform.productName;
-      // this.paymentModel.hash = this.hashKeyResponse;
-      // this.disablePaymentButton = false;
-      // this.paymentModel.txnid = val;
-      // // this.paymentModel.service_provider = 'payu_paisa';
-      // console.log('Payment Model : ' + JSON.stringify(this.paymentModel));
- 
 
-      this.payuform.amount = this.payuform.amount;
-      this.payuform.phone = this.payuform.phone;
-      this.payuform.hash = this.responseHashKey;
-      this.payuform.Txnid = this.responseTxnId;
-      this.payuform.Surl = "https://www.payumoney.com/mobileapp/payumoney/success.php";
-      this.payuform.Furl = "https://www.payumoney.com/mobileapp/payumoney/failure.php";
-      this.payuform.service_provider = 'payu_paisa';
-      this.payuform.Key = "5tJYJdBY";
-      this.payuform.udf1 = 'GV000001';
-      console.log(' this.payuform', this.payuform);
-      
-      const formData = new FormData();
-      formData.append('amount', this.payuform.amount);
-      formData.append('productinfo', this.payuform.productinfo);
-      formData.append('firstname', this.payuform.firstname);
-      formData.append('email', this.payuform.email);
-      formData.append('phone', this.payuform.phone);
-      formData.append('Surl', this.payuform.Surl);
-      formData.append('Furl', this.payuform.Furl);
-      formData.append('Key', this.payuform.Key);
-      formData.append('hash', this.payuform.hash);
-      formData.append('Txnid', this.payuform.Txnid);
-      formData.append('service_provider', this.payuform.service_provider);
-      formData.append('udf1', this.payuform.udf1);
+      let url = new URL(this.payuUrl);
+      url.searchParams.set('Name', this.payuform.Name);
+      url.searchParams.set('EmailID', this.payuform.EmailID);
+      url.searchParams.set('Amount', this.payuform.Amount);
+      url.searchParams.set('mobileno', this.payuform.mobilno.toString());
+      url.searchParams.set('TransationID', this.txnid.toString());
+
+      this.payuUrl = url.href;
+      this.buyProductService.pUrl = url.href
+
+
+
+
+
+
+
+
+
+      // const formData = new FormData();
+      // formData.append('amount', this.payuform.amount);
+      // formData.append('productinfo', this.payuform.productinfo);
+      // formData.append('firstname', this.payuform.firstname);
+      // formData.append('email', this.payuform.email);
+      // formData.append('phone', this.payuform.phone);
+      // formData.append('Surl', this.payuform.Surl);
+      // formData.append('Furl', this.payuform.Furl);
+      // formData.append('Key', this.payuform.Key);
+      // formData.append('hash', this.payuform.hash);
+      // formData.append('Txnid', this.payuform.Txnid);
+      // formData.append('service_provider', this.payuform.service_provider);
+      // formData.append('udf1', this.payuform.udf1);
 
       this.disablePaymentButton = false;
-      this.buyProductService.createPayment(formData).subscribe(
-        res => {
-          console.log('payment gateway response',res);
-          // this.onSuccessPayment(res);
-        },
-        err => {
-          console.log('error occured  ', err);
-          // this.onFailurePayment(err);
-        }
-      );
-      // this.buyProductService.paymentGateWay(paymentGateWayRequest).subscribe(response => {
-      //   console.log('payment gateway response', response);
-      // });
-    });
+      //   this.buyProductService.createPayment(formData).subscribe(
+      //     res => {
+      //       console.log('payment gateway response', res);
+      //     },
+      //     err => {
+      //       console.log('error occured  ', err);
+      //     }
+      //   );
 
+    });
   }
+
+
 
   ngOnInit() {
   }
 
+  navigateToSuccess() {
+    let failure = 'failure';
+    let success = 'success';
+    let TransationID = 124;
+    this.router.navigate(['/success/'], { queryParams: { TransationID: TransationID, Status: 'success' } });
+
+    this.dialogRef.close();
+
+  }
+
+  // navigateToPaymentGateway() {
+
+  //   this.paymentGateWay.Txnid = '100';
+  //   console.log(this.paymentGateWay);
+  //   this.buyProductService.postPaymenGatewayUrl(this.paymentGateWay.amount, this.paymentGateWay.Txnid, this.paymentGateWay.firstname, this.paymentGateWay.email, this.paymentGateWay.phone).subscribe(res => {
+  //     console.log(res);
+  //   });
+  // }
 
 }

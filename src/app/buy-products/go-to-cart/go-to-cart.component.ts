@@ -783,8 +783,11 @@ export class GoToCartComponent implements OnInit {
     this.purchaseProducts.items = JSON.parse(sessionStorage.getItem('cart_items'));
     this.purchaseProducts.VendorName = sessionStorage.getItem('sellerName');
     this.isOnlineSelected = sessionStorage.getItem("isOnlineSelected");
+    sessionStorage.removeItem('totalPayableAmount');
+    sessionStorage.setItem('totalPayableAmount', this.totalPayableAmount.toString());
     if (this.isOnlineSelected === "true") {
-
+      sessionStorage.removeItem('placOrderObj');
+      sessionStorage.setItem('placOrderObj', JSON.stringify(placOrderObj));
       this.dialog.open(PaymentComponent, {
         width: '600px',
         height: '630px',
@@ -1015,4 +1018,14 @@ export class GoToCartComponent implements OnInit {
       this.isMobileNoValid = false;
     }
   }
+
+  // navigateToSuccess() {
+  //   let failure = 'failure';
+  //   let success = 'success';
+  //   let TransationID = 124;
+
+  //   // this.router.navigate(['/payment/failure/'], { queryParams: { TransationID: TransationID, Status: failure } });
+  //   this.router.navigate(['/success/'], { queryParams: { TransationID: TransationID, Status: 'success' } });
+  // }
+
 }
