@@ -67,38 +67,6 @@ export class DialogMyOrdersEditComponent implements OnInit {
   ) {
     let mappedMyOrdersData: any = [];
     this.PurchaseProductId = data;
-    // this.buyProductsService.getAllOrdersDataByPurchaseProductId(this.PurchaseProductId).subscribe(data => {
-
-    //   this.myOrdersData = data;
-    //   mappedMyOrdersData = this.createCustomMyOrder(this.myOrdersData);
-    //   this.dataSource = new MatTableDataSource(this.myOrdersData);
-    //   this.dataSource.paginator = this.paginator;
-
-
-
-    //   this.orderNo = this.myOrdersData[0].OrderNo;
-    //   this.customerName = this.myOrdersData[0].customerName;
-
-    //   this.vendorName = this.myOrdersData[0].VendorName;
-    //   this.mobileNumber = this.myOrdersData[0].mobileNumber;
-
-    //   this.paymentType = this.myOrdersData[0].PaymentType;
-    //   this.orderDate = this.myOrdersData[0].OrderDate;
-
-    //   this.deliveryTime = this.myOrdersData[0].DeliveryTime;
-    //   this.deliveryType = this.myOrdersData[0].DeliveryType;
-
-    //   this.houseNo = this.myOrdersData[0].houseNO;
-    //   this.landMark = this.myOrdersData[0].landmark;
-
-    //   this.area = this.myOrdersData[0].area;
-    //   this.city = this.myOrdersData[0].city;
-
-    //   this.payableCalculation(this.myOrdersData);
-
-
-    // });
-
   }
 
   ngOnInit(): void {
@@ -223,7 +191,6 @@ export class DialogMyOrdersEditComponent implements OnInit {
       }
     }
 
-
     return isCategoryValid;
   }
   checkItemFinalPrice(element) {
@@ -243,9 +210,6 @@ export class DialogMyOrdersEditComponent implements OnInit {
         isRecordValid = true;
       }
     }
-
-
-
     return isRecordValid;
   }
 
@@ -253,12 +217,7 @@ export class DialogMyOrdersEditComponent implements OnInit {
   postMultipleInsertion(elements) {
     elements.forEach(element => {
 
-
-
       this.editMyOrder = new EditMyOrder();
- 
-
-
       this.editMyOrder.Discount = Number(element.Discount);
       this.editMyOrder.FinalPrice = Number(element.FinalPrice);
       this.editMyOrder.MRP = Number(element.MRP);
@@ -281,11 +240,8 @@ export class DialogMyOrdersEditComponent implements OnInit {
 
     });
 
-
     let prevStorageArray: any = [];
     let finalStorageArray: any = [];
-
-
 
     finalStorageArray = this.multipleEntries;
     prevStorageArray = JSON.parse(sessionStorage.getItem('cart_items'));
@@ -306,11 +262,8 @@ export class DialogMyOrdersEditComponent implements OnInit {
   }
 
   deleteProducts(response) {
-
     this.deleteMyOrder.PurchaseProductId = response.PurchaseProductId;
     this.deleteMyOrder.PurchaseProductsItemId = response.PurchaseProductsItemId;
-    // this.buyProductsService.deleteMyOrdersData(this.deleteMyOrder).subscribe(data => {
-    // });
   }
 
   createOrderItems(storageArray, currentItemsArray) {

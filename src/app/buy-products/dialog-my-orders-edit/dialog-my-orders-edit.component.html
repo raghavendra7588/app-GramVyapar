@@ -105,9 +105,6 @@
     <ng-container matColumnDef="oldQuantity">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Old Quantity </th>
         <td mat-cell *matCellDef="let element">
-            <!-- <mat-form-field style="width: 70px !important;">
-                <input matInput placeholder="Quantity" [(ngModel)]="element.RequiredQuantity">
-            </mat-form-field> -->
             {{element.RequiredQuantity}}
         </td>
     </ng-container>
@@ -118,7 +115,6 @@
             <mat-form-field style="width: 70px !important;">
                 <input matInput placeholder="Quantity" [(ngModel)]="element.pincode">
             </mat-form-field>
-            <!-- {{element.RequiredQuantity}} -->
         </td>
     </ng-container>
 

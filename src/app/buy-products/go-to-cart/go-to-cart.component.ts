@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 
 
-import { AddressDetails, CartItems, OrderedItems, PlaceOrder, PurchaseProducts } from '../buy-products.model';
+import { AddressDetails, CartItems, OrderedItems, PaymentGateWay, PlaceOrder, PurchaseProducts } from '../buy-products.model';
 import { BuyProductsService } from '../buy-products.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -16,7 +16,7 @@ import { EmitterService } from 'src/app/shared/emitter.service';
 import { DialogOrderNoComponent } from '../dialog-order-no/dialog-order-no.component';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DialogEditAddressComponent } from '../dialog-edit-address/dialog-edit-address.component';
-import { PaymentComponent } from '../payment/payment.component';
+// import { PaymentComponent } from '../payment/payment.component';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { AppDateAdapter } from './format-datepicker';
 
@@ -66,11 +66,6 @@ export class GoToCartComponent implements OnInit {
   uniquePurchaseOrderItemArray: any = [];
   isActive: boolean;
   multipleEntries: any = [];
-
-
-
-
-
   deliveryType: any = [];
   paymentType: any = [];
   deliveryTime: any = [];
@@ -120,6 +115,7 @@ export class GoToCartComponent implements OnInit {
   isMobileNumberEntered: boolean = false;
 
   purchaseProducts: PurchaseProducts = new PurchaseProducts();
+  payuform: PaymentGateWay = new PaymentGateWay();
   maxLengthPhone = 10;
 
   placeOrderResponse: any = [];
@@ -137,7 +133,12 @@ export class GoToCartComponent implements OnInit {
   isMobileNoValid: boolean = false;
   mobileNoLength: number;
   isOnlineSelected: string;
-
+  disablePaymentButton: boolean = true;
+  payuUrl: string = 'https://3intellects.co.in/uat_AdminApi/payU.aspx';
+  txnid: string;
+  isOnlineTransactionModeSelected: boolean = false;
+  isHidden: boolean = true;
+  makePayment: boolean = false;
 
   constructor(
     public router: Router,
@@ -185,6 +186,7 @@ export class GoToCartComponent implements OnInit {
     });
 
     this.minDate = new Date();
+
   }
 
   ngOnInit(): void {
@@ -208,13 +210,8 @@ export class GoToCartComponent implements OnInit {
     }
     this.payableCalculation(this.cartItems);
 
-
-
-
     this.creditYN = sessionStorage.getItem('creditYN');
     this.onlineYN = sessionStorage.getItem('onlineYN');
-
-
 
     this.vendorId = sessionStorage.getItem('vendorId');
     this.currentAddressId = Number(sessionStorage.getItem('address_id'));
@@ -244,9 +241,9 @@ export class GoToCartComponent implements OnInit {
       ];
     }
 
-    if (this.onlineYN === "Y") {
-      this.paymentType.push({ id: 2, type: 'Online' });
-    }
+    // if (this.onlineYN === "Y") {
+    //   this.paymentType.push({ id: 2, type: 'Online' });
+    // }
 
     this.deliveryTime = [
       { id: 0, type: '9.00 AM - 1.00PM', minHour: 9, maxHour: 13 },
@@ -466,25 +463,6 @@ export class GoToCartComponent implements OnInit {
     return storageArray;
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   selectedAddressFromList(response) {
 
     this.currentlySelectedAddress = response;
@@ -502,6 +480,14 @@ export class GoToCartComponent implements OnInit {
     this.purchaseProducts.AddressId = Number(response.id);
     this.isAddressSelected = true;
     this.addressSelected = true;
+    this.payuform.Name = response.name;
+    this.payuform.mobilno = response.mobilenumber;
+    this.payuform.Amount = this.totalPayableAmount.toString();
+    this.toastr.info('Kindly Enter Email ID', '', {
+      timeOut: 3000,
+      positionClass: 'toast-bottom-right'
+    });
+    this.disablePaymentButton = true;
   }
 
   getCartItems() {
@@ -652,16 +638,19 @@ export class GoToCartComponent implements OnInit {
   selectedPaymentTermFromList(response) {
     this.ispaymentType = true;
     if (this.purchaseProducts.PaymentType === 'Online') {
-      // this.dialog.open(PaymentComponent, {
-      //   width: '600px',
-      //   height: '630px'
-      // });
+      this.isOnlineTransactionModeSelected = true;
+      this.disablePaymentButton = true;
       sessionStorage.setItem("isOnlineSelected", "true");
+    }
+    if (this.purchaseProducts.PaymentType === 'Credit') {
+      this.isOnlineTransactionModeSelected = false;
+    }
+    if (this.purchaseProducts.PaymentType === 'Cash') {
+      this.isOnlineTransactionModeSelected = false;
     }
     else {
       if ("isOnlineSelected" in sessionStorage) {
         sessionStorage.removeItem("isOnlineSelected");
-        // this.spinner.show();
       }
     }
   }
@@ -788,12 +777,12 @@ export class GoToCartComponent implements OnInit {
     if (this.isOnlineSelected === "true") {
       sessionStorage.removeItem('placOrderObj');
       sessionStorage.setItem('placOrderObj', JSON.stringify(placOrderObj));
-      this.dialog.open(PaymentComponent, {
-        width: '600px',
-        height: '630px',
-        data: placOrderObj,
-        disableClose: true
-      });
+      // this.dialog.open(PaymentComponent, {
+      //   width: '600px',
+      //   height: '630px',
+      //   data: placOrderObj,
+      //   disableClose: true
+      // });
       this.purchaseProducts.DeliveryDate = new Date(this.prevDeliveryDate);
     }
     else {
@@ -930,7 +919,6 @@ export class GoToCartComponent implements OnInit {
       this.prevTotalOrder = Number(this.verifyUserDetails.TotalOrder);
 
       if (this.prevTotalOrder === 0) {
-        //console.log();
       }
       else {
         sessionStorage.setItem('totalOrder', this.prevTotalOrder.toString());
@@ -1019,13 +1007,24 @@ export class GoToCartComponent implements OnInit {
     }
   }
 
-  // navigateToSuccess() {
-  //   let failure = 'failure';
-  //   let success = 'success';
-  //   let TransationID = 124;
+  confirmPayment() {
+    let date = new Date();
+    this.txnid = ('web' + 'txnid' + date.getMilliseconds());
+    let url = new URL(this.payuUrl);
+    url.searchParams.set('Name', this.payuform.Name);
+    url.searchParams.set('EmailID', this.payuform.EmailID);
+    url.searchParams.set('Amount', this.payuform.Amount);
+    url.searchParams.set('mobileno', this.payuform.mobilno.toString());
+    url.searchParams.set('TransationID', this.txnid.toString());
 
-  //   // this.router.navigate(['/payment/failure/'], { queryParams: { TransationID: TransationID, Status: failure } });
-  //   this.router.navigate(['/success/'], { queryParams: { TransationID: TransationID, Status: 'success' } });
-  // }
+    this.payuUrl = url.href;
+    this.buyProductsService.pUrl = url.href;
+    console.log(this.buyProductsService.pUrl);
+
+    this.disablePaymentButton = false;
+    this.makePayment = true;
+  }
+
+
 
 }

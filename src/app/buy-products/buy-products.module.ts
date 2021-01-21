@@ -47,7 +47,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
-import { PaymentComponent } from './payment/payment.component';
+// import { PaymentComponent } from './payment/payment.component';
 import { MatMomentDateModule, MomentDateAdapter } from "@angular/material-moment-adapter";
 import { PaymentSuccessComponent } from './payment-success/payment-success.component';
 import { PaymentFailureComponent } from './payment-failure/payment-failure.component';
@@ -72,7 +72,7 @@ export const DateFormat = {
     DialogMyOrdersEditComponent,
     NumberDirective,
     DialogEditAddressComponent,
-    PaymentComponent,
+    // PaymentComponent,
     PaymentSuccessComponent,
     PaymentFailureComponent],
   imports: [
@@ -115,7 +115,7 @@ export const DateFormat = {
   ],
   exports: [CategoriesHomeComponent, GoToCartComponent, MyOrdersComponent, AddressDetailDataComponent, PaymentSuccessComponent,PaymentFailureComponent],
   entryComponents: [DialogAddAddressComponent, DialogOrderNoComponent, DialogMyOrdersViewComponent, DialogMyOrdersEditComponent,
-    DialogEditAddressComponent, PaymentComponent],
+    DialogEditAddressComponent],
   providers: [BuyProductsService,
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
     { provide: MAT_DATE_FORMATS, useValue: DateFormat }],

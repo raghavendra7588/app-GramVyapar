@@ -18,7 +18,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class MyOrdersComponent implements OnInit {
   displayedColumns: string[] = ['customerName', 'orderid', 'deliveryUpto', 'view'];
-
   dataSource: any;
   vendorArray: any = [];
   vendorName: string;
@@ -35,9 +34,7 @@ export class MyOrdersComponent implements OnInit {
   searchProducts: any;
   isDisplay: boolean;
   totalOrder: number;
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
 
   constructor(
     public buyProductsService: BuyProductsService,
@@ -45,8 +42,6 @@ export class MyOrdersComponent implements OnInit {
     public router: Router,
     public route: ActivatedRoute
   ) {
-
-
 
   }
 
@@ -64,9 +59,6 @@ export class MyOrdersComponent implements OnInit {
 
     this.totalOrder = Number(sessionStorage.getItem('totalOrder'));
 
-
-
-
     if ("totalOrder" in sessionStorage) {
       this.buyProductsService.getMyOrdersData(this.languageCode, this.userId).subscribe(response => {
         this.ordersData = response;
@@ -79,12 +71,6 @@ export class MyOrdersComponent implements OnInit {
     else {
       this.isDisplay = false;
     }
-
-
-
-
-
-
 
   }
   searchProductsFromList() {
@@ -105,7 +91,6 @@ export class MyOrdersComponent implements OnInit {
   }
 
   selectedVendorName() {
-    //console.log(this.myOrders.vendorName);
   }
 
   searchRecords() {
@@ -150,16 +135,6 @@ export class MyOrdersComponent implements OnInit {
     if ("sellerId" in sessionStorage) {
       this.myOrders.sellerId = sessionStorage.getItem('sellerId');
     }
-
-
-
-
-    // this.buyProductsService.getALLOrdersData(this.myOrders).subscribe(response => {
-    //   this.myOrdersData = response;
-    //   this.dataSource = new MatTableDataSource(this.myOrdersData);
-    //   this.dataSource.paginator = this.paginator;
-
-    // });
 
     this.myOrders.orderNo = prevOrderNo;
   }

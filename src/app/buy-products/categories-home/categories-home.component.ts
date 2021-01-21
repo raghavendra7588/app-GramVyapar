@@ -3,7 +3,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BuyProductsService } from '../buy-products.service';
 import { MatPaginator } from '@angular/material/paginator';
-// import { EmitterService } from 'src/shared/emitter.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { EmitterService } from 'src/app/shared/emitter.service';
@@ -20,17 +19,9 @@ import { NgxSpinnerService } from "ngx-spinner";
 })
 export class CategoriesHomeComponent implements OnInit {
 
-  // displayedColumns: string[] = ['name', 'brandname', 'selectVarient', 'mrp',
-  //   'discount', 'finalPrice', 'requiredQuantity', 'add'];
-
-
-  // displayedColumns: string[] = ['name', 'brandname', 'selectVarient', 'mrp',
-  //   'discount', 'requiredQuantity', 'add'];
-
-
   displayedColumns: string[] = ['name', 'brandname', 'selectVarient', 'finalPrice',
     'requiredQuantity', 'add'];
-    ProductForm: FormGroup;
+  ProductForm: FormGroup;
   dataSource: any;
   searchResult: any;
   patientCategory: FormGroup;
@@ -102,7 +93,6 @@ export class CategoriesHomeComponent implements OnInit {
   vendorContactNo: string;
 
   productName: ProductName = new ProductName();
-  // masterProductName: Array<ProductName>;
   masterProductName: Array<any>;
   allProductNameData: Array<any>;
 
@@ -113,11 +103,10 @@ export class CategoriesHomeComponent implements OnInit {
 
   productSearchData: any = [];
   autoCompleteResponse: any = [];
-  // page = 1;
-  // pageSize = 4;
-  // collectionSize = COUNTRIES.length;
-  // countries: Country[];
   txtVarient: any = [];
+  productSearchStr: string;
+  isProductSearch: boolean = false;
+
   constructor(
     public formBuilder: FormBuilder,
     public buyProductsService: BuyProductsService,
@@ -130,14 +119,13 @@ export class CategoriesHomeComponent implements OnInit {
     private spinner: NgxSpinnerService
   ) {
     this.productForm = this.fb.group({
-      varient: this.fb.array(['', Validators.required ])
-   });
+      varient: this.fb.array(['', Validators.required])
+    });
     this.activatedRoute.queryParams.subscribe(params => {
       this.name = params['name']
     });
     if ("isFirstTime" in sessionStorage) {
       this.isFirstTime = false;
-      // this.spinner.show();
     }
     else {
       this.isFirstTime = true;
@@ -148,7 +136,6 @@ export class CategoriesHomeComponent implements OnInit {
 
         if ("isFirstTime" in sessionStorage) {
           this.isFirstTime = false;
-          // this.spinner.show();
         }
         else {
           this.isFirstTime = true;
@@ -167,7 +154,6 @@ export class CategoriesHomeComponent implements OnInit {
       this.isHomeDelivery = this.vendorResponse.homedelivery;
       this.homeDeliveryLimit = Number(this.vendorResponse.homedeliverylimit);
       this.vendorContactNo = this.vendorResponse.mobilenumber;
-      // this.totalOrder = "0";
 
       sessionStorage.setItem('sellerName', this.responseVendorName);
       sessionStorage.setItem('vendorId', this.responseVendorCode);
@@ -178,9 +164,6 @@ export class CategoriesHomeComponent implements OnInit {
       sessionStorage.setItem('creditYN', this.vendorResponse.creditYN);
       sessionStorage.setItem('vendorContactNo', this.vendorContactNo);
       this.emitterService.isVendorContactNumber.emit(true);
-      // sessionStorage.setItem('totalOrder', this.totalOrder);
-
-      // this.getMasterProductNameData(this.responseVendorCode);
       this.buyProductsService.getAllMasterDataByProductName(this.responseVendorCode).subscribe(response => {
 
         this.masterProductName = response;
@@ -196,21 +179,11 @@ export class CategoriesHomeComponent implements OnInit {
       this.buyProductsService.getAllCategory(this.vendorId).subscribe(data => {
 
         this.categoryListData = data;
-        // this.isDataLoaded = true;
         this.checkCartItems(this.categoryListData);
       });
     });
     this.parentId = '0';
     this.vendorId = sessionStorage.getItem('vendorId');
-
-
-
-    // this.buyProductsService.getAllCategory(this.parentId, this.vendorId).subscribe(data => {
-
-    //   this.categoryListData = data;
-
-    //   this.checkCartItems(this.categoryListData);
-    // });
 
     this.patientCategory = this.fb.group({
       patientCategory: [null, Validators.required]
@@ -261,6 +234,7 @@ export class CategoriesHomeComponent implements OnInit {
     return customResponse
   }
   selectEvent(item) {
+
     let productName = item.name;
     this.userId = "0";
     this.selectedSubCategory = "";
@@ -274,7 +248,6 @@ export class CategoriesHomeComponent implements OnInit {
       let customResponse = this.createCustomBrandsDataResponse(this.productSearchData);
       this.autoCompleteResponse = customResponse;
       this.brandsData = customResponse;
-      console.log('res', customResponse);
       this.assignData()
       this.spinner.hide();
       this.isDataLoaded = true;
@@ -285,13 +258,18 @@ export class CategoriesHomeComponent implements OnInit {
   }
 
   onChangeSearch(search: string) {
-    // fetch remote data from here
-    // And reassign the 'data' which is binded to 'data' property.
-    // this.brandsData = this.autoCompleteResponse;
+    this.productSearchStr = search;
+
+    if (Number(this.productSearchStr.length) >= 2) {
+      this.isProductSearch = true;
+    }
+    else {
+      this.isProductSearch = false;
+    }
   }
 
   onFocused(e) {
-    // do something
+
   }
 
   displayFn(product) {
@@ -319,8 +297,8 @@ export class CategoriesHomeComponent implements OnInit {
     }
 
   }
+
   ngAfterViewInit() {
-    // this.dataSource.paginator = this.paginator
   }
 
   checkCartItems(arr) {
@@ -343,13 +321,6 @@ export class CategoriesHomeComponent implements OnInit {
     }
 
   }
-
-
-  // getCategoryListData() {
-  //   this.buyProductsService.getAllCategory(this.parentId, this.vendorId).subscribe(data => {
-  //     this.categoryListData = data;
-  //   });
-  // }
 
   getSubCategoryListData() {
     this.parentId = '3';
@@ -405,7 +376,6 @@ export class CategoriesHomeComponent implements OnInit {
       this.subCategoryListData = data;
       this.parentId = '0';
       this.spinner.hide();
-      // this.getAllSubCategoryData();
     });
   }
 
@@ -415,7 +385,6 @@ export class CategoriesHomeComponent implements OnInit {
     this.isDataLoaded = true;
     this.selectedBrands = '';
     this.spinner.show();
-    // this.filterProductSearchBySubCategoryId(this.SubCategoryId);
     this.getAllBrandsData();
   }
 
@@ -435,35 +404,20 @@ export class CategoriesHomeComponent implements OnInit {
   selectedVarientFromList(response, i) {
 
     this.availableQuantity = 'False';
-    this.selectedIndex = i;
-    // document.getElementById("mrp" + response.productid).innerHTML = response.productDetails[i].MRP;
+    this.selectedIndex = i; 
     document.getElementById("finalPrice" + response.productid).innerHTML = (Number(response.productDetails[i].FinalPrice)).toString();
-    // document.getElementById("discount" + response.productid).innerHTML = response.productDetails[i].Discount;
     this.showInitialProductDetails = false;
     this.finalProductDetails = true;
-
-    // for (let i = 0; i < this.brandsData.length; i++) {
-    //   for (let j = 0; j < response.productDetails.length; j++) {
-    //     if (Number(response.productid) === Number(this.brandsData[i].productid) &&
-    //       (response.name) === (this.brandsData[i].name) &&
-    //       Number(response.brandid) === Number(this.brandsData[i].brandid)
-    //     ) {
-    //    
-    //       response.productDetails[j].Unit = this.brandsData[i].productDetails[j].Unit;
-    //     }
-    //   }
-    // }
     this.selectedProductId = response.productid;
     this.availableQuantity = response.productDetails[i].outOfStockFlag;
 
   }
 
   selectedProductNameFromList(response) {
-    // console.log('you selected', response);
   }
 
 
-  onQuantityChange(response, quantity, i,productForm) {
+  onQuantityChange(response, quantity, i, productForm) {
 
     if (productForm === undefined || productForm === null) {
       i = 0;
@@ -486,19 +440,16 @@ export class CategoriesHomeComponent implements OnInit {
       }
 
     } else {
-      //console.log("");
     }
 
     if (Number(quantity) > 0) {
 
-      // this.catchResponse = this.pushProduct(this.purchaseProductArray, response, i);
       this.catchResponse = this.pushProduct(this.purchaseProductArray, response, this.selectedIndex);
       this.purchaseProductArray = this.catchResponse;
       this.selectedQuantity = 0;
       sessionStorage.setItem('cart_items', JSON.stringify(this.purchaseProductArray));
       this.toastr.success('Product is Added Into Cart');
       this.totalProductsCalculation(this.purchaseProductArray);
-      // this.selectedIndex = undefined;
       this.emitterService.isProductIsAddedOrRemoved.emit(true);
     }
     else {
@@ -506,46 +457,6 @@ export class CategoriesHomeComponent implements OnInit {
     }
 
   }
-
-  // pushProduct(arr, response, j) {
-
-  //   let sellerID = sessionStorage.getItem('sellerId');
-  //   let vendorCode = sessionStorage.getItem('vendorId');
-
-  //   if (j === undefined) {
-  //     j = 0;
-  //   }
-
-
-  //   // let productItemsObj = {
-  //   //   deliverySlot: "", paymentType: "", status: "", isactive: "Y",
-  //   //   cartDetails: [{
-  //   //     ImageVersion: "0", cartid: "0", discount: response.productDetails[j].Discount.toString(),
-  //   //     finalPrice: response.productDetails[j].FinalPrice.toString(), id: response.productDetails[j].id.toString(),
-  //   //     mrp: response.productDetails[j].MRP.toString(),
-  //   //     productVarientid: 1662, quantity: response.mappingid
-  //   //   }],
-  //   //   LanguageCode: "en", cartid: "0", deliveryUpto: "", deliveredDate: "", deliveryType: "", userid: sellerID.toString(),
-  //   //   vendorCode: vendorCode.toString()
-  //   // }
-
-
-  //   arr.push({
-  //     brandImageUrl: response.brandImageUrl, imgurl: response.imgurl, name: response.name,
-  //     brandid: response.brandid, productid: response.productid,
-  //     id: response.productDetails[j].id, Unit: response.productDetails[j].Unit, Discount: response.productDetails[j].Discount,
-  //     FinalPrice: response.productDetails[j].FinalPrice, MRP: response.productDetails[j].MRP, Quantity: response.productDetails[j].Quantity,
-  //     RequiredQuantity: response.mappingid, categoryid: response.categoryid
-  //   });
-  //   // this.buyProductsService.addToCartItems(productItemsObj).subscribe(res => {
-  //   //   // this.cartid = res.cartid;
-  //   //   this.toastr.success('Product is Added Into Cart');
-  //   // });
-
-
-  //   return arr;
-  // }
-
 
   pushProduct(arr, response, j) {
 
@@ -559,16 +470,6 @@ export class CategoriesHomeComponent implements OnInit {
     const index = arr.findIndex((o) => o.productid === response.productid && o.id === response.productDetails[j].id);
 
     if (index === -1) {                 //not exist
-
-
-      // arr.push({
-      //   brandImageUrl: response.brandImageUrl, imgurl: response.imgurl, name: response.name,
-      //   brandid: response.brandid, productid: response.productid,
-      //   id: response.productDetails[j].id, Unit: response.productDetails[j].Unit, Discount: response.productDetails[j].Discount,
-      //   FinalPrice: response.productDetails[j].FinalPrice, MRP: response.productDetails[j].MRP, Quantity: response.productDetails[j].Quantity,
-      //   RequiredQuantity: response.mappingid, categoryid: response.categoryid
-      // });
-
       arr.push({
         name: response.name,
         brandid: response.brandid,
@@ -610,7 +511,6 @@ export class CategoriesHomeComponent implements OnInit {
         }
       }
     }
-    // console.table('unique storage array', arr);
     return arr;
   }
 
@@ -678,14 +578,11 @@ export class CategoriesHomeComponent implements OnInit {
       this.allSubCategoryData = response;
       this.brandsData = this.allSubCategoryData;
       setTimeout(() => this.brandsData = response);
-      // this.brandsData = response;
 
       this.dataSource = new MatTableDataSource(this.allSubCategoryData);
       this.dataSource.paginator = this.paginator;
     });
 
-    // this.dataSource = new MatTableDataSource(this.allSubCategoryData);
-    // this.dataSource.paginator = this.paginator;
   }
   getAllSubCategoryData() {
     this.brandId = "0";

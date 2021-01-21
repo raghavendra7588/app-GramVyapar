@@ -111,7 +111,6 @@ export class DialogMyOrdersViewComponent implements OnInit {
 
 
     this.payableCalculation(this.orderDataResponse.orderDetails);
-    // this.vendorContactNo = "7588641864";
     this.vendorContactNo = sessionStorage.getItem('vendorContactNo');
   }
 

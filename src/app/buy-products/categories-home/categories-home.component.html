@@ -47,7 +47,7 @@
         </ng-autocomplete>
 
         <ng-template #itemTemplate let-item>
-          <a [innerHTML]="item.name"></a>
+          <a [innerHTML]="item.name" *ngIf="isProductSearch"></a>
         </ng-template>
 
         <ng-template #notFoundTemplate let-notFound>

@@ -187,7 +187,6 @@ export class PaymentFormUpdated {
 
 
 export class PaymentGateWay {
-    productinfo: string;
     Name: string;
     EmailID: string;
     Amount: string;

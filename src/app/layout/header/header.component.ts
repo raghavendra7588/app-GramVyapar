@@ -84,7 +84,7 @@ export class HeaderComponent implements OnInit {
   }
 
   goToAddress() {
-    // this.router.navigate(['/buyProducts/addressDetailsData']);
+
   }
 
   goToMyOrders() {

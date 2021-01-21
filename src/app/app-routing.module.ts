@@ -21,7 +21,6 @@ const routes: Routes = [
   { path: 'success/:TransationID/:Status', component: PaymentSuccessComponent },
   { path: 'failure', component: PaymentFailureComponent },
   { path: 'failure/:TransationID/:Status', component: PaymentFailureComponent }
-  // { path: '', component: GoToCartComponent }
 ];
 
 

@@ -10,15 +10,10 @@ import { environment } from 'src/environments/environment';
 })
 export class BuyProductsService {
 
-  // <add key="MERCHANT_KEY" value="5tJYJdBY" />
-  // <add key="SALT" value="8bDVEHoZ2b" />
-  // <add key="PAYU_BASE_URL" value="https://test.payu.in" />
-  // <add key="action" value="" />
-  // <add key="hashSequence" value="key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10" />
- 
+
   masterDataArray: any = [];
   masterDataResonseArray: any = [];
-  pUrl: string;
+  pUrl: string = '';
   private ADMIN_BASE_URL = 'https://3intellects.co.in/Uat_AdminApi/api/';
 
   private GET_PRODUCT_LIST = this.ADMIN_BASE_URL + 'Product/GetProductList';
@@ -37,14 +32,10 @@ export class BuyProductsService {
   private GET_PRODUCT_SEARCH = this.ADMIN_BASE_URL + 'Product/GetProductSearch';
   private GET_HASH_KEY = this.ADMIN_BASE_URL + 'Transaction/GetHashKey';
   private PAYMENT_GATEWAY = 'https://sandboxsecure.payu.in/_payment';
-  // https://sandboxsecure.payu.in/_payment
-  // private PAYMENT_GATEWAY = ' https://secure.snd.payu.com/';
-
-  // private PAYMENT_GATEWAY = '/payment/pay';
-  // '/payment/pay'
+ 
   public API_BASE_URL = environment.apiBaseUrl;
 
-  private PAYMENT_GATEWAY_URL = 'https://3intellects.co.in/uat_AdminApi/payU.aspx';
+  PAYMENT_GATEWAY_URL = 'https://3intellects.co.in/uat_AdminApi/payU.aspx';
 
   constructor(public http: HttpClient) { }
 
@@ -233,7 +224,7 @@ export class BuyProductsService {
       'Access-Control-Allow-Headers': 'X-Requested-With,content-type',
       'Access-Control-Allow-Credentials': 'true'
     });
-    // return this.http.post('https://test.payu.in/_payment', paymentRequest,  { headers: reqHeader });
+
     return this.http.post('https://test.payu.in/_payment', paymentRequest, { headers: reqHeader });
   }
 
