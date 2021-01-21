@@ -260,7 +260,7 @@ export class CategoriesHomeComponent implements OnInit {
   onChangeSearch(search: string) {
     this.productSearchStr = search;
 
-    if (Number(this.productSearchStr.length) >= 2) {
+    if (Number(this.productSearchStr.length) >= 3) {
       this.isProductSearch = true;
     }
     else {
@@ -404,7 +404,7 @@ export class CategoriesHomeComponent implements OnInit {
   selectedVarientFromList(response, i) {
 
     this.availableQuantity = 'False';
-    this.selectedIndex = i; 
+    this.selectedIndex = i;
     document.getElementById("finalPrice" + response.productid).innerHTML = (Number(response.productDetails[i].FinalPrice)).toString();
     this.showInitialProductDetails = false;
     this.finalProductDetails = true;

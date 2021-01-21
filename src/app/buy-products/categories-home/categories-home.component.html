@@ -56,15 +56,16 @@
       </div>
     </div>
   </div>
-
-  <mat-divider class="mt-2"></mat-divider>
+  <div class="mt-4"></div>
+  <!-- <mat-divider class="mt-2"></mat-divider> -->
   <div *ngIf="isDataLoaded">
 
     <div class="container-fluid my-4" style="position: absolute;">
       <div class="row">
-        
-        <div class="col-md-6 col-sm-6 col-12 my-2" *ngFor="let element of brandsData | filter : searchResult;let j = index;">
-         
+
+        <div class="col-md-6 col-sm-6 col-12 my-2"
+          *ngFor="let element of brandsData | filter : searchResult;let j = index;">
+
           <mat-card style="margin: auto;">
             <div class="row">
               <div class="col-md-12 col-12 col-sm-6 text-center" style="color: #FF8C00;">
@@ -80,9 +81,9 @@
                 <mat-form-field style="min-width:80%;max-width: 50px;">
                   <mat-placeholder class="select-backGroundColor">Varient
                   </mat-placeholder>
-                  <mat-select id="productDetails" [(ngModel)]="txtVarient[j]" >
+                  <mat-select id="productDetails" [(ngModel)]="txtVarient[j]">
                     <mat-option *ngFor="let item of element.productDetails;let i = index;" [value]="item.Unit"
-                      (click)="selectedVarientFromList(element,i)"  >
+                      (click)="selectedVarientFromList(element,i)">
                       {{item.Unit}}
                     </mat-option>
                   </mat-select>
@@ -117,9 +118,9 @@
 
 
           </mat-card>
-         
+
         </div>
-     
+
       </div>
     </div>
 

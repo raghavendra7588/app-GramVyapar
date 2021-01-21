@@ -240,10 +240,9 @@ export class GoToCartComponent implements OnInit {
         { id: 0, type: 'Cash' }
       ];
     }
-
-    // if (this.onlineYN === "Y") {
-    //   this.paymentType.push({ id: 2, type: 'Online' });
-    // }
+    if (this.onlineYN === "Y") {
+      this.paymentType.push({ id: 2, type: 'Online' });
+    }
 
     this.deliveryTime = [
       { id: 0, type: '9.00 AM - 1.00PM', minHour: 9, maxHour: 13 },
@@ -483,10 +482,7 @@ export class GoToCartComponent implements OnInit {
     this.payuform.Name = response.name;
     this.payuform.mobilno = response.mobilenumber;
     this.payuform.Amount = this.totalPayableAmount.toString();
-    this.toastr.info('Kindly Enter Email ID', '', {
-      timeOut: 3000,
-      positionClass: 'toast-bottom-right'
-    });
+   
     this.disablePaymentButton = true;
   }
 
@@ -639,6 +635,10 @@ export class GoToCartComponent implements OnInit {
     this.ispaymentType = true;
     if (this.purchaseProducts.PaymentType === 'Online') {
       this.isOnlineTransactionModeSelected = true;
+       this.toastr.info('Kindly Enter Email ID', '', {
+      timeOut: 3000,
+      positionClass: 'toast-bottom-right'
+    });
       this.disablePaymentButton = true;
       sessionStorage.setItem("isOnlineSelected", "true");
     }
