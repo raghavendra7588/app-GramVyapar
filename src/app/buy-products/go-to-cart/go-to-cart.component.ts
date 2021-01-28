@@ -139,6 +139,7 @@ export class GoToCartComponent implements OnInit {
   isOnlineTransactionModeSelected: boolean = false;
   isHidden: boolean = true;
   makePayment: boolean = false;
+  isEmailIDPresent: boolean = false;
 
   constructor(
     public router: Router,
@@ -482,7 +483,7 @@ export class GoToCartComponent implements OnInit {
     this.payuform.Name = response.name;
     this.payuform.mobilno = response.mobilenumber;
     this.payuform.Amount = this.totalPayableAmount.toString();
-   
+
     this.disablePaymentButton = true;
   }
 
@@ -635,29 +636,37 @@ export class GoToCartComponent implements OnInit {
     this.ispaymentType = true;
     if (this.purchaseProducts.PaymentType === 'Online') {
       this.isOnlineTransactionModeSelected = true;
-       this.toastr.info('Kindly Enter Email ID', '', {
-      timeOut: 3000,
-      positionClass: 'toast-bottom-right'
-    });
+
       this.disablePaymentButton = true;
       sessionStorage.setItem("isOnlineSelected", "true");
     }
     if (this.purchaseProducts.PaymentType === 'Credit') {
       this.isOnlineTransactionModeSelected = false;
+      sessionStorage.setItem("isOnlineSelected", "false");
     }
     if (this.purchaseProducts.PaymentType === 'Cash') {
       this.isOnlineTransactionModeSelected = false;
+      sessionStorage.setItem("isOnlineSelected", "false");
     }
-    else {
-      if ("isOnlineSelected" in sessionStorage) {
-        sessionStorage.removeItem("isOnlineSelected");
-      }
-    }
+    // else {
+    //   if ("isOnlineSelected" in sessionStorage) {
+    //     sessionStorage.removeItem("isOnlineSelected");
+    //   }
+    // }
   }
 
   selectedDeliveryTimeFromList(response) {
     this.isDeliveryTime = true;
     this.selectedTimeSlot = response.id;
+    this.isOnlineSelected = sessionStorage.getItem("isOnlineSelected");
+   
+    if (this.isOnlineSelected === "true") {
+      this.toastr.info('Please Enter Email ID For Online Transaction', '', {
+        timeOut: 3000,
+        positionClass: 'toast-bottom-right'
+      });
+    }
+
   }
 
 
@@ -1008,12 +1017,133 @@ export class GoToCartComponent implements OnInit {
   }
 
   confirmPayment() {
+
+    this.purchaseProducts.VendorCode = sessionStorage.getItem('vendorId');
+    this.purchaseProducts.SellerId = Number(sessionStorage.getItem('sellerId'));
+    let todaysDate = new Date();
+    let formattedTodaysDate = this.convertDate(todaysDate);
+    let selectedDeliveryDate = this.convertDate(this.purchaseProducts.DeliveryDate);
+    let minTimeSlot: number;
+    let maxTimeSlot: number;
+
     let date = new Date();
-    this.txnid = ('web' + 'txnid' + date.getMilliseconds());
+    let currentHour = date.getHours();
+
+    for (let i = 0; i < this.deliveryTime.length; i++) {
+
+      if (this.deliveryTime[i].id === this.selectedTimeSlot) {
+        minTimeSlot = this.deliveryTime[i].minHour;
+        maxTimeSlot = this.deliveryTime[i].maxHour;
+      }
+    }
+    if ((formattedTodaysDate === selectedDeliveryDate)) {
+      if (currentHour >= maxTimeSlot) {
+        this.toastr.error('Check Delivery Time');
+        return;
+      }
+
+    }
+
+    let userid = sessionStorage.getItem('customerId');
+    let vendorCode = sessionStorage.getItem('vendorId');
+    let selectedProductStorageArray = JSON.parse(sessionStorage.getItem('cart_items'));
+
+    let ProductStorageArray: any = [];
+    ProductStorageArray = this.createProductArray(selectedProductStorageArray);
+
+    let formattedDeliveryDate = this.convertDateInYMD(this.purchaseProducts.DeliveryDate);
+
+
+    let placOrderObj = {
+      deliverySlot: this.purchaseProducts.DeliveryTime,
+      paymentType: this.purchaseProducts.PaymentType,
+      societyName: this.currentlySelectedAddress.societyName,
+      flatNo: this.currentlySelectedAddress.flatNo,
+      pincode: this.currentlySelectedAddress.pincode,
+      city: this.currentlySelectedAddress.city,
+      state: this.currentlySelectedAddress.state,
+      overallDiscount: 0,
+      LanguageCode: "en",
+      cartid: "0",
+      locality: this.currentlySelectedAddress.locality,
+      deliveryType: this.purchaseProducts.DeliveryType,
+      deliveryUpto: formattedDeliveryDate,
+      userid: userid,
+      mobilenumber: this.mobileNo,
+      vendorCode: vendorCode,
+      deliveryCharges: 0,
+      status: "ConfirmOrder",
+      isactive: "Y",
+      areaName: this.currentlySelectedAddress.areaName,
+      name: this.currentlySelectedAddress.name,
+      referralAmountUsed: 0,
+      deliveredDate: "",
+      cartDetails: ProductStorageArray
+    }
+
+    this.isHomeDelivery = sessionStorage.getItem('isHomeDelivery');
+    this.homeDeliveryLimit = Number(sessionStorage.getItem('homeDeliveryLimit'));
+    let homeDeliveryValueLimit = this.homeDeliveryLimit;
+
+
+    if (this.isHomeDelivery === 'N') {
+      this.toastr.error('Home Delivery Not Available For this Seller', 'Important', { positionClass: 'toast-bottom-right' });
+      return;
+    }
+
+
+    if (this.totalPayableAmount <= this.homeDeliveryLimit && this.selectedDeliveryType === "Home Delivery") {
+
+      this.toastr.error(`Home Delivery Is Available Above ${homeDeliveryValueLimit} Amount`, 'Important', { positionClass: 'toast-bottom-right' });
+      return;
+    }
+
+    if (this.purchaseProducts.OrderNo === null || this.purchaseProducts.OrderNo === undefined) {
+      this.purchaseProducts.OrderNo = 'NULL';
+    }
+
+
+    if (this.purchaseProducts.DeliveryDate === null || this.purchaseProducts.DeliveryDate === undefined || this.purchaseProducts.DeliveryDate.toString() === '') {
+
+      this.purchaseProducts.DeliveryDate = 'NULL';
+    }
+    else {
+
+      this.prevDeliveryDate = this.purchaseProducts.DeliveryDate;
+      let deliveryDate = this.convertDate(this.purchaseProducts.DeliveryDate);
+      this.purchaseProducts.DeliveryDate = deliveryDate;
+    }
+
+    if (this.purchaseProducts.DeliveryType === null || this.purchaseProducts.DeliveryType === undefined || this.purchaseProducts.DeliveryType.toString() === '') {
+      this.purchaseProducts.DeliveryType = 'NULL';
+    }
+
+    if (this.purchaseProducts.PaymentType === null || this.purchaseProducts.PaymentType === undefined || this.purchaseProducts.PaymentType.toString() === '') {
+      this.purchaseProducts.PaymentType = 'NULL';
+    }
+
+    if (this.purchaseProducts.DeliveryTime === null || this.purchaseProducts.DeliveryTime === undefined || this.purchaseProducts.DeliveryTime.toString() === '') {
+      this.purchaseProducts.DeliveryTime = 'NULL';
+    }
+    this.purchaseProducts.items = JSON.parse(sessionStorage.getItem('cart_items'));
+    this.purchaseProducts.VendorName = sessionStorage.getItem('sellerName');
+    this.isOnlineSelected = sessionStorage.getItem("isOnlineSelected");
+    sessionStorage.removeItem('totalPayableAmount');
+    sessionStorage.setItem('totalPayableAmount', this.totalPayableAmount.toString());
+    if (this.isOnlineSelected === "true") {
+      sessionStorage.removeItem('placOrderObj');
+      sessionStorage.setItem('placOrderObj', JSON.stringify(placOrderObj));
+
+      this.purchaseProducts.DeliveryDate = new Date(this.prevDeliveryDate);
+    }
+
+    let dateObj = new Date();
+    this.txnid = ('web' + 'txnid' + dateObj.getMilliseconds());
     let url = new URL(this.payuUrl);
     url.searchParams.set('Name', this.payuform.Name);
     url.searchParams.set('EmailID', this.payuform.EmailID);
-    url.searchParams.set('Amount', this.payuform.Amount);
+    // url.searchParams.set('Amount', this.payuform.Amount);
+    url.searchParams.set('Amount', '5');
     url.searchParams.set('mobileno', this.payuform.mobilno.toString());
     url.searchParams.set('TransationID', this.txnid.toString());
 
@@ -1024,6 +1154,10 @@ export class GoToCartComponent implements OnInit {
     this.disablePaymentButton = false;
     this.makePayment = true;
   }
+
+
+
+
 
 
 

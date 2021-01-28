@@ -15,10 +15,14 @@ export class PaymentFailureComponent implements OnInit {
     private router: Router,
     public buyProductsService: BuyProductsService,
     public toastr: ToastrService
-  ) { }
+  ) {
+
+    this.toastr.error('Transaction Failed !!', '', {
+      timeOut: 3000,
+    });
+  }
 
   ngOnInit(): void {
-    this.toastr.error('Transaction Failed !!');
   }
 
   tryAgain() {

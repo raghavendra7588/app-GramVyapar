@@ -290,8 +290,8 @@
         <mat-form-field style="width: 100%;">
           <mat-placeholder [ngClass]="isMobileNumberEntered === true ? 'select-backGroundColor' : ''">Enter Email ID
           </mat-placeholder>
-          <input matInput name="society" [(ngModel)]="payuform.EmailID" [disabled]="!isMobileNumberEntered || !isOnlineTransactionModeSelected"
-            autocomplete="off">
+          <input matInput name="society" [(ngModel)]="payuform.EmailID"
+            [disabled]="!isMobileNumberEntered || !isOnlineTransactionModeSelected" autocomplete="off">
         </mat-form-field>
       </div>
     </div>
@@ -336,7 +336,7 @@
             <div class="col-md-9 col-6 col-sm-6"></div>
             <div class="col-md-3 col-6 col-sm-6">
               <button *ngIf="isOnlineTransactionModeSelected && !makePayment" mat-raised-button color="primary"
-                [disabled]="!payuform.EmailID || !isAddressSelected || !isDeliveryType || !ispaymentType || !isDeliveryDate || !isDeliveryTime"
+                [disabled]="!payuform.EmailID ||!isAddressSelected || !isDeliveryType || !ispaymentType || !isDeliveryDate || !isDeliveryTime"
                 class="width-100 mt-2" (click)="confirmPayment()">Confirm</button>
               <button type="button" *ngIf="!disablePaymentButton && makePayment" class="btn btn-success"
                 class="width-100 mt-2" type="submit">Make Payment</button>
