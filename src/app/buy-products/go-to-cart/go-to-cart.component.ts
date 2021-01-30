@@ -659,7 +659,7 @@ export class GoToCartComponent implements OnInit {
     this.isDeliveryTime = true;
     this.selectedTimeSlot = response.id;
     this.isOnlineSelected = sessionStorage.getItem("isOnlineSelected");
-   
+
     if (this.isOnlineSelected === "true") {
       this.toastr.info('Please Enter Email ID For Online Transaction', '', {
         timeOut: 3000,
@@ -918,6 +918,8 @@ export class GoToCartComponent implements OnInit {
   }
 
   verifyUserData() {
+    this.payuform.EmailID = '';
+    this.isOnlineTransactionModeSelected = false;
     this.buyProductsService.verifyUserDetails(this.mobileNo).subscribe(response => {
       sessionStorage.removeItem('totalOrder');
       this.verifyUserDetails = response;
@@ -933,6 +935,10 @@ export class GoToCartComponent implements OnInit {
         sessionStorage.setItem('totalOrder', this.prevTotalOrder.toString());
       }
 
+      if (this.verifyUserDetails.emailid) {
+        this.payuform.EmailID = this.verifyUserDetails.emailid;
+        this.isOnlineTransactionModeSelected = true;
+      }
 
 
       this.selectedAddressId = '';

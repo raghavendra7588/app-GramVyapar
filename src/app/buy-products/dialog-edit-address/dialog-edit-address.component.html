@@ -17,18 +17,25 @@
             </div>
             <div class="col-md-4 col-sm-4 col-12 mt-3">
                 <mat-form-field style="width: 100%;">
-                    <input matInput name="houseNo" placeholder="Flat /House No" [(ngModel)]="address.flatNo"
-                        formControlName="houseNo">
+                    <input matInput name="emailId" placeholder="Email ID" [(ngModel)]="address.emailID"
+                        formControlName="emailID">
                 </mat-form-field>
             </div>
+          
         </div>
 
         <div class="row">
             <div class="col-md-4 col-sm-4 col-12">
+                <mat-form-field style="width: 100%;">
+                    <input matInput name="houseNo" placeholder="Flat /House No" [(ngModel)]="address.flatNo"
+                        formControlName="houseNo">
+                </mat-form-field>
+            </div>
+            <div class="col-md-4 col-sm-4 col-12">
 
                 <mat-form-field style="width: 100%;">
-                    <input matInput name="society" placeholder="Society / Apartment Name" [(ngModel)]="address.societyName"
-                        formControlName="society">
+                    <input matInput name="society" placeholder="Society / Apartment Name"
+                        [(ngModel)]="address.societyName" formControlName="society">
                 </mat-form-field>
             </div>
             <div class="col-md-4 col-sm-4 col-12">
@@ -37,6 +44,12 @@
                         formControlName="landMark">
                 </mat-form-field>
             </div>
+           
+
+        </div>
+
+        <div class="row">
+
             <div class="col-md-4 col-sm-4 col-12">
                 <mat-form-field style="width: 100%;">
                     <input matInput name="city" placeholder="City" [(ngModel)]="address.city" formControlName="city">
@@ -44,10 +57,6 @@
 
             </div>
 
-
-        </div>
-
-        <div class="row">
             <div class="col-md-4 col-sm-4 col-12">
 
                 <mat-form-field style="width: 100%;">
@@ -63,6 +72,16 @@
                 </mat-form-field>
             </div>
 
+            
+        </div>
+
+        <div class="row">
+            <!-- <div class="col-md-4 col-sm-4 col-12">
+                <mat-form-field style="width: 100%;">
+                    <input matInput name="emailId" placeholder="Email ID" [(ngModel)]="address.emailID"
+                        formControlName="emailID">
+                </mat-form-field>
+            </div> -->
             <div class="col-md-4 col-sm-4 col-12">
                 <mat-form-field style="width: 100%;">
                     <input matInput name="State" [(ngModel)]="address.state" placeholder="State" formControlName="state"
@@ -78,8 +97,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-4 mt-2 col-sm-12 col-6">
-                <button mat-raised-button color="primary" class="width-100"
-                    (click)="onSubmit()">Update</button>
+                <button mat-raised-button color="primary" class="width-100" (click)="onSubmit()">Update</button>
             </div>
             <div class="col-md-4 mt-2 col-sm-12 col-6">
                 <button mat-raised-button class="width-100" mat-dialog-close>Close</button>

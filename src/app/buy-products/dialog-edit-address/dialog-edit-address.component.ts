@@ -40,9 +40,10 @@ export class DialogEditAddressComponent implements OnInit {
       pinCode: [''],
       city: [''],
       area: [''],
-      state: ['']
+      state: [''],
+      emailID: ['']
     });
-   
+
     this.addressData = data;
     this.assignAddressData();
 
@@ -110,10 +111,13 @@ export class DialogEditAddressComponent implements OnInit {
     if (this.address.state === null || this.address.state === undefined || this.address.state === '') {
       this.address.state = '';
     }
+    if (this.address.emailID === null || this.address.emailID === undefined || this.address.emailID === '') {
+      this.address.emailID = '';
+    }
     this.address.id = this.addressData.id;
     this.address.userId = sessionStorage.getItem('customerId').toString();
     this.address.primaryAddressFlag = "";
-
+    console.log('address data', this.address);
     this.buyProductsService.addUserAddress(this.address).subscribe(data => {
       this.addressResponse = data;
       this.toastr.success('Record Updated Successfully');
