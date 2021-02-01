@@ -12,6 +12,7 @@ export class AddressDetails {
     city: string;
     userId: string;
     primaryAddressFlag: string;
+    emailid: string;
 }
 
 export class UpdateEmail {

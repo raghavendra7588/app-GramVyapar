@@ -51,7 +51,7 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { MatMomentDateModule, MomentDateAdapter } from "@angular/material-moment-adapter";
 import { PaymentSuccessComponent } from './payment-success/payment-success.component';
 import { PaymentFailureComponent } from './payment-failure/payment-failure.component';
-import { DialogEditEmailComponent } from './dialog-edit-email/dialog-edit-email.component';
+
 
 export const DateFormat = {
   parse: {
@@ -75,8 +75,7 @@ export const DateFormat = {
     DialogEditAddressComponent,
     // PaymentComponent,
     PaymentSuccessComponent,
-    PaymentFailureComponent,
-    DialogEditEmailComponent],
+    PaymentFailureComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -126,8 +125,7 @@ export const DateFormat = {
     DialogOrderNoComponent,
     DialogMyOrdersViewComponent,
     DialogMyOrdersEditComponent,
-    DialogEditAddressComponent,
-    DialogEditEmailComponent],
+    DialogEditAddressComponent],
   providers: [
     BuyProductsService,
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },

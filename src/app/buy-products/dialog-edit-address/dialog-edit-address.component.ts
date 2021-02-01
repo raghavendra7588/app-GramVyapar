@@ -5,7 +5,7 @@ import { AddressDetails } from 'src/app/buy-products/buy-products.model';
 import { BuyProductsService } from '../buy-products.service';
 import { ToastrService } from 'ngx-toastr';
 import { EmitterService } from 'src/app/shared/emitter.service';
-import { DialogEditEmailComponent } from '../dialog-edit-email/dialog-edit-email.component';
+
 
 @Component({
   selector: 'app-dialog-edit-address',
@@ -87,35 +87,43 @@ export class DialogEditAddressComponent implements OnInit {
     if (this.address.name === null || this.address.name === undefined || this.address.name === '') {
       this.address.name = '';
     }
+
     if (this.address.mobilenumber === null || this.address.mobilenumber === undefined) {
       this.address.mobilenumber = "";
     }
     if (this.address.flatNo === null || this.address.flatNo === undefined || this.address.flatNo === '') {
       this.address.flatNo = '';
     }
+
     if (this.address.societyName === null || this.address.societyName === undefined || this.address.societyName === '') {
       this.address.societyName = '';
     }
+
     if (this.address.locality === null || this.address.locality === undefined || this.address.locality === '') {
       this.address.locality = '';
     }
+
     if (this.address.pincode === null || this.address.pincode === undefined) {
       this.address.pincode = "";
     }
+
     if (this.address.city === null || this.address.city === undefined || this.address.city === '') {
       this.address.city = '';
     }
+
     if (this.address.areaName === null || this.address.areaName === undefined || this.address.areaName === '') {
       this.address.areaName = '';
     }
     if (this.address.state === null || this.address.state === undefined || this.address.state === '') {
       this.address.state = '';
     }
- 
+
+
     this.address.id = this.addressData.id;
     this.address.userId = sessionStorage.getItem('customerId').toString();
     this.address.primaryAddressFlag = "";
- 
+
+  
     this.buyProductsService.addUserAddress(this.address).subscribe(data => {
       this.addressResponse = data;
       this.toastr.success('Record Updated Successfully');

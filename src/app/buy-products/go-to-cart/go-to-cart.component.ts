@@ -19,7 +19,7 @@ import { DialogEditAddressComponent } from '../dialog-edit-address/dialog-edit-a
 // import { PaymentComponent } from '../payment/payment.component';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { AppDateAdapter } from './format-datepicker';
-import { DialogEditEmailComponent } from '../dialog-edit-email/dialog-edit-email.component';
+
 
 
 
@@ -141,6 +141,7 @@ export class GoToCartComponent implements OnInit {
   isHidden: boolean = true;
   makePayment: boolean = false;
   isEmailIDPresent: boolean = false;
+  prevEmailID: string = '';
 
   constructor(
     public router: Router,
@@ -696,6 +697,7 @@ export class GoToCartComponent implements OnInit {
     let date = new Date();
     let currentHour = date.getHours();
 
+
     for (let i = 0; i < this.deliveryTime.length; i++) {
 
       if (this.deliveryTime[i].id === this.selectedTimeSlot) {
@@ -940,6 +942,8 @@ export class GoToCartComponent implements OnInit {
 
       this.customerId = this.verifyUserDetails.customerId;
       sessionStorage.setItem('customerId', this.customerId);
+      this.prevEmailID = this.verifyUserDetails.emailid;
+      // sessionStorage.setItem('emailid',this.verifyUserDetails.emailid);
       this.isMobileNumberEntered = true;
       this.prevTotalOrder = Number(this.verifyUserDetails.TotalOrder);
 
@@ -951,7 +955,7 @@ export class GoToCartComponent implements OnInit {
 
       if (this.verifyUserDetails.emailid) {
         this.payuform.EmailID = this.verifyUserDetails.emailid;
-        this.isOnlineTransactionModeSelected = true;
+        // this.isOnlineTransactionModeSelected = true;
       }
 
 
@@ -983,13 +987,7 @@ export class GoToCartComponent implements OnInit {
     });
   }
 
-  editEmail() {
-    this.dialog.open(DialogEditEmailComponent, {
-      height: '250px',
-      width: '500px',
-      data: this.currentlySelectedAddress
-    });
-  }
+
 
   updateSingleQuantity(response) {
 
@@ -1044,6 +1042,14 @@ export class GoToCartComponent implements OnInit {
   }
 
   confirmPayment() {
+
+    if (this.prevEmailID != this.payuform.EmailID) {
+      let updateEmailID = { emailid: this.payuform.EmailID, mobilenumber: this.mobileNo };
+      this.buyProductsService.updateEmailId(updateEmailID).subscribe(res => {
+        this.toastr.success('Email ID is updated');
+      });
+    }
+
 
     this.purchaseProducts.VendorCode = sessionStorage.getItem('vendorId');
     this.purchaseProducts.SellerId = Number(sessionStorage.getItem('sellerId'));
@@ -1169,8 +1175,8 @@ export class GoToCartComponent implements OnInit {
     let url = new URL(this.payuUrl);
     url.searchParams.set('Name', this.payuform.Name);
     url.searchParams.set('EmailID', this.payuform.EmailID);
-    // url.searchParams.set('Amount', this.payuform.Amount);
-    url.searchParams.set('Amount', '5');
+    url.searchParams.set('Amount', this.payuform.Amount);
+    // url.searchParams.set('Amount', '5');
     url.searchParams.set('mobileno', this.payuform.mobilno.toString());
     url.searchParams.set('TransationID', this.txnid.toString());
 
