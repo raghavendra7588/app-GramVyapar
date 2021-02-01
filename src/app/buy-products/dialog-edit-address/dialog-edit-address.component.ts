@@ -32,8 +32,6 @@ export class DialogEditAddressComponent implements OnInit {
     public toastr: ToastrService,
     public emitterService: EmitterService,
     public dialog: MatDialog,) {
-
-    console.log('data to edit mode', data);
     this.addressForm = this.formBuilder.group({
       name: [''],
       mobileNumber: [''],
@@ -117,7 +115,7 @@ export class DialogEditAddressComponent implements OnInit {
     this.address.id = this.addressData.id;
     this.address.userId = sessionStorage.getItem('customerId').toString();
     this.address.primaryAddressFlag = "";
-    console.log('address data to update', this.address);
+ 
     this.buyProductsService.addUserAddress(this.address).subscribe(data => {
       this.addressResponse = data;
       this.toastr.success('Record Updated Successfully');
