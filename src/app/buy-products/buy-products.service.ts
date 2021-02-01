@@ -32,7 +32,10 @@ export class BuyProductsService {
   private GET_PRODUCT_SEARCH = this.ADMIN_BASE_URL + 'Product/GetProductSearch';
   private GET_HASH_KEY = this.ADMIN_BASE_URL + 'Transaction/GetHashKey';
   private PAYMENT_GATEWAY = 'https://sandboxsecure.payu.in/_payment';
- 
+  private UPDATE_EMAIL_ID = this.ADMIN_BASE_URL + 'User/UpdateEmailID';
+  // https://3intellects.co.in/Uat_AdminApi/api/
+  // private UPDATE_EMAIL_ID = 'https://3intellects.co.in/Uat_AdminApi/api/User/UpdateEmailID';
+
   public API_BASE_URL = environment.apiBaseUrl;
 
   PAYMENT_GATEWAY_URL = 'https://3intellects.co.in/uat_AdminApi/payU.aspx';
@@ -145,6 +148,10 @@ export class BuyProductsService {
 
   addUserAddress(addressData) {
     return this.http.post(this.ADD_USER_ADDRESS, addressData);
+  }
+
+  updateEmailId(emailData) {
+    return this.http.post(this.UPDATE_EMAIL_ID, emailData);
   }
 
   placeOrderData(placeOrder) {

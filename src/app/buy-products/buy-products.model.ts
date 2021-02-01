@@ -12,7 +12,11 @@ export class AddressDetails {
     city: string;
     userId: string;
     primaryAddressFlag: string;
-    emailID: string;
+}
+
+export class UpdateEmail {
+    mobilenumber: string;
+    emailid: string;
 }
 
 export class OrderedItems {

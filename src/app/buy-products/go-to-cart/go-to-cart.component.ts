@@ -19,6 +19,7 @@ import { DialogEditAddressComponent } from '../dialog-edit-address/dialog-edit-a
 // import { PaymentComponent } from '../payment/payment.component';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { AppDateAdapter } from './format-datepicker';
+import { DialogEditEmailComponent } from '../dialog-edit-email/dialog-edit-email.component';
 
 
 
@@ -165,6 +166,19 @@ export class GoToCartComponent implements OnInit {
       if (value) {
         this.getCartItems();
 
+        this.clearValues();
+        if (this.addressData.length === 0 || this.addressData === undefined || this.addressData === null) {
+          this.isAddressSelected = false;
+          this.addressSelected = false;
+          this.isMobileNumberEntered = false;
+        }
+      }
+    });
+
+    this.emitterService.isEmailIDUpdated.subscribe(value => {
+      if (value) {
+        this.getCartItems();
+        this.payuform.EmailID = value.emailid;
         this.clearValues();
         if (this.addressData.length === 0 || this.addressData === undefined || this.addressData === null) {
           this.isAddressSelected = false;
@@ -962,10 +976,17 @@ export class GoToCartComponent implements OnInit {
   }
 
   editAddress() {
-
     this.dialog.open(DialogEditAddressComponent, {
       height: '400px',
       width: '800px',
+      data: this.currentlySelectedAddress
+    });
+  }
+
+  editEmail() {
+    this.dialog.open(DialogEditEmailComponent, {
+      height: '250px',
+      width: '500px',
       data: this.currentlySelectedAddress
     });
   }

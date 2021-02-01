@@ -51,6 +51,7 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { MatMomentDateModule, MomentDateAdapter } from "@angular/material-moment-adapter";
 import { PaymentSuccessComponent } from './payment-success/payment-success.component';
 import { PaymentFailureComponent } from './payment-failure/payment-failure.component';
+import { DialogEditEmailComponent } from './dialog-edit-email/dialog-edit-email.component';
 
 export const DateFormat = {
   parse: {
@@ -74,7 +75,8 @@ export const DateFormat = {
     DialogEditAddressComponent,
     // PaymentComponent,
     PaymentSuccessComponent,
-    PaymentFailureComponent],
+    PaymentFailureComponent,
+    DialogEditEmailComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -105,18 +107,29 @@ export const DateFormat = {
     AutocompleteLibModule,
     ToastrModule.forRoot({
       timeOut: 1200,
-      preventDuplicates: true,
-      // positionClass: 'toast-bottom-right'
+      preventDuplicates: true
     }),
     ModalModule.forRoot(),
     MatNativeDateModule,
     Ng2SearchPipeModule,
     NgxScrollTopModule
   ],
-  exports: [CategoriesHomeComponent, GoToCartComponent, MyOrdersComponent, AddressDetailDataComponent, PaymentSuccessComponent,PaymentFailureComponent],
-  entryComponents: [DialogAddAddressComponent, DialogOrderNoComponent, DialogMyOrdersViewComponent, DialogMyOrdersEditComponent,
-    DialogEditAddressComponent],
-  providers: [BuyProductsService,
+  exports: [
+    CategoriesHomeComponent,
+    GoToCartComponent,
+    MyOrdersComponent,
+    AddressDetailDataComponent,
+    PaymentSuccessComponent,
+    PaymentFailureComponent],
+  entryComponents: [
+    DialogAddAddressComponent,
+    DialogOrderNoComponent,
+    DialogMyOrdersViewComponent,
+    DialogMyOrdersEditComponent,
+    DialogEditAddressComponent,
+    DialogEditEmailComponent],
+  providers: [
+    BuyProductsService,
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
     { provide: MAT_DATE_FORMATS, useValue: DateFormat }],
 

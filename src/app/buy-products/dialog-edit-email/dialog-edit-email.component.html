@@ -1,0 +1,36 @@
+<form [formGroup]="userForm">
+    <div class="container">
+        <h4 class="text-center font-weight-bold">Update Email </h4>
+        <div class="row">
+
+            <div class="col-md-5 col-sm-4 col-12 mt-3">
+                <mat-form-field style="width: 100%;">
+                    <input matInput name="Number" placeholder="Mobile Number" type="text" readonly
+                        [(ngModel)]="updateEmail.mobilenumber" formControlName="mobileNumber" appNumber>
+                </mat-form-field>
+            </div>
+
+
+            <div class="col-md-5 col-sm-4 col-12 mt-3">
+                <mat-form-field style="width: 100%;">
+                    <input matInput name="emailId" placeholder="Email ID" [(ngModel)]="updateEmail.emailid"
+                        formControlName="emailid">
+                </mat-form-field>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="container-fluid my-2">
+        <div class="row">
+            <div class="col-md-3 mt-2 col-sm-12 col-6">
+                <button mat-raised-button color="primary" class="width-100" (click)="onSubmit()">Update</button>
+            </div>
+            <div class="col-md-3 mt-2 col-sm-12 col-6">
+                <button mat-raised-button class="width-100" mat-dialog-close>Close</button>
+            </div>
+        </div>
+    </div>
+</form>

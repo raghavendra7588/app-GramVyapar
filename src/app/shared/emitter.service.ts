@@ -22,6 +22,7 @@ export class EmitterService {
   public isVendorContactNumber: EventEmitter<boolean>;
   public masterResponse: EventEmitter<any>;
   public isOrderedPlaced: EventEmitter<boolean>;
+  public isEmailIDUpdated: EventEmitter<any>;
 
   constructor() {
     this.isRecord = new EventEmitter();
@@ -41,5 +42,6 @@ export class EmitterService {
     this.isVendorContactNumber = new EventEmitter();
     this.masterResponse = new EventEmitter();
     this.isOrderedPlaced = new EventEmitter();
+    this.isEmailIDUpdated = new EventEmitter();
   }
 }

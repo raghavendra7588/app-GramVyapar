@@ -25,7 +25,7 @@ export class PaymentSuccessComponent implements OnInit {
     if ("isFirstTime" in sessionStorage) {
       let prevTotalOrder: number;
       this.placeOrderObj = JSON.parse(sessionStorage.getItem('placOrderObj'));
-      console.log(this.placeOrderObj);
+
       this.buyProductsService.placeOrderData(this.placeOrderObj).subscribe(response => {
         this.placeOrderResponse = response;
         this.toastr.success('Your Order Is Placed','', {

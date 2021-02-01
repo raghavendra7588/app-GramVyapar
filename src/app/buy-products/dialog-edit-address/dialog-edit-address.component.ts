@@ -1,10 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { AddressDetails } from 'src/app/buy-products/buy-products.model';
 import { BuyProductsService } from '../buy-products.service';
 import { ToastrService } from 'ngx-toastr';
 import { EmitterService } from 'src/app/shared/emitter.service';
+import { DialogEditEmailComponent } from '../dialog-edit-email/dialog-edit-email.component';
 
 @Component({
   selector: 'app-dialog-edit-address',
@@ -29,8 +30,10 @@ export class DialogEditAddressComponent implements OnInit {
     private dialogRef: MatDialogRef<DialogEditAddressComponent>,
     public buyProductsService: BuyProductsService,
     public toastr: ToastrService,
-    public emitterService: EmitterService) {
+    public emitterService: EmitterService,
+    public dialog: MatDialog,) {
 
+    console.log('data to edit mode', data);
     this.addressForm = this.formBuilder.group({
       name: [''],
       mobileNumber: [''],
@@ -40,8 +43,7 @@ export class DialogEditAddressComponent implements OnInit {
       pinCode: [''],
       city: [''],
       area: [''],
-      state: [''],
-      emailID: ['']
+      state: ['']
     });
 
     this.addressData = data;
@@ -111,13 +113,11 @@ export class DialogEditAddressComponent implements OnInit {
     if (this.address.state === null || this.address.state === undefined || this.address.state === '') {
       this.address.state = '';
     }
-    if (this.address.emailID === null || this.address.emailID === undefined || this.address.emailID === '') {
-      this.address.emailID = '';
-    }
+ 
     this.address.id = this.addressData.id;
     this.address.userId = sessionStorage.getItem('customerId').toString();
     this.address.primaryAddressFlag = "";
-    console.log('address data', this.address);
+    console.log('address data to update', this.address);
     this.buyProductsService.addUserAddress(this.address).subscribe(data => {
       this.addressResponse = data;
       this.toastr.success('Record Updated Successfully');
@@ -126,5 +126,6 @@ export class DialogEditAddressComponent implements OnInit {
       this.dialogRef.close();
     });
   }
+
 
 }
