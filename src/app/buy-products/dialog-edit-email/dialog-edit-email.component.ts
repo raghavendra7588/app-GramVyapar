@@ -32,7 +32,6 @@ export class DialogEditEmailComponent implements OnInit {
     });
 
     this.userData = data;
-    console.log('data received ', this.userData);
     this.assignAddressData();
   }
 
