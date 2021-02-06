@@ -33,10 +33,9 @@ export class BuyProductsService {
   private GET_HASH_KEY = this.ADMIN_BASE_URL + 'Transaction/GetHashKey';
   private PAYMENT_GATEWAY = 'https://sandboxsecure.payu.in/_payment';
   private UPDATE_EMAIL_ID = this.ADMIN_BASE_URL + 'User/UpdateEmailID';
-  // https://3intellects.co.in/Uat_AdminApi/api/
-  // private UPDATE_EMAIL_ID = 'https://3intellects.co.in/Uat_AdminApi/api/User/UpdateEmailID';
 
-  public API_BASE_URL = environment.apiBaseUrl;
+
+
 
   PAYMENT_GATEWAY_URL = 'https://3intellects.co.in/uat_AdminApi/payU.aspx';
 
@@ -176,6 +175,20 @@ export class BuyProductsService {
     return this.http.post<Array<ProductName>>(this.GET_ALL_DATA_BY_PRODUCT_NAME, data, { headers: reqHeader });
   }
 
+  createPayment(paymentRequest) {
+
+    let reqHeader = new HttpHeaders({
+      'NoAuth': 'True',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
+      'Access-Control-Allow-Headers': 'X-Requested-With,content-type',
+      'Access-Control-Allow-Credentials': 'true'
+    });
+
+    return this.http.post('https://test.payu.in/_payment', paymentRequest, { headers: reqHeader });
+  }
+
+
   getProductSearch(userId: string, productName: string, vendorCode: string) {
     const data = {
       userid: userId,
@@ -192,47 +205,10 @@ export class BuyProductsService {
     return this.http.post(this.GET_HASH_KEY, hashKeyRequest);
   }
 
-  httpHeader = {
-    headers: new HttpHeaders({
-      'NoAuth': 'True',
-      'Access-Control-Allow-Origin': '**',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
-      'Access-Control-Allow-Headers': 'X-Requested-With,content-type',
-      'Access-Control-Allow-Credentials': 'true'
-    })
-  };
 
 
   paymentGateWay(gateWayRequest) {
     return this.http.post(this.PAYMENT_GATEWAY, gateWayRequest);
-  }
-
-  get(url): Observable<any> {
-    return this.http.get(this.API_BASE_URL + url);
-  }
-
-  post(url, body: any): Observable<any> {
-    return this.http.post(this.API_BASE_URL + url, body, this.httpHeader);
-  }
-
-  put(url, body: any): Observable<any> {
-    return this.http.put(this.API_BASE_URL + url, body, this.httpHeader);
-  }
-
-  delete(url): Observable<any> {
-    return this.http.delete(this.API_BASE_URL + url, this.httpHeader);
-  }
-  createPayment(paymentRequest) {
-
-    let reqHeader = new HttpHeaders({
-      'NoAuth': 'True',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
-      'Access-Control-Allow-Headers': 'X-Requested-With,content-type',
-      'Access-Control-Allow-Credentials': 'true'
-    });
-
-    return this.http.post('https://test.payu.in/_payment', paymentRequest, { headers: reqHeader });
   }
 
   postPaymenGatewayUrl(Amount, TransactionID, Name, EmailID, mobileno) {

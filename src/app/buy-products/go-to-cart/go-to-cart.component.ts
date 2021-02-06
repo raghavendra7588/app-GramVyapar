@@ -675,7 +675,7 @@ export class GoToCartComponent implements OnInit {
     this.selectedTimeSlot = response.id;
     this.isOnlineSelected = sessionStorage.getItem("isOnlineSelected");
 
-    if (this.isOnlineSelected === "true") {
+    if (this.isOnlineSelected === "true" && !this.payuform.EmailID) {
       this.toastr.info('Please Enter Email ID For Online Transaction', '', {
         timeOut: 3000,
         positionClass: 'toast-bottom-right'
@@ -802,12 +802,7 @@ export class GoToCartComponent implements OnInit {
     if (this.isOnlineSelected === "true") {
       sessionStorage.removeItem('placOrderObj');
       sessionStorage.setItem('placOrderObj', JSON.stringify(placOrderObj));
-      // this.dialog.open(PaymentComponent, {
-      //   width: '600px',
-      //   height: '630px',
-      //   data: placOrderObj,
-      //   disableClose: true
-      // });
+
       this.purchaseProducts.DeliveryDate = new Date(this.prevDeliveryDate);
     }
     else {
@@ -840,11 +835,6 @@ export class GoToCartComponent implements OnInit {
 
 
       totalFinalPrice = ((selectedProductStorageArray[i].MRP - selectedProductStorageArray[i].Discount) * selectedProductStorageArray[i].RequiredQuantity);
-
-
-
-
-
 
       var itemsObj = {
         id: "0",
@@ -883,7 +873,6 @@ export class GoToCartComponent implements OnInit {
     const year = date.getFullYear();
     const month = `${date.getMonth() + 1}`.padStart(2, "0");
     const day = `${date.getDate()}`.padStart(2, "0");
-    // const stringDate = [year, month, day].join("/");
     const stringDate = [day, month, year].join("-");
     let fullDate = stringDate;
     return fullDate
@@ -943,7 +932,6 @@ export class GoToCartComponent implements OnInit {
       this.customerId = this.verifyUserDetails.customerId;
       sessionStorage.setItem('customerId', this.customerId);
       this.prevEmailID = this.verifyUserDetails.emailid;
-      // sessionStorage.setItem('emailid',this.verifyUserDetails.emailid);
       this.isMobileNumberEntered = true;
       this.prevTotalOrder = Number(this.verifyUserDetails.TotalOrder);
 
@@ -955,7 +943,6 @@ export class GoToCartComponent implements OnInit {
 
       if (this.verifyUserDetails.emailid) {
         this.payuform.EmailID = this.verifyUserDetails.emailid;
-        // this.isOnlineTransactionModeSelected = true;
       }
 
 
@@ -1176,13 +1163,12 @@ export class GoToCartComponent implements OnInit {
     url.searchParams.set('Name', this.payuform.Name);
     url.searchParams.set('EmailID', this.payuform.EmailID);
     url.searchParams.set('Amount', this.payuform.Amount);
-    // url.searchParams.set('Amount', '5');
     url.searchParams.set('mobileno', this.payuform.mobilno.toString());
     url.searchParams.set('TransationID', this.txnid.toString());
 
     this.payuUrl = url.href;
     this.buyProductsService.pUrl = url.href;
-    console.log(this.buyProductsService.pUrl);
+
 
     this.disablePaymentButton = false;
     this.makePayment = true;
